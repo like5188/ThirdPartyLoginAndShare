@@ -1,6 +1,8 @@
 package com.like.thirdpartyloginandshare
 
 import android.content.Context
+import com.like.thirdpartyloginandshare.util.SingletonHolder
+import com.like.thirdpartyloginandshare.util.WX_APP_ID
 import com.tencent.mm.opensdk.modelmsg.SendAuth
 import com.tencent.mm.opensdk.openapi.IWXAPI
 import com.tencent.mm.opensdk.openapi.WXAPIFactory

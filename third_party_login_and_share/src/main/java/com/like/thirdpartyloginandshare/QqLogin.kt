@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.support.v4.app.Fragment
 import android.text.TextUtils
+import com.like.thirdpartyloginandshare.util.QQ_APP_ID
 import com.tencent.connect.UnionInfo
 import com.tencent.connect.UserInfo
 import com.tencent.connect.common.Constants

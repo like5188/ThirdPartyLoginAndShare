@@ -1,4 +1,4 @@
-package com.like.thirdpartyloginandshare
+package com.like.thirdpartyloginandshare.util
 
 import kotlin.jvm.functions.FunctionN
 
