@@ -23,7 +23,7 @@ class WxLogin(private val context: Context) {
         mWxApi.registerApp(WX_APP_ID)
     }
 
-    fun login() {
+    fun getCode() {
         // 获取授权码
         val req = SendAuth.Req()
         // 获取用户个人信息的授权作用域
