@@ -9,7 +9,6 @@ import com.tencent.connect.share.QzoneShare
 import com.tencent.tauth.IUiListener
 import com.tencent.tauth.Tencent
 
-
 /**
  * QQ空间分享工具类
  * QQ空间分享无需QQ登录
