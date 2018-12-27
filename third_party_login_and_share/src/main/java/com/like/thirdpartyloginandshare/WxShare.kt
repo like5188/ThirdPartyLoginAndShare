@@ -9,7 +9,7 @@ import com.tencent.mm.opensdk.openapi.IWXAPI
 import java.io.ByteArrayOutputStream
 
 
-class WxShare(private val context: Context) {
+class WxShare(context: Context) {
     private val mWxApi: IWXAPI by lazy {
         WxLogin.getInstance(context).mWxApi
     }

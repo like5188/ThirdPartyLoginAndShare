@@ -8,7 +8,7 @@ import com.tencent.mm.opensdk.openapi.IWXAPI
 import com.tencent.mm.opensdk.openapi.WXAPIFactory
 import kotlin.jvm.functions.FunctionN
 
-class WxLogin(private val context: Context) {
+class WxLogin(context: Context) {
     companion object : SingletonHolder<WxLogin>(object : FunctionN<WxLogin> {
         override val arity: Int = 1 // number of arguments that must be passed to constructor
 
