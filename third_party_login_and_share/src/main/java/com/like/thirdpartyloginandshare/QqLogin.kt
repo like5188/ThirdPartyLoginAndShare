@@ -17,7 +17,7 @@ import org.json.JSONObject
  * QQ登录工具类
  * 应用需要在调用接口的Activity的onActivityResult方法中调用[onActivityResult]
  */
-class QqLogin(context: Context, private val mLoginListener: LoginListener) {
+class QqLogin(private val context: Context, private val mLoginListener: LoginListener) {
     private val mTencent = Tencent.createInstance(QQ_APP_ID, context.applicationContext)
 
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -27,40 +27,40 @@ class QqLogin(context: Context, private val mLoginListener: LoginListener) {
     }
 
     fun login(activity: Activity) {
-        checkSessionValidAndLogin(activity) {
+        checkSessionValidAndLogin {
             mTencent.login(activity, "all", mLoginListener)
         }
     }
 
     fun login(fragment: Fragment) {
-        checkSessionValidAndLogin(fragment.context) {
+        checkSessionValidAndLogin {
             mTencent.login(fragment, "all", mLoginListener)
         }
     }
 
-    fun isLogin(context: Context) = mTencent.isSessionValid
+    fun isLogin() = mTencent.isSessionValid
 
     fun logout(context: Context) {
         mTencent.logout(context)
     }
 
-    fun getUserInfo(context: Context, listener: GetUserInfoListener) {
-        if (isLogin(context)) {
+    fun getUserInfo(listener: GetUserInfoListener) {
+        if (isLogin()) {
             UserInfo(context, mTencent.qqToken).getUserInfo(listener)
         } else {
             listener.onFailure("获取用户信息失败 尚未登录")
         }
     }
 
-    fun getUnionId(context: Context, listener: GetUnionIdListener) {
-        if (isLogin(context)) {
+    fun getUnionId(listener: GetUnionIdListener) {
+        if (isLogin()) {
             UnionInfo(context, mTencent.qqToken).getUnionId(listener)
         } else {
             listener.onFailure("获取unionId失败 尚未登录")
         }
     }
 
-    private inline fun checkSessionValidAndLogin(context: Context?, login: () -> Unit) {
+    private inline fun checkSessionValidAndLogin(login: () -> Unit) {
         if (mTencent.checkSessionValid(QQ_APP_ID)) {
             mTencent.initSessionCache(mTencent.loadSession(QQ_APP_ID))
             mLoginListener.onSuccess()
