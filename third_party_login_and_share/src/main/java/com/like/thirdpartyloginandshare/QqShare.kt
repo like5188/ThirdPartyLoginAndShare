@@ -11,12 +11,12 @@ import com.tencent.tauth.Tencent
  * QQ分享工具类
  * QQ分享无需QQ登录
  */
-class QqShare() {
+class QqShare(private val activity: Activity) {
+    private val mTencent = Tencent.createInstance(QQ_APP_ID, activity.applicationContext)
 
     /**
      * 分享图文消息
      *
-     * @param activity
      * @param title         分享的标题, 最长30个字符。
      * @param targetUrl     这条分享消息被好友点击后的跳转URL。
      * @param summary       分享的消息摘要，最长40个字。
@@ -25,7 +25,6 @@ class QqShare() {
      * @param listener
      */
     fun shareImageAndText(
-        activity: Activity,
         title: String,
         targetUrl: String,
         summary: String = "",
@@ -52,18 +51,16 @@ class QqShare() {
         params.putInt(QQShare.SHARE_TO_QQ_EXT_INT, QQShare.SHARE_TO_QQ_FLAG_QZONE_AUTO_OPEN)
         // 携带ARK信息的同时，需要携带原本的图文信息，ARK信息只是作为可选项，传递的JSON串为空或者不规范，分享的仍然为原本的图文信息。
         params.putString(QQShare.SHARE_TO_QQ_ARK_INFO, arkStr)
-        Tencent.createInstance(QQ_APP_ID, activity.applicationContext)?.shareToQQ(activity, params, listener)
+        mTencent.shareToQQ(activity, params, listener)
     }
 
     /**
      * 分享图片
      *
-     * @param activity
      * @param imageLocalUrl     需要分享的本地图片路径
      * @param listener
      */
     fun shareImage(
-        activity: Activity,
         imageLocalUrl: String,
         listener: IUiListener? = null
     ) {
@@ -78,13 +75,12 @@ class QqShare() {
         // Tencent.SHARE_TO_QQ_FLAG_QZONE_AUTO_OPEN，分享时自动打开分享到QZone的对话框。
         // Tencent.SHARE_TO_QQ_FLAG_QZONE_ITEM_HIDE，分享时隐藏分享到QZone按钮
         params.putInt(QQShare.SHARE_TO_QQ_EXT_INT, QQShare.SHARE_TO_QQ_FLAG_QZONE_AUTO_OPEN)
-        Tencent.createInstance(QQ_APP_ID, activity.applicationContext)?.shareToQQ(activity, params, listener)
+        mTencent.shareToQQ(activity, params, listener)
     }
 
     /**
      * 分享音乐
      *
-     * @param activity
      * @param title         分享的标题, 最长30个字符。
      * @param audioUrl      音乐文件的远程链接, 以URL的形式传入, 不支持本地音乐。
      * @param targetUrl     这条分享消息被好友点击后的跳转URL。
@@ -93,7 +89,6 @@ class QqShare() {
      * @param listener
      */
     fun shareAudio(
-        activity: Activity,
         title: String,
         audioUrl: String,
         targetUrl: String,
@@ -120,20 +115,18 @@ class QqShare() {
         // Tencent.SHARE_TO_QQ_FLAG_QZONE_AUTO_OPEN，分享时自动打开分享到QZone的对话框。
         // Tencent.SHARE_TO_QQ_FLAG_QZONE_ITEM_HIDE，分享时隐藏分享到QZone按钮
         params.putInt(QQShare.SHARE_TO_QQ_EXT_INT, QQShare.SHARE_TO_QQ_FLAG_QZONE_AUTO_OPEN)
-        Tencent.createInstance(QQ_APP_ID, activity.applicationContext)?.shareToQQ(activity, params, listener)
+        mTencent.shareToQQ(activity, params, listener)
     }
 
     /**
      * 分享应用
      *
-     * @param activity
      * @param title         分享的标题, 最长30个字符。
      * @param summary       分享的消息摘要，最长40个字。
      * @param imageUrl      分享图片的URL或者本地路径
      * @param listener
      */
     fun shareApp(
-        activity: Activity,
         title: String,
         summary: String = "",
         imageUrl: String = "",
@@ -154,7 +147,7 @@ class QqShare() {
         // Tencent.SHARE_TO_QQ_FLAG_QZONE_AUTO_OPEN，分享时自动打开分享到QZone的对话框。
         // Tencent.SHARE_TO_QQ_FLAG_QZONE_ITEM_HIDE，分享时隐藏分享到QZone按钮
         params.putInt(QQShare.SHARE_TO_QQ_EXT_INT, QQShare.SHARE_TO_QQ_FLAG_QZONE_AUTO_OPEN)
-        Tencent.createInstance(QQ_APP_ID, activity.applicationContext)?.shareToQQ(activity, params, listener)
+        mTencent.shareToQQ(activity, params, listener)
     }
 
 }

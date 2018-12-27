@@ -11,12 +11,12 @@ import com.tencent.tauth.Tencent
  * QQ空间分享工具类
  * QQ空间分享无需QQ登录
  */
-class QqZoneShare() {
+class QqZoneShare(private val activity: Activity) {
+    private val mTencent = Tencent.createInstance(QQ_APP_ID, activity.applicationContext)
 
     /**
      * 分享图文消息
      *
-     * @param activity
      * @param title         分享的标题，最多200个字符
      * @param targetUrl     需要跳转的链接，URL字符串
      * @param summary       分享的摘要，最多600字符
@@ -24,7 +24,6 @@ class QqZoneShare() {
      * @param listener
      */
     fun shareImageAndText(
-        activity: Activity,
         title: String,
         targetUrl: String,
         summary: String = "",
@@ -42,7 +41,7 @@ class QqZoneShare() {
         params.putString(QzoneShare.SHARE_TO_QQ_TARGET_URL, targetUrl)
         // 分享的图片, 以ArrayList<String>的类型传入，以便支持多张图片（注：图片最多支持9张图片，多余的图片会被丢弃）。
         params.putStringArrayList(QzoneShare.SHARE_TO_QQ_IMAGE_URL, imageUrl)
-        Tencent.createInstance(QQ_APP_ID, activity.applicationContext)?.shareToQzone(activity, params, listener)
+        mTencent.shareToQzone(activity, params, listener)
     }
 
 }
