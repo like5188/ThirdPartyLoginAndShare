@@ -39,14 +39,12 @@ class QqLogin(private val context: Context, private val mLoginListener: LoginLis
         }
     }
 
-    fun isLogin() = mTencent.isSessionValid
-
     fun logout(context: Context) {
         mTencent.logout(context)
     }
 
     fun getUserInfo(listener: GetUserInfoListener) {
-        if (isLogin()) {
+        if (mTencent.isSessionValid) {
             UserInfo(context, mTencent.qqToken).getUserInfo(listener)
         } else {
             listener.onFailure("获取用户信息失败 尚未登录")
@@ -54,7 +52,7 @@ class QqLogin(private val context: Context, private val mLoginListener: LoginLis
     }
 
     fun getUnionId(listener: GetUnionIdListener) {
-        if (isLogin()) {
+        if (mTencent.isSessionValid) {
             UnionInfo(context, mTencent.qqToken).getUnionId(listener)
         } else {
             listener.onFailure("获取unionId失败 尚未登录")
