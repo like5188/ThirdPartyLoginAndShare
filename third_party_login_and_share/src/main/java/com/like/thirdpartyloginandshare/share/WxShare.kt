@@ -5,16 +5,28 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Bitmap.CompressFormat
 import com.like.thirdpartyloginandshare.login.WxLogin
+import com.like.thirdpartyloginandshare.share.params.app.AppParams
+import com.like.thirdpartyloginandshare.share.params.image.ImageParams
+import com.like.thirdpartyloginandshare.share.params.image.WxImageParams
+import com.like.thirdpartyloginandshare.share.params.imageandtext.ImageAndTextParams
+import com.like.thirdpartyloginandshare.share.params.multiimage.MultiImageParams
+import com.like.thirdpartyloginandshare.share.params.music.MusicParams
+import com.like.thirdpartyloginandshare.share.params.music.WxMusicParams
+import com.like.thirdpartyloginandshare.share.params.page.PageParams
+import com.like.thirdpartyloginandshare.share.params.page.WxPageParams
+import com.like.thirdpartyloginandshare.share.params.text.TextParams
+import com.like.thirdpartyloginandshare.share.params.text.WxTextParams
+import com.like.thirdpartyloginandshare.share.params.video.VideoParams
+import com.like.thirdpartyloginandshare.share.params.video.WxVideoParams
 import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
 import com.like.thirdpartyloginandshare.util.WX_OPEN_ID
 import com.tencent.mm.opensdk.modelmsg.*
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX.Req.WXSceneSession
+import com.tencent.mm.opensdk.modelmsg.SendMessageToWX.Req.WXSceneTimeline
 import com.tencent.mm.opensdk.openapi.IWXAPI
 import java.io.ByteArrayOutputStream
-import java.io.File
 
-
-class WxShare(activity: Activity) : ShareStrategy(activity) {
+class WxShare(activity: Activity, private val sence: Int) : ShareStrategy(activity) {
     private val mWxApi: IWXAPI by lazy {
         WxLogin.getInstance(activity).mWxApi
     }
@@ -25,146 +37,134 @@ class WxShare(activity: Activity) : ShareStrategy(activity) {
     override fun setShareListener(listener: OnLoginAndShareListener) {
     }
 
-    /**
-     * 分享文本
-     *
-     * @param text      文本。长度需大于0且不超过10KB
-     */
-    override fun shareText(text: String) {
+    override fun shareText(params: TextParams) {
+        if (params !is WxTextParams) return
         // 初始化一个 WXTextObject 对象，填写分享的文本内容
         val textObj = WXTextObject()
-        textObj.text = text
+        textObj.text = params.text
 
         // 初始化一个 WXMediaMessage 对象
         val msg = WXMediaMessage()
         msg.mediaObject = textObj
-        msg.description = text
+        msg.description = params.text
 
         // 构造一个Req
         val req = SendMessageToWX.Req()
         req.transaction = buildTransaction("text")
         req.message = msg
-        req.scene = WXSceneSession
+        req.scene = sence
 
         // 调用api接口，发送数据到微信
         mWxApi.sendReq(req)
     }
 
-    /**
-     * 分享图片
-     *
-     * @param bmp       图片。内容大小不超过10MB
-     * @param thumbBmp  缩略图
-     */
-    override fun shareImage(bmp: Bitmap, thumbBmp: Bitmap) {
+    override fun shareImage(params: ImageParams) {
+        if (params !is WxImageParams) return
         // 初始化一个 WXImageObject 对象
-        val imgObj = WXImageObject(bmp)
-        bmp.recycle()
+        val imgObj = WXImageObject(params.bmp)
+        params.bmp.recycle()
 
         // 初始化一个 WXMediaMessage 对象
         val msg = WXMediaMessage()
         msg.mediaObject = imgObj
-        msg.thumbData = bmpToByteArray(thumbBmp, true)
+        msg.thumbData = bmpToByteArray(params.thumbBmp, true)
 
         // 构造一个Req
         val req = SendMessageToWX.Req()
         req.transaction = buildTransaction("img")
         req.message = msg
-        req.scene = WXSceneSession
+        req.scene = sence
         req.userOpenId = WX_OPEN_ID
 
         // 调用api接口，发送数据到微信
         mWxApi.sendReq(req)
     }
 
-    /**
-     * 分享音乐
-     *
-     * 分享至微信的音乐，直接点击好友会话或朋友圈下的分享内容会跳转至第三方 APP，
-     * 点击会话列表顶部的音乐分享内容将跳转至微信原生音乐播放器播放。
-     *
-     * @param title         标题
-     * @param description   描述
-     * @param musicUrl      音频的URL地址。限制长度不超过10KB
-     * @param thumbBmp      缩略图
-     */
-    override fun shareMusic(title: String, description: String, musicUrl: String, thumbBmp: Bitmap) {
-        //初始化一个WXMusicObject，填写url
+    override fun shareMultiImage(params: MultiImageParams) {
+        when (sence) {
+            WXSceneSession -> throw UnsupportedOperationException("WX不支持此操作")
+            WXSceneTimeline -> throw UnsupportedOperationException("WX_CIRCLE不支持此操作")
+        }
+    }
+
+    override fun shareImageAndText(params: ImageAndTextParams) {
+        when (sence) {
+            WXSceneSession -> throw UnsupportedOperationException("WX不支持此操作")
+            WXSceneTimeline -> throw UnsupportedOperationException("WX_CIRCLE不支持此操作")
+        }
+    }
+
+    override fun shareMusic(params: MusicParams) {
+        if (params !is WxMusicParams) return
+        // 初始化一个WXMusicObject，填写url
         val music = WXMusicObject()
-        music.musicUrl = musicUrl
+        music.musicUrl = params.musicUrl
 
         // 用 WXMusicObject 对象初始化一个 WXMediaMessage 对象
         val msg = WXMediaMessage()
         msg.mediaObject = music
-        msg.title = title
-        msg.description = description
-        msg.thumbData = bmpToByteArray(thumbBmp, true);
+        msg.title = params.title
+        msg.description = params.description
+        msg.thumbData = bmpToByteArray(params.thumbBmp, true);
 
         // 构造一个Req
         val req = SendMessageToWX.Req()
         req.transaction = buildTransaction("music")
         req.message = msg
-        req.scene = WXSceneSession
+        req.scene = sence
         req.userOpenId = WX_OPEN_ID
 
         // 调用api接口，发送数据到微信
         mWxApi.sendReq(req)
     }
 
-    /**
-     * 分享视频
-     *
-     * @param title         标题
-     * @param description   描述
-     * @param videoUrl      视频的URL地址。限制长度不超过10KB
-     * @param thumbBmp      缩略图
-     */
-    override fun shareVideo(title: String, description: String, videoUrl: String, thumbBmp: Bitmap) {
+    override fun shareVideo(params: VideoParams) {
+        if (params !is WxVideoParams) return
         // 初始化一个WXVideoObject，填写url
         val video = WXVideoObject()
-        video.videoUrl = videoUrl
+        video.videoUrl = params.videoUrl
 
         // 用 WXVideoObject 对象初始化一个 WXMediaMessage 对象
         val msg = WXMediaMessage(video)
-        msg.title = title
-        msg.description = description
-        msg.thumbData = bmpToByteArray(thumbBmp, true)
+        msg.title = params.title
+        msg.description = params.description
+        msg.thumbData = bmpToByteArray(params.thumbBmp, true)
 
         // 构造一个Req
         val req = SendMessageToWX.Req()
         req.transaction = buildTransaction("video")
         req.message = msg
-        req.scene = WXSceneSession
+        req.scene = sence
         req.userOpenId = WX_OPEN_ID
 
         // 调用api接口，发送数据到微信
         mWxApi.sendReq(req)
     }
 
-    /**
-     * 分享网页
-     *
-     * @param title         标题
-     * @param description   描述
-     * @param webPageUrl    html链接。限制长度不超过10KB
-     * @param thumbBmp      缩略图
-     */
-    override fun shareWebpage(title: String, description: String, webPageUrl: String, thumbBmp: Bitmap) {
+    override fun shareApp(params: AppParams) {
+        when (sence) {
+            WXSceneSession -> throw UnsupportedOperationException("WX不支持此操作")
+            WXSceneTimeline -> throw UnsupportedOperationException("WX_CIRCLE不支持此操作")
+        }
+    }
+
+    override fun sharePage(params: PageParams) {
+        if (params !is WxPageParams) return
         // 初始化一个WXWebpageObject，填写url
         val webpage = WXWebpageObject()
-        webpage.webpageUrl = webPageUrl
+        webpage.webpageUrl = params.webPageUrl
 
         // 用 WXWebpageObject 对象初始化一个 WXMediaMessage 对象
         val msg = WXMediaMessage(webpage)
-        msg.title = title
-        msg.description = description
-        msg.thumbData = bmpToByteArray(thumbBmp, true)
+        msg.title = params.title
+        msg.description = params.description
+        msg.thumbData = bmpToByteArray(params.thumbBmp, true)
 
         // 构造一个Req
         val req = SendMessageToWX.Req()
         req.transaction = buildTransaction("webpage")
         req.message = msg
-        req.scene = WXSceneSession
+        req.scene = sence
         req.userOpenId = WX_OPEN_ID
 
         // 调用api接口，发送数据到微信
@@ -188,63 +188,4 @@ class WxShare(activity: Activity) : ShareStrategy(activity) {
         return result
     }
 
-    override fun shareImageAndText(
-        title: String,
-        targetUrl: String,
-        summary: String,
-        imageUrl: String,
-        arkStr: String
-    ) {
-        throw UnsupportedOperationException("WEIXIN不支持此操作")
-    }
-
-    override fun shareImage(imageLocalUrl: String) {
-        throw UnsupportedOperationException("WEIXIN不支持此操作")
-    }
-
-    override fun shareAudio(title: String, audioUrl: String, targetUrl: String, summary: String, imageUrl: String) {
-        throw UnsupportedOperationException("WEIXIN不支持此操作")
-    }
-
-    override fun shareApp(title: String, summary: String, imageUrl: String) {
-        throw UnsupportedOperationException("WEIXIN不支持此操作")
-    }
-
-    override fun shareImageAndText(title: String, targetUrl: String, summary: String, imageUrl: ArrayList<String>?) {
-        throw UnsupportedOperationException("WEIXIN不支持此操作")
-    }
-
-    override fun publishMood(summary: String, imageUrl: ArrayList<String>?, scene: String, callback: String) {
-        throw UnsupportedOperationException("WEIXIN不支持此操作")
-    }
-
-    override fun publishVideo(videoLocalPath: String, scene: String, callback: String) {
-        throw UnsupportedOperationException("WEIXIN不支持此操作")
-    }
-
-    override fun shareText(text: String, title: String, actionUrl: String) {
-        throw UnsupportedOperationException("WEIXIN不支持此操作")
-    }
-
-    override fun shareImage(bmp: Bitmap) {
-        throw UnsupportedOperationException("WEIXIN不支持此操作")
-    }
-
-    override fun shareMultiImage(images: List<File>) {
-        throw UnsupportedOperationException("WEIXIN不支持此操作")
-    }
-
-    override fun shareVideo(video: File) {
-        throw UnsupportedOperationException("WEIXIN不支持此操作")
-    }
-
-    override fun shareMedia(
-        thumbBmp: Bitmap,
-        title: String,
-        description: String,
-        actionUrl: String,
-        defaultText: String
-    ) {
-        throw UnsupportedOperationException("WEIXIN不支持此操作")
-    }
 }
