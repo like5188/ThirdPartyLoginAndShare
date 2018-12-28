@@ -22,24 +22,24 @@ class ThirdPartyLogin private constructor(private val mActivity: Activity) {
         fun with(fragment: Fragment): ThirdPartyLogin = getInstance(fragment.activity)
     }
 
-    private lateinit var mLoginStrategy: LoginStrategy
+    private lateinit var mStrategy: LoginStrategy
 
     fun setPlatForm(platForm: PlatForm): ThirdPartyLogin {
         when (platForm) {
             PlatForm.QQ -> {
-                mLoginStrategy = QqLogin(mActivity)
+                mStrategy = QqLogin(mActivity)
             }
             PlatForm.QZONE -> {
                 throw UnsupportedOperationException("暂不支持 QZONE 进行登录")
             }
             PlatForm.WEIXIN -> {
-                mLoginStrategy = WxLogin(mActivity)
+                mStrategy = WxLogin.getInstance(mActivity)
             }
             PlatForm.WEIXIN_CIRCLE -> {
                 throw UnsupportedOperationException("暂不支持 WEIXIN_CIRCLE 进行登录")
             }
             PlatForm.SINA -> {
-                mLoginStrategy = WbLogin(mActivity)
+                mStrategy = WbLogin(mActivity)
             }
         }
         return this
@@ -47,21 +47,21 @@ class ThirdPartyLogin private constructor(private val mActivity: Activity) {
 
     fun login(listener: OnLoginAndShareListener) {
         checkParams()
-        mLoginStrategy.login(listener)
+        mStrategy.login(listener)
     }
 
     fun logout() {
         checkParams()
-        mLoginStrategy.logout()
+        mStrategy.logout()
     }
 
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         checkParams()
-        mLoginStrategy.onActivityResult(requestCode, resultCode, data)
+        mStrategy.onActivityResult(requestCode, resultCode, data)
     }
 
     private fun checkParams() {
-        if (!::mLoginStrategy.isInitialized) {
+        if (!::mStrategy.isInitialized) {
             throw UnsupportedOperationException("请先调用setPlatForm(platForm: PlatForm)方法进行初始化")
         }
     }
