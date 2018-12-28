@@ -6,7 +6,8 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.like.thirdpartyloginandshare.ThirdPartyLogin
 import com.like.thirdpartyloginandshare.ThirdPartyShare
-import com.like.thirdpartyloginandshare.share.params.text.TextParams
+import com.like.thirdpartyloginandshare.share.params.image.QqImageParams
+import com.like.thirdpartyloginandshare.share.params.imageandtext.QZoneImageAndTextParams
 import com.like.thirdpartyloginandshare.share.params.text.WbTextParams
 import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
 import com.like.thirdpartyloginandshare.util.PlatForm
@@ -71,28 +72,72 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun wxCircleLogin(view: View) {
-
-    }
-
     fun wxCircleShare(view: View) {
 
     }
 
     fun qqLogin(view: View) {
+        ThirdPartyLogin.with(this)
+            .setPlatForm(PlatForm.QQ)
+            .setLoginListener(object : OnLoginAndShareListener {
+                override fun onSuccess() {
+                    toast("QQ登录成功")
+                }
 
+                override fun onFailure(errorMessage: String) {
+                    toast("QQ登录失败：$errorMessage")
+                }
+
+                override fun onCancel() {
+                    toast("取消QQ登录")
+                }
+            })
+            .login()
     }
 
     fun qqShare(view: View) {
+        ThirdPartyShare.with(this)
+            .setPlatForm(PlatForm.QQ)
+            .setShareListener(object : OnLoginAndShareListener {
+                override fun onSuccess() {
+                    toast("QQ分享成功")
+                }
 
-    }
+                override fun onFailure(errorMessage: String) {
+                    toast("QQ分享失败：$errorMessage")
+                }
 
-    fun qzoneLogin(view: View) {
-
+                override fun onCancel() {
+                    toast("取消QQ分享")
+                }
+            })
+            .shareImage(QqImageParams("$cacheDir/123.jpg"))
     }
 
     fun qzoneShare(view: View) {
+        ThirdPartyShare.with(this)
+            .setPlatForm(PlatForm.QZONE)
+            .setShareListener(object : OnLoginAndShareListener {
+                override fun onSuccess() {
+                    toast("QZONE分享成功")
+                }
 
+                override fun onFailure(errorMessage: String) {
+                    toast("QZONE分享失败：$errorMessage")
+                }
+
+                override fun onCancel() {
+                    toast("取消QZONE分享")
+                }
+            })
+            .shareImageAndText(
+                QZoneImageAndTextParams(
+                    "title",
+                    "https://www.baidu.com/",
+                    "summary",
+                    arrayListOf("$cacheDir/123.jpg")
+                )
+            )
     }
 
 }

@@ -26,18 +26,11 @@
             android:onClick="wxShare"
             android:text="微信分享"/>
 
-
-    <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="wxCircleLogin"
-            android:text="微信朋友圈登录"/>
     <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="wxCircleShare"
             android:text="微信朋友圈分享"/>
-
 
     <Button
             android:layout_width="match_parent"
@@ -50,11 +43,6 @@
             android:onClick="qqShare"
             android:text="QQ分享"/>
 
-    <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="qzoneLogin"
-            android:text="QQ空间登录"/>
     <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

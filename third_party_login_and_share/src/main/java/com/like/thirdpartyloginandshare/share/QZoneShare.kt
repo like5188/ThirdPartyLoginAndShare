@@ -63,7 +63,7 @@ class QZoneShare(activity: Activity) : ShareStrategy(activity) {
             // 需要跳转的链接，URL字符串
             putString(QzoneShare.SHARE_TO_QQ_TARGET_URL, params.targetUrl)
             // 分享的图片, 以ArrayList<String>的类型传入，以便支持多张图片（注：图片最多支持9张图片，多余的图片会被丢弃）。
-            putStringArrayList(QzoneShare.SHARE_TO_QQ_IMAGE_URL, params.imageUrl)
+            putStringArrayList(QzoneShare.SHARE_TO_QQ_IMAGE_URL, params.imageUrls)
             mTencent.shareToQzone(activity, this, mShareListener)
         }
     }
