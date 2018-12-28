@@ -36,6 +36,10 @@ class MainActivity : AppCompatActivity() {
                 override fun onFailure(errorMessage: String) {
                     toast("微博登录失败：$errorMessage")
                 }
+
+                override fun onCancel() {
+                    toast("取消微博登录")
+                }
             })
             .login()
     }
@@ -50,6 +54,10 @@ class MainActivity : AppCompatActivity() {
 
                 override fun onFailure(errorMessage: String) {
                     toast("微博分享失败：$errorMessage")
+                }
+
+                override fun onCancel() {
+                    toast("取消微博分享")
                 }
             })
             .shareText(WbTextParams("内容", "标题", "https://www.baidu.com/"))
