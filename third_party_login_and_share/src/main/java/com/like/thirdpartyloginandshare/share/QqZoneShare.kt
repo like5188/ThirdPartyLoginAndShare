@@ -3,21 +3,28 @@ package com.like.thirdpartyloginandshare.share
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
 import com.like.thirdpartyloginandshare.util.QQ_APP_ID
 import com.tencent.connect.common.Constants
 import com.tencent.connect.share.QzonePublish
 import com.tencent.connect.share.QzoneShare
 import com.tencent.tauth.IUiListener
 import com.tencent.tauth.Tencent
+import com.tencent.tauth.UiError
 
 /**
  * QQ空间分享工具类
  * QQ空间分享无需QQ登录
  */
-class QqZoneShare(private val activity: Activity, private val mShareListener: IUiListener) {
+class QqZoneShare(activity: Activity) : ShareStrategy(activity) {
     private val mTencent = Tencent.createInstance(QQ_APP_ID, activity.applicationContext)
+    private lateinit var mShareListener: ShareListener
 
-    fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    override fun setShareListener(listener: OnLoginAndShareListener) {
+        mShareListener = ShareListener(listener)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == Constants.REQUEST_QZONE_SHARE) {
             Tencent.onActivityResultData(requestCode, resultCode, data, mShareListener)
         }
@@ -31,11 +38,11 @@ class QqZoneShare(private val activity: Activity, private val mShareListener: IU
      * @param summary       分享的摘要，最多600字符
      * @param imageUrl      分享的图片, 以ArrayList<String>的类型传入，以便支持多张图片（注：图片最多支持9张图片，多余的图片会被丢弃）。
      */
-    fun shareImageAndText(
+    override fun shareImageAndText(
         title: String,
         targetUrl: String,
-        summary: String = "",
-        imageUrl: ArrayList<String>? = null
+        summary: String,
+        imageUrl: ArrayList<String>?
     ) {
         val params = Bundle()
         // 分享的类型。
@@ -59,11 +66,11 @@ class QqZoneShare(private val activity: Activity, private val mShareListener: IU
      * @param scene             区分分享场景，用于异化feeds点击行为和小尾巴展示
      * @param callback          游戏自定义字段，点击分享消息回到游戏时回传给游戏
      */
-    fun publishMood(
-        summary: String = "",
-        imageUrl: ArrayList<String>? = null,
-        scene: String = "",
-        callback: String = ""
+    override fun publishMood(
+        summary: String,
+        imageUrl: ArrayList<String>?,
+        scene: String,
+        callback: String
     ) {
         val params = Bundle()
         // 分享的类型
@@ -92,10 +99,10 @@ class QqZoneShare(private val activity: Activity, private val mShareListener: IU
      * @param scene             区分分享场景，用于异化feeds点击行为和小尾巴展示
      * @param callback          游戏自定义字段，点击分享消息回到游戏时回传给游戏
      */
-    fun publishVideo(
+    override fun publishVideo(
         videoLocalPath: String,
-        scene: String = "",
-        callback: String = ""
+        scene: String,
+        callback: String
     ) {
         val params = Bundle()
         // 分享的类型
@@ -114,6 +121,29 @@ class QqZoneShare(private val activity: Activity, private val mShareListener: IU
         params.putBundle(QzonePublish.PUBLISH_TO_QZONE_EXTMAP, extParams)
 
         mTencent.publishToQzone(activity, params, mShareListener)
+    }
+
+    class ShareListener(private val listener: OnLoginAndShareListener) : IUiListener {
+        override fun onComplete(response: Any?) {
+            onSuccess()
+        }
+
+        override fun onError(e: UiError) {
+            onFailure("分享失败 ${e.errorDetail}")
+        }
+
+        override fun onCancel() {
+            onFailure("取消分享")
+        }
+
+        fun onSuccess() {
+            listener.onSuccess()
+        }
+
+        fun onFailure(errorMessage: String) {
+            listener.onFailure(errorMessage)
+        }
+
     }
 
 }

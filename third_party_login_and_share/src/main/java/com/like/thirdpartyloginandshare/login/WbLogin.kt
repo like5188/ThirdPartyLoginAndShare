@@ -3,6 +3,7 @@ package com.like.thirdpartyloginandshare.login
 import android.app.Activity
 import android.content.Intent
 import com.like.thirdpartyloginandshare.util.APP_KEY
+import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
 import com.like.thirdpartyloginandshare.util.REDIRECT_URL
 import com.like.thirdpartyloginandshare.util.SCOPE
 import com.sina.weibo.sdk.WbSdk
@@ -19,11 +20,15 @@ class WbLogin(activity: Activity) : LoginStrategy(activity) {
         WbSdk.install(applicationContext, mAuthInfo)
     }
 
-    fun setLoginListener(loginListener: OnLoginListener) {
-        mLoginListener = LoginListener(loginListener)
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        mSsoHandler.authorizeCallBack(requestCode, resultCode, data)
     }
 
-    override fun login(listener: OnLoginListener) {
+    override fun setLoginListener(listener: OnLoginAndShareListener) {
+        mLoginListener = LoginListener(listener)
+    }
+
+    override fun login(listener: OnLoginAndShareListener) {
         if (AccessTokenKeeper.readAccessToken(applicationContext).isSessionValid) {
             mLoginListener.onSuccess()
         } else {
@@ -35,11 +40,7 @@ class WbLogin(activity: Activity) : LoginStrategy(activity) {
         AccessTokenKeeper.clear(applicationContext)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        mSsoHandler.authorizeCallBack(requestCode, resultCode, data)
-    }
-
-    inner class LoginListener(private val listener: OnLoginListener) : WbAuthListener {
+    inner class LoginListener(private val listener: OnLoginAndShareListener) : WbAuthListener {
         override fun onSuccess(token: Oauth2AccessToken?) {
             if (token != null) {
                 if (token.isSessionValid) {

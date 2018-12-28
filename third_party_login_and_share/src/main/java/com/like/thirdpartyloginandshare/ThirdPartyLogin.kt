@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.support.v4.app.Fragment
 import com.like.thirdpartyloginandshare.login.*
+import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
 import com.like.thirdpartyloginandshare.util.PlatForm
 import com.like.thirdpartyloginandshare.util.SingletonHolder
 import kotlin.jvm.functions.FunctionN
@@ -44,7 +45,7 @@ class ThirdPartyLogin private constructor(private val mActivity: Activity) {
         return this
     }
 
-    fun login(listener: OnLoginListener) {
+    fun login(listener: OnLoginAndShareListener) {
         checkParams()
         mLoginStrategy.login(listener)
     }

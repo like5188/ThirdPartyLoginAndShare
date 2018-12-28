@@ -1,13 +1,25 @@
 package com.like.thirdpartyloginandshare.login
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
+import com.like.thirdpartyloginandshare.util.SingletonHolder
 import com.like.thirdpartyloginandshare.util.WX_APP_ID
 import com.tencent.mm.opensdk.modelmsg.SendAuth
 import com.tencent.mm.opensdk.openapi.IWXAPI
 import com.tencent.mm.opensdk.openapi.WXAPIFactory
+import kotlin.jvm.functions.FunctionN
 
-class WxLogin(activity: Activity) : LoginStrategy(activity) {
+class WxLogin private constructor(activity: Activity) : LoginStrategy(activity) {
+    companion object : SingletonHolder<WxLogin>(object : FunctionN<WxLogin> {
+        override val arity: Int = 1 // number of arguments that must be passed to constructor
+
+        override fun invoke(vararg args: Any?): WxLogin {
+            return WxLogin(args[0] as Activity)
+        }
+    })
+
     val mWxApi: IWXAPI by lazy {
         WXAPIFactory.createWXAPI(applicationContext, WX_APP_ID, true)
     }
@@ -16,14 +28,17 @@ class WxLogin(activity: Activity) : LoginStrategy(activity) {
         mWxApi.registerApp(WX_APP_ID)
     }
 
-    override fun login(listener: OnLoginListener) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    }
+
+    override fun setLoginListener(listener: OnLoginAndShareListener) {
+    }
+
+    override fun login(listener: OnLoginAndShareListener) {
         getCode()
     }
 
     override fun logout() {
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
     }
 
     private fun getCode() {

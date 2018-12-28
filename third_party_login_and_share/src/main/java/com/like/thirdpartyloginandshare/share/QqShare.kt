@@ -4,21 +4,28 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import com.like.thirdpartyloginandshare.R
+import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
 import com.like.thirdpartyloginandshare.util.QQ_APP_ID
 import com.tencent.connect.common.Constants
 import com.tencent.connect.share.QQShare
 import com.tencent.tauth.IUiListener
 import com.tencent.tauth.Tencent
+import com.tencent.tauth.UiError
 
 
 /**
  * QQ分享工具类
  * QQ分享无需QQ登录
  */
-class QqShare(private val activity: Activity, private val mShareListener: IUiListener) {
+class QqShare(activity: Activity) : ShareStrategy(activity) {
     private val mTencent = Tencent.createInstance(QQ_APP_ID, activity.applicationContext)
+    private lateinit var mShareListener: ShareListener
 
-    fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    override fun setShareListener(listener: OnLoginAndShareListener) {
+        mShareListener = ShareListener(listener)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == Constants.REQUEST_QQ_SHARE) {
             Tencent.onActivityResultData(requestCode, resultCode, data, mShareListener)
         }
@@ -33,12 +40,12 @@ class QqShare(private val activity: Activity, private val mShareListener: IUiLis
      * @param imageUrl      分享图片的URL或者本地路径
      * @param arkStr        Ark JSON串
      */
-    fun shareImageAndText(
+    override fun shareImageAndText(
         title: String,
         targetUrl: String,
-        summary: String = "",
-        imageUrl: String = "",
-        arkStr: String = ""
+        summary: String,
+        imageUrl: String,
+        arkStr: String
     ) {
         val params = Bundle()
         // 分享的类型。图文分享(普通分享)
@@ -67,7 +74,7 @@ class QqShare(private val activity: Activity, private val mShareListener: IUiLis
      *
      * @param imageLocalUrl     需要分享的本地图片路径
      */
-    fun shareImage(imageLocalUrl: String) {
+    override fun shareImage(imageLocalUrl: String) {
         val params = Bundle()
         // 分享的类型。
         params.putInt(QQShare.SHARE_TO_QQ_KEY_TYPE, QQShare.SHARE_TO_QQ_TYPE_IMAGE)
@@ -91,12 +98,12 @@ class QqShare(private val activity: Activity, private val mShareListener: IUiLis
      * @param summary       分享的消息摘要，最长40个字。
      * @param imageUrl      分享图片的URL或者本地路径
      */
-    fun shareAudio(
+    override fun shareAudio(
         title: String,
         audioUrl: String,
         targetUrl: String,
-        summary: String = "",
-        imageUrl: String = ""
+        summary: String,
+        imageUrl: String
     ) {
         val params = Bundle()
         // 分享的类型。图文分享(普通分享)
@@ -127,10 +134,10 @@ class QqShare(private val activity: Activity, private val mShareListener: IUiLis
      * @param summary       分享的消息摘要，最长40个字。
      * @param imageUrl      分享图片的URL或者本地路径
      */
-    fun shareApp(
+    override fun shareApp(
         title: String,
-        summary: String = "",
-        imageUrl: String = ""
+        summary: String,
+        imageUrl: String
     ) {
         val params = Bundle()
         // 分享的类型。图文分享(普通分享)
@@ -148,6 +155,29 @@ class QqShare(private val activity: Activity, private val mShareListener: IUiLis
         // Tencent.SHARE_TO_QQ_FLAG_QZONE_ITEM_HIDE，分享时隐藏分享到QZone按钮
         params.putInt(QQShare.SHARE_TO_QQ_EXT_INT, QQShare.SHARE_TO_QQ_FLAG_QZONE_AUTO_OPEN)
         mTencent.shareToQQ(activity, params, mShareListener)
+    }
+
+    class ShareListener(private val listener: OnLoginAndShareListener) : IUiListener {
+        override fun onComplete(response: Any?) {
+            onSuccess()
+        }
+
+        override fun onError(e: UiError) {
+            onFailure("分享失败 ${e.errorDetail}")
+        }
+
+        override fun onCancel() {
+            onFailure("取消分享")
+        }
+
+        fun onSuccess() {
+            listener.onSuccess()
+        }
+
+        fun onFailure(errorMessage: String) {
+            listener.onFailure(errorMessage)
+        }
+
     }
 
 }

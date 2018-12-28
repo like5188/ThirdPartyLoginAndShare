@@ -4,27 +4,33 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
+import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
 import com.sina.weibo.sdk.api.*
 import com.sina.weibo.sdk.share.WbShareCallback
 import com.sina.weibo.sdk.share.WbShareHandler
 import com.sina.weibo.sdk.utils.Utility
 import java.io.File
 
-class WbShare(private val activity: Activity, private val mShareListener: WbShareCallback) {
+class WbShare(activity: Activity) : ShareStrategy(activity) {
     private val shareHandler = WbShareHandler(activity)
+    private lateinit var mShareListener: ShareListener
+
+    override fun setShareListener(listener: OnLoginAndShareListener) {
+        mShareListener = ShareListener(listener)
+    }
 
     init {
         shareHandler.registerApp()
     }
 
-    fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         shareHandler.doResultIntent(data, mShareListener)
     }
 
     /**
      * 分享文本
      */
-    fun shareText(text: String, title: String, actionUrl: String) {
+    override fun shareText(text: String, title: String, actionUrl: String) {
         val textObject = TextObject()
         textObject.text = text
         textObject.title = title
@@ -38,7 +44,7 @@ class WbShare(private val activity: Activity, private val mShareListener: WbShar
     /**
      * 分享图片
      */
-    fun shareImage(bmp: Bitmap) {
+    override fun shareImage(bmp: Bitmap) {
         val imageObject = ImageObject()
         imageObject.setImageObject(bmp)
 
@@ -52,7 +58,7 @@ class WbShare(private val activity: Activity, private val mShareListener: WbShar
      *
      * @param images 本地图片文件
      */
-    fun shareMultiImage(images: List<File>) {
+    override fun shareMultiImage(images: List<File>) {
         val multiImageObject = MultiImageObject()
         //pathList设置的是本地本件的路径,并且是当前应用可以访问的路径，现在不支持网络路径（多图分享依靠微博最新版本的支持，所以当分享到低版本的微博应用时，多图分享失效
         // 可以通过WbSdk.hasSupportMultiImage 方法判断是否支持多图分享,h5分享微博暂时不支持多图）多图分享接入程序必须有文件读写权限，否则会造成分享失败
@@ -70,7 +76,7 @@ class WbShare(private val activity: Activity, private val mShareListener: WbShar
      *
      * @param video 本地视频文件
      */
-    fun shareVideo(video: File) {
+    override fun shareVideo(video: File) {
         //获取视频
         val videoSourceObject = VideoSourceObject()
         videoSourceObject.videoPath = Uri.fromFile(video)
@@ -89,7 +95,13 @@ class WbShare(private val activity: Activity, private val mShareListener: WbShar
      * @param actionUrl
      * @param defaultText   默认文案
      */
-    fun shareMedia(thumbBmp: Bitmap, title: String, description: String, actionUrl: String, defaultText: String) {
+    override fun shareMedia(
+        thumbBmp: Bitmap,
+        title: String,
+        description: String,
+        actionUrl: String,
+        defaultText: String
+    ) {
         val mediaObject = WebpageObject()
         mediaObject.identify = Utility.generateGUID()
         mediaObject.title = title
@@ -103,6 +115,29 @@ class WbShare(private val activity: Activity, private val mShareListener: WbShar
         val weiboMessage = WeiboMultiMessage()
         weiboMessage.mediaObject = mediaObject
         shareHandler.shareMessage(weiboMessage, false)
+    }
+
+    class ShareListener(private val listener: OnLoginAndShareListener) : WbShareCallback {
+        override fun onWbShareFail() {
+            onFailure("分享失败")
+        }
+
+        override fun onWbShareCancel() {
+            onFailure("取消分享")
+        }
+
+        override fun onWbShareSuccess() {
+            onSuccess()
+        }
+
+        fun onSuccess() {
+            listener.onSuccess()
+        }
+
+        fun onFailure(errorMessage: String) {
+            listener.onFailure(errorMessage)
+        }
+
     }
 
 }

@@ -1,18 +1,27 @@
 package com.like.thirdpartyloginandshare.share
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Bitmap.CompressFormat
 import com.like.thirdpartyloginandshare.login.WxLogin
+import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
 import com.like.thirdpartyloginandshare.util.WX_OPEN_ID
 import com.tencent.mm.opensdk.modelmsg.*
 import com.tencent.mm.opensdk.openapi.IWXAPI
 import java.io.ByteArrayOutputStream
 
 
-class WxShare(context: Context) {
+class WxShare(activity: Activity) : ShareStrategy(activity) {
     private val mWxApi: IWXAPI by lazy {
-        WxLogin.getInstance(context).mWxApi
+        WxLogin.getInstance(activity).mWxApi
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    }
+
+    override fun setShareListener(listener: OnLoginAndShareListener) {
     }
 
     /**
@@ -21,7 +30,7 @@ class WxShare(context: Context) {
      * @param text      文本。长度需大于0且不超过10KB
      * @param scene     场景。发送到聊天界面：[com.tencent.mm.opensdk.modelmsg.SendMessageToWX.Req.WXSceneSession]；发送到朋友圈：[com.tencent.mm.opensdk.modelmsg.SendMessageToWX.Req.WXSceneTimeline]
      */
-    fun shareText(text: String, scene: Int) {
+    override fun shareText(text: String, scene: Int) {
         // 初始化一个 WXTextObject 对象，填写分享的文本内容
         val textObj = WXTextObject()
         textObj.text = text
@@ -48,7 +57,7 @@ class WxShare(context: Context) {
      * @param thumbBmp  缩略图
      * @param scene     场景。发送到聊天界面：[com.tencent.mm.opensdk.modelmsg.SendMessageToWX.Req.WXSceneSession]；发送到朋友圈：[com.tencent.mm.opensdk.modelmsg.SendMessageToWX.Req.WXSceneTimeline]
      */
-    fun shareImage(bmp: Bitmap, thumbBmp: Bitmap, scene: Int) {
+    override fun shareImage(bmp: Bitmap, thumbBmp: Bitmap, scene: Int) {
         // 初始化一个 WXImageObject 对象
         val imgObj = WXImageObject(bmp)
         bmp.recycle()
@@ -81,7 +90,7 @@ class WxShare(context: Context) {
      * @param thumbBmp      缩略图
      * @param scene         场景。发送到聊天界面：[com.tencent.mm.opensdk.modelmsg.SendMessageToWX.Req.WXSceneSession]；发送到朋友圈：[com.tencent.mm.opensdk.modelmsg.SendMessageToWX.Req.WXSceneTimeline]
      */
-    fun shareMusic(title: String, description: String, musicUrl: String, thumbBmp: Bitmap, scene: Int) {
+    override fun shareMusic(title: String, description: String, musicUrl: String, thumbBmp: Bitmap, scene: Int) {
         //初始化一个WXMusicObject，填写url
         val music = WXMusicObject()
         music.musicUrl = musicUrl
@@ -113,7 +122,7 @@ class WxShare(context: Context) {
      * @param thumbBmp      缩略图
      * @param scene         场景。发送到聊天界面：[com.tencent.mm.opensdk.modelmsg.SendMessageToWX.Req.WXSceneSession]；发送到朋友圈：[com.tencent.mm.opensdk.modelmsg.SendMessageToWX.Req.WXSceneTimeline]
      */
-    fun shareVideo(title: String, description: String, videoUrl: String, thumbBmp: Bitmap, scene: Int) {
+    override fun shareVideo(title: String, description: String, videoUrl: String, thumbBmp: Bitmap, scene: Int) {
         // 初始化一个WXVideoObject，填写url
         val video = WXVideoObject()
         video.videoUrl = videoUrl
@@ -144,7 +153,7 @@ class WxShare(context: Context) {
      * @param thumbBmp      缩略图
      * @param scene         场景。发送到聊天界面：[com.tencent.mm.opensdk.modelmsg.SendMessageToWX.Req.WXSceneSession]；发送到朋友圈：[com.tencent.mm.opensdk.modelmsg.SendMessageToWX.Req.WXSceneTimeline]
      */
-    fun shareWebpage(title: String, description: String, webPageUrl: String, thumbBmp: Bitmap, scene: Int) {
+    override fun shareWebpage(title: String, description: String, webPageUrl: String, thumbBmp: Bitmap, scene: Int) {
         // 初始化一个WXWebpageObject，填写url
         val webpage = WXWebpageObject()
         webpage.webpageUrl = webPageUrl

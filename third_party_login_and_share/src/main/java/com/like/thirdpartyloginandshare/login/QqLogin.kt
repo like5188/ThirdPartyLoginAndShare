@@ -3,6 +3,7 @@ package com.like.thirdpartyloginandshare.login
 import android.app.Activity
 import android.content.Intent
 import android.text.TextUtils
+import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
 import com.like.thirdpartyloginandshare.util.QQ_APP_ID
 import com.tencent.connect.UnionInfo
 import com.tencent.connect.UserInfo
@@ -20,11 +21,17 @@ class QqLogin(activity: Activity) : LoginStrategy(activity) {
     private val mTencent = Tencent.createInstance(QQ_APP_ID, applicationContext)
     private lateinit var mLoginListener: LoginListener
 
-    fun setLoginListener(loginListener: OnLoginListener) {
-        mLoginListener = LoginListener(loginListener)
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == Constants.REQUEST_LOGIN) {
+            Tencent.onActivityResultData(requestCode, resultCode, data, mLoginListener as IUiListener)
+        }
     }
 
-    override fun login(listener: OnLoginListener) {
+    override fun setLoginListener(listener: OnLoginAndShareListener) {
+        mLoginListener = LoginListener(listener)
+    }
+
+    override fun login(listener: OnLoginAndShareListener) {
         if (mTencent.checkSessionValid(QQ_APP_ID)) {
             mTencent.initSessionCache(mTencent.loadSession(QQ_APP_ID))
             mLoginListener.onSuccess()
@@ -37,13 +44,7 @@ class QqLogin(activity: Activity) : LoginStrategy(activity) {
         mTencent.logout(applicationContext)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == Constants.REQUEST_LOGIN) {
-            Tencent.onActivityResultData(requestCode, resultCode, data, mLoginListener as IUiListener)
-        }
-    }
-
-    inner class LoginListener(private val listener: OnLoginListener) : IUiListener {
+    inner class LoginListener(private val listener: OnLoginAndShareListener) : IUiListener {
         override fun onComplete(response: Any?) {
             val jsonObject = response as JSONObject?
             if (null != jsonObject && jsonObject.length() != 0) {
