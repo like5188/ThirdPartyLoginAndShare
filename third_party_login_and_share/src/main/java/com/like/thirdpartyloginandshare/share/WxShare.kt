@@ -1,7 +1,6 @@
 package com.like.thirdpartyloginandshare.share
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Bitmap.CompressFormat
@@ -11,6 +10,7 @@ import com.like.thirdpartyloginandshare.util.WX_OPEN_ID
 import com.tencent.mm.opensdk.modelmsg.*
 import com.tencent.mm.opensdk.openapi.IWXAPI
 import java.io.ByteArrayOutputStream
+import java.io.File
 
 
 class WxShare(activity: Activity) : ShareStrategy(activity) {
@@ -190,5 +190,65 @@ class WxShare(activity: Activity) : ShareStrategy(activity) {
             e.printStackTrace()
         }
         return result
+    }
+
+    override fun shareImageAndText(
+        title: String,
+        targetUrl: String,
+        summary: String,
+        imageUrl: String,
+        arkStr: String
+    ) {
+        throw UnsupportedOperationException("WEIXIN不支持此操作")
+    }
+
+    override fun shareImage(imageLocalUrl: String) {
+        throw UnsupportedOperationException("WEIXIN不支持此操作")
+    }
+
+    override fun shareAudio(title: String, audioUrl: String, targetUrl: String, summary: String, imageUrl: String) {
+        throw UnsupportedOperationException("WEIXIN不支持此操作")
+    }
+
+    override fun shareApp(title: String, summary: String, imageUrl: String) {
+        throw UnsupportedOperationException("WEIXIN不支持此操作")
+    }
+
+    override fun shareImageAndText(title: String, targetUrl: String, summary: String, imageUrl: ArrayList<String>?) {
+        throw UnsupportedOperationException("WEIXIN不支持此操作")
+    }
+
+    override fun publishMood(summary: String, imageUrl: ArrayList<String>?, scene: String, callback: String) {
+        throw UnsupportedOperationException("WEIXIN不支持此操作")
+    }
+
+    override fun publishVideo(videoLocalPath: String, scene: String, callback: String) {
+        throw UnsupportedOperationException("WEIXIN不支持此操作")
+    }
+
+    override fun shareText(text: String, title: String, actionUrl: String) {
+        throw UnsupportedOperationException("WEIXIN不支持此操作")
+    }
+
+    override fun shareImage(bmp: Bitmap) {
+        throw UnsupportedOperationException("WEIXIN不支持此操作")
+    }
+
+    override fun shareMultiImage(images: List<File>) {
+        throw UnsupportedOperationException("WEIXIN不支持此操作")
+    }
+
+    override fun shareVideo(video: File) {
+        throw UnsupportedOperationException("WEIXIN不支持此操作")
+    }
+
+    override fun shareMedia(
+        thumbBmp: Bitmap,
+        title: String,
+        description: String,
+        actionUrl: String,
+        defaultText: String
+    ) {
+        throw UnsupportedOperationException("WEIXIN不支持此操作")
     }
 }

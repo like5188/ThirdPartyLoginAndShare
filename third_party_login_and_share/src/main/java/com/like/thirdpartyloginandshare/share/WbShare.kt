@@ -140,4 +140,57 @@ class WbShare(activity: Activity) : ShareStrategy(activity) {
 
     }
 
+    override fun shareImageAndText(
+        title: String,
+        targetUrl: String,
+        summary: String,
+        imageUrl: String,
+        arkStr: String
+    ) {
+        throw UnsupportedOperationException("SINA不支持此操作")
+    }
+
+    override fun shareImage(imageLocalUrl: String) {
+        throw UnsupportedOperationException("SINA不支持此操作")
+    }
+
+    override fun shareAudio(title: String, audioUrl: String, targetUrl: String, summary: String, imageUrl: String) {
+        throw UnsupportedOperationException("SINA不支持此操作")
+    }
+
+    override fun shareApp(title: String, summary: String, imageUrl: String) {
+        throw UnsupportedOperationException("SINA不支持此操作")
+    }
+
+    override fun shareImageAndText(title: String, targetUrl: String, summary: String, imageUrl: ArrayList<String>?) {
+        throw UnsupportedOperationException("SINA不支持此操作")
+    }
+
+    override fun publishMood(summary: String, imageUrl: ArrayList<String>?, scene: String, callback: String) {
+        throw UnsupportedOperationException("SINA不支持此操作")
+    }
+
+    override fun publishVideo(videoLocalPath: String, scene: String, callback: String) {
+        throw UnsupportedOperationException("SINA不支持此操作")
+    }
+
+    override fun shareText(text: String, scene: Int) {
+        throw UnsupportedOperationException("SINA不支持此操作")
+    }
+
+    override fun shareImage(bmp: Bitmap, thumbBmp: Bitmap, scene: Int) {
+        throw UnsupportedOperationException("SINA不支持此操作")
+    }
+
+    override fun shareMusic(title: String, description: String, musicUrl: String, thumbBmp: Bitmap, scene: Int) {
+        throw UnsupportedOperationException("SINA不支持此操作")
+    }
+
+    override fun shareVideo(title: String, description: String, videoUrl: String, thumbBmp: Bitmap, scene: Int) {
+        throw UnsupportedOperationException("SINA不支持此操作")
+    }
+
+    override fun shareWebpage(title: String, description: String, webPageUrl: String, thumbBmp: Bitmap, scene: Int) {
+        throw UnsupportedOperationException("SINA不支持此操作")
+    }
 }

@@ -2,6 +2,7 @@ package com.like.thirdpartyloginandshare.share
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
 import com.like.thirdpartyloginandshare.R
 import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
@@ -11,6 +12,8 @@ import com.tencent.connect.share.QQShare
 import com.tencent.tauth.IUiListener
 import com.tencent.tauth.Tencent
 import com.tencent.tauth.UiError
+import java.io.File
+import java.lang.UnsupportedOperationException
 
 
 /**
@@ -180,4 +183,61 @@ class QqShare(activity: Activity) : ShareStrategy(activity) {
 
     }
 
+    override fun shareImageAndText(title: String, targetUrl: String, summary: String, imageUrl: ArrayList<String>?) {
+        throw UnsupportedOperationException("QQ不支持此操作")
+    }
+
+    override fun publishMood(summary: String, imageUrl: ArrayList<String>?, scene: String, callback: String) {
+        throw UnsupportedOperationException("QQ不支持此操作")
+    }
+
+    override fun publishVideo(videoLocalPath: String, scene: String, callback: String) {
+        throw UnsupportedOperationException("QQ不支持此操作")
+    }
+
+    override fun shareText(text: String, title: String, actionUrl: String) {
+        throw UnsupportedOperationException("QQ不支持此操作")
+    }
+
+    override fun shareImage(bmp: Bitmap) {
+        throw UnsupportedOperationException("QQ不支持此操作")
+    }
+
+    override fun shareMultiImage(images: List<File>) {
+        throw UnsupportedOperationException("QQ不支持此操作")
+    }
+
+    override fun shareVideo(video: File) {
+        throw UnsupportedOperationException("QQ不支持此操作")
+    }
+
+    override fun shareMedia(
+        thumbBmp: Bitmap,
+        title: String,
+        description: String,
+        actionUrl: String,
+        defaultText: String
+    ) {
+        throw UnsupportedOperationException("QQ不支持此操作")
+    }
+
+    override fun shareText(text: String, scene: Int) {
+        throw UnsupportedOperationException("QQ不支持此操作")
+    }
+
+    override fun shareImage(bmp: Bitmap, thumbBmp: Bitmap, scene: Int) {
+        throw UnsupportedOperationException("QQ不支持此操作")
+    }
+
+    override fun shareMusic(title: String, description: String, musicUrl: String, thumbBmp: Bitmap, scene: Int) {
+        throw UnsupportedOperationException("QQ不支持此操作")
+    }
+
+    override fun shareVideo(title: String, description: String, videoUrl: String, thumbBmp: Bitmap, scene: Int) {
+        throw UnsupportedOperationException("QQ不支持此操作")
+    }
+
+    override fun shareWebpage(title: String, description: String, webPageUrl: String, thumbBmp: Bitmap, scene: Int) {
+        throw UnsupportedOperationException("QQ不支持此操作")
+    }
 }

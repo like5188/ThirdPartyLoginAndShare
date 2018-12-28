@@ -2,6 +2,7 @@ package com.like.thirdpartyloginandshare.share
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
 import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
 import com.like.thirdpartyloginandshare.util.QQ_APP_ID
@@ -11,6 +12,7 @@ import com.tencent.connect.share.QzoneShare
 import com.tencent.tauth.IUiListener
 import com.tencent.tauth.Tencent
 import com.tencent.tauth.UiError
+import java.io.File
 
 /**
  * QQ空间分享工具类
@@ -146,4 +148,71 @@ class QqZoneShare(activity: Activity) : ShareStrategy(activity) {
 
     }
 
+    override fun shareImageAndText(
+        title: String,
+        targetUrl: String,
+        summary: String,
+        imageUrl: String,
+        arkStr: String
+    ) {
+        throw UnsupportedOperationException("QZONE不支持此操作")
+    }
+
+    override fun shareImage(imageLocalUrl: String) {
+        throw UnsupportedOperationException("QZONE不支持此操作")
+    }
+
+    override fun shareAudio(title: String, audioUrl: String, targetUrl: String, summary: String, imageUrl: String) {
+        throw UnsupportedOperationException("QZONE不支持此操作")
+    }
+
+    override fun shareApp(title: String, summary: String, imageUrl: String) {
+        throw UnsupportedOperationException("QZONE不支持此操作")
+    }
+
+    override fun shareText(text: String, title: String, actionUrl: String) {
+        throw UnsupportedOperationException("QZONE不支持此操作")
+    }
+
+    override fun shareImage(bmp: Bitmap) {
+        throw UnsupportedOperationException("QZONE不支持此操作")
+    }
+
+    override fun shareMultiImage(images: List<File>) {
+        throw UnsupportedOperationException("QZONE不支持此操作")
+    }
+
+    override fun shareVideo(video: File) {
+        throw UnsupportedOperationException("QZONE不支持此操作")
+    }
+
+    override fun shareMedia(
+        thumbBmp: Bitmap,
+        title: String,
+        description: String,
+        actionUrl: String,
+        defaultText: String
+    ) {
+        throw UnsupportedOperationException("QZONE不支持此操作")
+    }
+
+    override fun shareText(text: String, scene: Int) {
+        throw UnsupportedOperationException("QZONE不支持此操作")
+    }
+
+    override fun shareImage(bmp: Bitmap, thumbBmp: Bitmap, scene: Int) {
+        throw UnsupportedOperationException("QZONE不支持此操作")
+    }
+
+    override fun shareMusic(title: String, description: String, musicUrl: String, thumbBmp: Bitmap, scene: Int) {
+        throw UnsupportedOperationException("QZONE不支持此操作")
+    }
+
+    override fun shareVideo(title: String, description: String, videoUrl: String, thumbBmp: Bitmap, scene: Int) {
+        throw UnsupportedOperationException("QZONE不支持此操作")
+    }
+
+    override fun shareWebpage(title: String, description: String, webPageUrl: String, thumbBmp: Bitmap, scene: Int) {
+        throw UnsupportedOperationException("QZONE不支持此操作")
+    }
 }

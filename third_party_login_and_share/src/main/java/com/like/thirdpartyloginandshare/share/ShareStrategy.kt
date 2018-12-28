@@ -19,21 +19,20 @@ abstract class ShareStrategy(protected val activity: Activity) {
      * @param imageUrl      分享图片的URL或者本地路径
      * @param arkStr        Ark JSON串
      */
-    open fun shareImageAndText(
+    abstract fun shareImageAndText(
         title: String,
         targetUrl: String,
         summary: String = "",
         imageUrl: String = "",
         arkStr: String = ""
-    ) {
-    }
+    )
 
     /**
      * QQ分享图片
      *
      * @param imageLocalUrl     需要分享的本地图片路径
      */
-    open fun shareImage(imageLocalUrl: String) {}
+    abstract fun shareImage(imageLocalUrl: String)
 
     /**
      * QQ分享音乐
@@ -44,14 +43,13 @@ abstract class ShareStrategy(protected val activity: Activity) {
      * @param summary       分享的消息摘要，最长40个字。
      * @param imageUrl      分享图片的URL或者本地路径
      */
-    open fun shareAudio(
+    abstract fun shareAudio(
         title: String,
         audioUrl: String,
         targetUrl: String,
         summary: String = "",
         imageUrl: String = ""
-    ) {
-    }
+    )
 
     /**
      * QQ分享应用
@@ -60,12 +58,11 @@ abstract class ShareStrategy(protected val activity: Activity) {
      * @param summary       分享的消息摘要，最长40个字。
      * @param imageUrl      分享图片的URL或者本地路径
      */
-    open fun shareApp(
+    abstract fun shareApp(
         title: String,
         summary: String = "",
         imageUrl: String = ""
-    ) {
-    }
+    )
 
     /**
      * QQ空间分享图文消息
@@ -75,13 +72,12 @@ abstract class ShareStrategy(protected val activity: Activity) {
      * @param summary       分享的摘要，最多600字符
      * @param imageUrl      分享的图片, 以ArrayList<String>的类型传入，以便支持多张图片（注：图片最多支持9张图片，多余的图片会被丢弃）。
      */
-    open fun shareImageAndText(
+    abstract fun shareImageAndText(
         title: String,
         targetUrl: String,
         summary: String = "",
         imageUrl: ArrayList<String>? = null
-    ) {
-    }
+    )
 
     /**
      * QQ空间发表说说、上传图片
@@ -91,13 +87,12 @@ abstract class ShareStrategy(protected val activity: Activity) {
      * @param scene             区分分享场景，用于异化feeds点击行为和小尾巴展示
      * @param callback          游戏自定义字段，点击分享消息回到游戏时回传给游戏
      */
-    open fun publishMood(
+    abstract fun publishMood(
         summary: String = "",
         imageUrl: ArrayList<String>? = null,
         scene: String = "",
         callback: String = ""
-    ) {
-    }
+    )
 
     /**
      * QQ空间发表视频
@@ -106,37 +101,36 @@ abstract class ShareStrategy(protected val activity: Activity) {
      * @param scene             区分分享场景，用于异化feeds点击行为和小尾巴展示
      * @param callback          游戏自定义字段，点击分享消息回到游戏时回传给游戏
      */
-    open fun publishVideo(
+    abstract fun publishVideo(
         videoLocalPath: String,
         scene: String = "",
         callback: String = ""
-    ) {
-    }
+    )
 
 
     /**
      * 微博分享文本
      */
-    open fun shareText(text: String, title: String, actionUrl: String) {}
+    abstract fun shareText(text: String, title: String, actionUrl: String)
 
     /**
      * 微博分享图片
      */
-    open fun shareImage(bmp: Bitmap) {}
+    abstract fun shareImage(bmp: Bitmap)
 
     /**
      * 微博分享多图
      *
      * @param images 本地图片文件
      */
-    open fun shareMultiImage(images: List<File>) {}
+    abstract fun shareMultiImage(images: List<File>)
 
     /**
      * 微博分享视频
      *
      * @param video 本地视频文件
      */
-    open fun shareVideo(video: File) {}
+    abstract fun shareVideo(video: File)
 
     /**
      * 微博分享多媒体（网页）
@@ -147,23 +141,22 @@ abstract class ShareStrategy(protected val activity: Activity) {
      * @param actionUrl
      * @param defaultText   默认文案
      */
-    open fun shareMedia(
+    abstract fun shareMedia(
         thumbBmp: Bitmap,
         title: String,
         description: String,
         actionUrl: String,
         defaultText: String
-    ) {
-    }
+    )
 
 
     /**
      * 微信分享文本
      *
      * @param text      文本。长度需大于0且不超过10KB
-     * @param scene     场景。发送到聊天界面：[com.tencent.mm.opensdk.modelmsg.SendMessageToWX.Req.WXSceneSession]；发送到朋友圈：[com.tencent.mm.opensdk.modelmsg.SendMessageToWX.Req.WXSceneTimeline]
+     * @param scene     场景。发送到聊天界面：[com.tencent.mm.abstractsdk.modelmsg.SendMessageToWX.Req.WXSceneSession]；发送到朋友圈：[com.tencent.mm.opensdk.modelmsg.SendMessageToWX.Req.WXSceneTimeline]
      */
-    open fun shareText(text: String, scene: Int) {}
+    abstract fun shareText(text: String, scene: Int)
 
     /**
      * 微信分享图片
@@ -172,7 +165,7 @@ abstract class ShareStrategy(protected val activity: Activity) {
      * @param thumbBmp  缩略图
      * @param scene     场景。发送到聊天界面：[com.tencent.mm.opensdk.modelmsg.SendMessageToWX.Req.WXSceneSession]；发送到朋友圈：[com.tencent.mm.opensdk.modelmsg.SendMessageToWX.Req.WXSceneTimeline]
      */
-    open fun shareImage(bmp: Bitmap, thumbBmp: Bitmap, scene: Int) {}
+    abstract fun shareImage(bmp: Bitmap, thumbBmp: Bitmap, scene: Int)
 
     /**
      * 微信分享音乐
@@ -186,7 +179,7 @@ abstract class ShareStrategy(protected val activity: Activity) {
      * @param thumbBmp      缩略图
      * @param scene         场景。发送到聊天界面：[com.tencent.mm.opensdk.modelmsg.SendMessageToWX.Req.WXSceneSession]；发送到朋友圈：[com.tencent.mm.opensdk.modelmsg.SendMessageToWX.Req.WXSceneTimeline]
      */
-    open fun shareMusic(title: String, description: String, musicUrl: String, thumbBmp: Bitmap, scene: Int) {}
+    abstract fun shareMusic(title: String, description: String, musicUrl: String, thumbBmp: Bitmap, scene: Int)
 
     /**
      * 微信分享视频
@@ -197,7 +190,7 @@ abstract class ShareStrategy(protected val activity: Activity) {
      * @param thumbBmp      缩略图
      * @param scene         场景。发送到聊天界面：[com.tencent.mm.opensdk.modelmsg.SendMessageToWX.Req.WXSceneSession]；发送到朋友圈：[com.tencent.mm.opensdk.modelmsg.SendMessageToWX.Req.WXSceneTimeline]
      */
-    open fun shareVideo(title: String, description: String, videoUrl: String, thumbBmp: Bitmap, scene: Int) {}
+    abstract fun shareVideo(title: String, description: String, videoUrl: String, thumbBmp: Bitmap, scene: Int)
 
     /**
      * 微信分享网页
@@ -208,5 +201,5 @@ abstract class ShareStrategy(protected val activity: Activity) {
      * @param thumbBmp      缩略图
      * @param scene         场景。发送到聊天界面：[com.tencent.mm.opensdk.modelmsg.SendMessageToWX.Req.WXSceneSession]；发送到朋友圈：[com.tencent.mm.opensdk.modelmsg.SendMessageToWX.Req.WXSceneTimeline]
      */
-    open fun shareWebpage(title: String, description: String, webPageUrl: String, thumbBmp: Bitmap, scene: Int) {}
+    abstract fun shareWebpage(title: String, description: String, webPageUrl: String, thumbBmp: Bitmap, scene: Int)
 }
