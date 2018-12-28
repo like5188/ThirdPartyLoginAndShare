@@ -31,13 +31,13 @@ class ThirdPartyShare private constructor(private val mActivity: Activity) {
             PlatForm.QZONE -> {
                 mStrategy = QqZoneShare(mActivity)
             }
-            PlatForm.WEIXIN -> {
+            PlatForm.WX -> {
                 mStrategy = WxShare(mActivity)
             }
-            PlatForm.WEIXIN_CIRCLE -> {
+            PlatForm.WX_CIRCLE -> {
                 mStrategy = WxCircleShare(mActivity)
             }
-            PlatForm.SINA -> {
+            PlatForm.WB -> {
                 mStrategy = WbShare(mActivity)
             }
         }

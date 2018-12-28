@@ -32,13 +32,13 @@ class ThirdPartyLogin private constructor(private val mActivity: Activity) {
             PlatForm.QZONE -> {
                 throw UnsupportedOperationException("暂不支持 QZONE 进行登录")
             }
-            PlatForm.WEIXIN -> {
+            PlatForm.WX -> {
                 mStrategy = WxLogin.getInstance(mActivity)
             }
-            PlatForm.WEIXIN_CIRCLE -> {
-                throw UnsupportedOperationException("暂不支持 WEIXIN_CIRCLE 进行登录")
+            PlatForm.WX_CIRCLE -> {
+                throw UnsupportedOperationException("暂不支持 WX_CIRCLE 进行登录")
             }
-            PlatForm.SINA -> {
+            PlatForm.WB -> {
                 mStrategy = WbLogin(mActivity)
             }
         }
