@@ -34,7 +34,8 @@ class WxShare(activity: Activity, private val sence: Int) : ShareStrategy(activi
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
     }
 
-    override fun setShareListener(listener: OnLoginAndShareListener) {
+    override fun setShareListener(listener: OnLoginAndShareListener): ShareStrategy {
+        return this
     }
 
     override fun shareText(params: TextParams) {

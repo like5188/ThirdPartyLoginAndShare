@@ -27,11 +27,12 @@ class QqLogin(activity: Activity) : LoginStrategy(activity) {
         }
     }
 
-    override fun setLoginListener(listener: OnLoginAndShareListener) {
+    override fun setLoginListener(listener: OnLoginAndShareListener): LoginStrategy {
         mLoginListener = LoginListener(listener)
+        return this
     }
 
-    override fun login(listener: OnLoginAndShareListener) {
+    override fun login() {
         if (mTencent.checkSessionValid(QQ_APP_ID)) {
             mTencent.initSessionCache(mTencent.loadSession(QQ_APP_ID))
             mLoginListener.onSuccess()

@@ -15,7 +15,7 @@ import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
 abstract class ShareStrategy(protected val activity: Activity) {
     protected val applicationContext = activity.applicationContext
     abstract fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
-    abstract fun setShareListener(listener: OnLoginAndShareListener)
+    abstract fun setShareListener(listener: OnLoginAndShareListener): ShareStrategy
     /**
      * 分享文本
      */

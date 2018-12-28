@@ -26,8 +26,9 @@ class WbShare(activity: Activity) : ShareStrategy(activity) {
     private val shareHandler = WbShareHandler(activity)
     private lateinit var mShareListener: ShareListener
 
-    override fun setShareListener(listener: OnLoginAndShareListener) {
+    override fun setShareListener(listener: OnLoginAndShareListener): ShareStrategy {
         mShareListener = ShareListener(listener)
+        return this
     }
 
     init {

@@ -53,14 +53,15 @@ class ThirdPartyLogin private constructor(activity: Activity) : LoginStrategy(ac
         mStrategy.onActivityResult(requestCode, resultCode, data)
     }
 
-    override fun setLoginListener(listener: OnLoginAndShareListener) {
+    override fun setLoginListener(listener: OnLoginAndShareListener): ThirdPartyLogin {
         checkParams()
         mStrategy.setLoginListener(listener)
+        return this
     }
 
-    override fun login(listener: OnLoginAndShareListener) {
+    override fun login() {
         checkParams()
-        mStrategy.login(listener)
+        mStrategy.login()
     }
 
     override fun logout() {

@@ -31,10 +31,11 @@ class WxLogin private constructor(activity: Activity) : LoginStrategy(activity) 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
     }
 
-    override fun setLoginListener(listener: OnLoginAndShareListener) {
+    override fun setLoginListener(listener: OnLoginAndShareListener): LoginStrategy {
+        return this
     }
 
-    override fun login(listener: OnLoginAndShareListener) {
+    override fun login() {
         getCode()
     }
 

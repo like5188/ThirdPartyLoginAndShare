@@ -59,9 +59,10 @@ class ThirdPartyShare private constructor(activity: Activity) : ShareStrategy(ac
         mStrategy.onActivityResult(requestCode, resultCode, data)
     }
 
-    override fun setShareListener(listener: OnLoginAndShareListener) {
+    override fun setShareListener(listener: OnLoginAndShareListener): ThirdPartyShare {
         checkParams()
         mStrategy.setShareListener(listener)
+        return this
     }
 
     override fun shareText(params: TextParams) {

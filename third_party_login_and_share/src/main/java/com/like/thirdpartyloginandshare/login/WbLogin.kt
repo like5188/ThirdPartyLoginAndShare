@@ -24,11 +24,12 @@ class WbLogin(activity: Activity) : LoginStrategy(activity) {
         mSsoHandler.authorizeCallBack(requestCode, resultCode, data)
     }
 
-    override fun setLoginListener(listener: OnLoginAndShareListener) {
+    override fun setLoginListener(listener: OnLoginAndShareListener): LoginStrategy {
         mLoginListener = LoginListener(listener)
+        return this
     }
 
-    override fun login(listener: OnLoginAndShareListener) {
+    override fun login() {
         if (AccessTokenKeeper.readAccessToken(applicationContext).isSessionValid) {
             mLoginListener.onSuccess()
         } else {
