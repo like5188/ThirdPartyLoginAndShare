@@ -140,7 +140,8 @@ class QqShare(activity: Activity) : ShareStrategy(activity) {
     override fun shareApp(
         title: String,
         summary: String,
-        imageUrl: String
+        imageUrl: String,
+        targetUrl: String
     ) {
         val params = Bundle()
         // 分享的类型。图文分享(普通分享)
@@ -151,6 +152,8 @@ class QqShare(activity: Activity) : ShareStrategy(activity) {
         params.putString(QQShare.SHARE_TO_QQ_SUMMARY, summary)
         // 分享图片的URL或者本地路径
         params.putString(QQShare.SHARE_TO_QQ_IMAGE_URL, imageUrl)
+        // 分享的app的链接
+        params.putString(QQShare.SHARE_TO_QQ_TARGET_URL, targetUrl)
         // 手Q客户端顶部，替换“返回”按钮文字，如果为空，用返回代替
         params.putString(QQShare.SHARE_TO_QQ_APP_NAME, activity.resources.getString(R.string.app_name))
         // 分享额外选项，两种类型可选（默认是不隐藏分享到QZone按钮且不自动打开分享到QZone的对话框）：
