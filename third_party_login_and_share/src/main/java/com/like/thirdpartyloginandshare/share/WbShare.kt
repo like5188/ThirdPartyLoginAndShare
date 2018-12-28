@@ -23,7 +23,7 @@ import com.sina.weibo.sdk.share.WbShareHandler
 import com.sina.weibo.sdk.utils.Utility
 
 class WbShare(activity: Activity) : ShareStrategy(activity) {
-    private val shareHandler = WbShareHandler(activity)
+    private val shareHandler by lazy { WbShareHandler(activity) }
     private lateinit var mShareListener: ShareListener
 
     override fun setShareListener(listener: OnLoginAndShareListener): ShareStrategy {

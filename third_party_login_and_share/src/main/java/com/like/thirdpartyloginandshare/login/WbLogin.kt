@@ -12,8 +12,8 @@ import com.sina.weibo.sdk.auth.sso.SsoHandler
 
 
 class WbLogin(activity: Activity) : LoginStrategy(activity) {
-    private val mAuthInfo = AuthInfo(applicationContext, APP_KEY, REDIRECT_URL, SCOPE)
-    private val mSsoHandler = SsoHandler(activity)
+    private val mAuthInfo by lazy { AuthInfo(applicationContext, APP_KEY, REDIRECT_URL, SCOPE) }
+    private val mSsoHandler by lazy { SsoHandler(activity) }
     private lateinit var mLoginListener: LoginListener
 
     init {

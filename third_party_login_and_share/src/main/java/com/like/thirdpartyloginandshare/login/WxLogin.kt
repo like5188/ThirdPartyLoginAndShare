@@ -19,9 +19,7 @@ class WxLogin private constructor(activity: Activity) : LoginStrategy(activity) 
         }
     })
 
-    val mWxApi: IWXAPI by lazy {
-        WXAPIFactory.createWXAPI(applicationContext, WX_APP_ID, true)
-    }
+    val mWxApi: IWXAPI by lazy { WXAPIFactory.createWXAPI(applicationContext, WX_APP_ID, true) }
 
     init {
         mWxApi.registerApp(WX_APP_ID)

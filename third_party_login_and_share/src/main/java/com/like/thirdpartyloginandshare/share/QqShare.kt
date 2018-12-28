@@ -30,7 +30,7 @@ import com.tencent.tauth.UiError
  * QQ分享无需QQ登录
  */
 class QqShare(activity: Activity) : ShareStrategy(activity) {
-    private val mTencent = Tencent.createInstance(QQ_APP_ID, activity.applicationContext)
+    private val mTencent by lazy { Tencent.createInstance(QQ_APP_ID, activity.applicationContext) }
     private lateinit var mShareListener: ShareListener
 
     override fun setShareListener(listener: OnLoginAndShareListener): ShareStrategy {

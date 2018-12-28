@@ -27,9 +27,7 @@ import com.tencent.mm.opensdk.openapi.IWXAPI
 import java.io.ByteArrayOutputStream
 
 class WxShare(activity: Activity, private val sence: Int) : ShareStrategy(activity) {
-    private val mWxApi: IWXAPI by lazy {
-        WxLogin.getInstance(activity).mWxApi
-    }
+    private val mWxApi: IWXAPI by lazy { WxLogin.getInstance(activity).mWxApi }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
     }

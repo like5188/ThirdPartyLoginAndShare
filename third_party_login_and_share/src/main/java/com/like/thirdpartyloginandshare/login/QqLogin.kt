@@ -18,7 +18,7 @@ import org.json.JSONObject
  * 应用需要在调用接口的Activity的onActivityResult方法中调用[onActivityResult]
  */
 class QqLogin(activity: Activity) : LoginStrategy(activity) {
-    private val mTencent = Tencent.createInstance(QQ_APP_ID, applicationContext)
+    private val mTencent by lazy { Tencent.createInstance(QQ_APP_ID, applicationContext) }
     private lateinit var mLoginListener: LoginListener
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
