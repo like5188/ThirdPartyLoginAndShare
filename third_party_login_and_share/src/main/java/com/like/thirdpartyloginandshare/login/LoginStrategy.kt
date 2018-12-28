@@ -5,7 +5,7 @@ import android.content.Intent
 
 abstract class LoginStrategy(protected val activity: Activity) {
     protected val applicationContext = activity.applicationContext
+    abstract fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
     abstract fun login(listener: OnLoginListener)
     abstract fun logout()
-    abstract fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
 }
