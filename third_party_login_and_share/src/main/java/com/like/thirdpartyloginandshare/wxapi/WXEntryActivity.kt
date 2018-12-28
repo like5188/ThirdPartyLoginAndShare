@@ -3,7 +3,7 @@ package com.like.thirdpartyloginandshare.wxapi
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import com.like.thirdpartyloginandshare.WxLogin
+import com.like.thirdpartyloginandshare.login.WxLogin
 import com.tencent.mm.opensdk.modelbase.BaseReq
 import com.tencent.mm.opensdk.modelbase.BaseResp
 import com.tencent.mm.opensdk.modelmsg.SendAuth

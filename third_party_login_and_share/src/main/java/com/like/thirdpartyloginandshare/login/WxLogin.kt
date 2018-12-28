@@ -1,31 +1,32 @@
-package com.like.thirdpartyloginandshare
+package com.like.thirdpartyloginandshare.login
 
-import android.content.Context
-import com.like.thirdpartyloginandshare.util.SingletonHolder
+import android.app.Activity
+import android.content.Intent
 import com.like.thirdpartyloginandshare.util.WX_APP_ID
 import com.tencent.mm.opensdk.modelmsg.SendAuth
 import com.tencent.mm.opensdk.openapi.IWXAPI
 import com.tencent.mm.opensdk.openapi.WXAPIFactory
-import kotlin.jvm.functions.FunctionN
 
-class WxLogin(context: Context) {
-    companion object : SingletonHolder<WxLogin>(object : FunctionN<WxLogin> {
-        override val arity: Int = 1 // number of arguments that must be passed to constructor
-
-        override fun invoke(vararg args: Any?): WxLogin {
-            return WxLogin(args[0] as Context)
-        }
-    })
-
+class WxLogin(activity: Activity) : LoginStrategy(activity) {
     val mWxApi: IWXAPI by lazy {
-        WXAPIFactory.createWXAPI(context, WX_APP_ID, true)
+        WXAPIFactory.createWXAPI(applicationContext, WX_APP_ID, true)
     }
 
     init {
         mWxApi.registerApp(WX_APP_ID)
     }
 
-    fun getCode() {
+    override fun login(listener: OnLoginListener) {
+        getCode()
+    }
+
+    override fun logout() {
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    }
+
+    private fun getCode() {
         // 获取授权码
         val req = SendAuth.Req()
         // 获取用户个人信息的授权作用域

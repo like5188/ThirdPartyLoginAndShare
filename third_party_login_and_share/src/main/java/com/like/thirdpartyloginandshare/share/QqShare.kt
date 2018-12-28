@@ -1,8 +1,9 @@
-package com.like.thirdpartyloginandshare
+package com.like.thirdpartyloginandshare.share
 
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import com.like.thirdpartyloginandshare.R
 import com.like.thirdpartyloginandshare.util.QQ_APP_ID
 import com.tencent.connect.common.Constants
 import com.tencent.connect.share.QQShare

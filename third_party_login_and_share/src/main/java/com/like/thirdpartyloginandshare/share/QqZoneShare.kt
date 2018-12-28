@@ -1,4 +1,4 @@
-package com.like.thirdpartyloginandshare
+package com.like.thirdpartyloginandshare.share
 
 import android.app.Activity
 import android.content.Intent

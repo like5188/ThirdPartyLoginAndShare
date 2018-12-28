@@ -1,8 +1,9 @@
-package com.like.thirdpartyloginandshare
+package com.like.thirdpartyloginandshare.share
 
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Bitmap.CompressFormat
+import com.like.thirdpartyloginandshare.login.WxLogin
 import com.like.thirdpartyloginandshare.util.WX_OPEN_ID
 import com.tencent.mm.opensdk.modelmsg.*
 import com.tencent.mm.opensdk.openapi.IWXAPI
