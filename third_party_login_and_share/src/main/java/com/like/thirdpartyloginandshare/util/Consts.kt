@@ -1,14 +1,14 @@
 package com.like.thirdpartyloginandshare.util
 
 // QQ
-const val QQ_APP_ID = "1"
+const val QQ_APP_ID = "101540498"
 
 // 微信
 const val WX_APP_ID = "2"
 const val WX_OPEN_ID = "3"
 
 // 微博
-const val APP_KEY = "4"
+const val APP_KEY = "1929959086"
 /**
  * 当前 DEMO 应用的回调页，第三方应用可以使用自己的回调页。
  * 建议使用默认回调页：https://api.weibo.com/oauth2/default.html
