@@ -116,24 +116,16 @@ class WbShare(activity: Activity) : ShareStrategy(activity) {
     }
 
     class ShareListener(private val listener: OnLoginAndShareListener) : WbShareCallback {
-        override fun onWbShareFail() {
-            onFailure("分享失败")
-        }
-
-        override fun onWbShareCancel() {
-            onFailure("取消分享")
-        }
-
         override fun onWbShareSuccess() {
-            onSuccess()
-        }
-
-        fun onSuccess() {
             listener.onSuccess()
         }
 
-        fun onFailure(errorMessage: String) {
-            listener.onFailure(errorMessage)
+        override fun onWbShareFail() {
+            listener.onFailure("分享失败")
+        }
+
+        override fun onWbShareCancel() {
+            listener.onCancel()
         }
 
     }

@@ -1,7 +1,6 @@
 package com.like.thirdpartyloginandshare.login
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
 import com.like.thirdpartyloginandshare.util.SingletonHolder

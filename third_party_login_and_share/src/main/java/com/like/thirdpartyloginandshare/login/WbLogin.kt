@@ -45,29 +45,26 @@ class WbLogin(activity: Activity) : LoginStrategy(activity) {
         override fun onSuccess(token: Oauth2AccessToken?) {
             if (token != null) {
                 if (token.isSessionValid) {
-                    onSuccess()
+                    listener.onSuccess()
                     // 保存 Token 到 SharedPreferences
                     AccessTokenKeeper.writeAccessToken(applicationContext, token)
                 }
             } else {
-                onFailure("登录失败 返回为空")
+                listener.onFailure("登录失败 返回为空")
             }
         }
 
-        override fun cancel() {
-            onFailure("取消登录")
+        override fun onFailure(errorMessage: WbConnectErrorMessage) {
+            listener.onFailure("登录失败 ${errorMessage.errorMessage}")
         }
 
-        override fun onFailure(errorMessage: WbConnectErrorMessage) {
-            onFailure("登录失败 ${errorMessage.errorMessage}")
+        override fun cancel() {
+            listener.onCancel()
         }
 
         fun onSuccess() {
             listener.onSuccess()
         }
 
-        fun onFailure(errorMessage: String) {
-            listener.onFailure(errorMessage)
-        }
     }
 }

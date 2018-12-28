@@ -59,26 +59,22 @@ class QqLogin(activity: Activity) : LoginStrategy(activity) {
                     }
                 } catch (e: Exception) {
                 }
-                onSuccess()
+                listener.onSuccess()
             } else {
-                onFailure("登录失败 返回为空")
+                listener.onFailure("登录失败 返回为空")
             }
         }
 
         override fun onError(e: UiError) {
-            onFailure("登录失败 ${e.errorDetail}")
+            listener.onFailure("登录失败 ${e.errorDetail}")
         }
 
         override fun onCancel() {
-            onFailure("取消登录")
+            listener.onCancel()
         }
 
         fun onSuccess() {
             listener.onSuccess()
-        }
-
-        fun onFailure(errorMessage: String) {
-            listener.onFailure(errorMessage)
         }
 
     }

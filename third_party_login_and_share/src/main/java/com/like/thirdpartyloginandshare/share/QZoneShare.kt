@@ -86,23 +86,15 @@ class QZoneShare(activity: Activity) : ShareStrategy(activity) {
 
     class ShareListener(private val listener: OnLoginAndShareListener) : IUiListener {
         override fun onComplete(response: Any?) {
-            onSuccess()
-        }
-
-        override fun onError(e: UiError) {
-            onFailure("分享失败 ${e.errorDetail}")
-        }
-
-        override fun onCancel() {
-            onFailure("取消分享")
-        }
-
-        fun onSuccess() {
             listener.onSuccess()
         }
 
-        fun onFailure(errorMessage: String) {
-            listener.onFailure(errorMessage)
+        override fun onError(e: UiError) {
+            listener.onFailure("分享失败 ${e.errorDetail}")
+        }
+
+        override fun onCancel() {
+            listener.onCancel()
         }
 
     }
