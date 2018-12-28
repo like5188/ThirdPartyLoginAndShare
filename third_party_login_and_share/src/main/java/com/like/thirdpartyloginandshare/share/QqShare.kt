@@ -221,23 +221,23 @@ class QqShare(activity: Activity) : ShareStrategy(activity) {
         throw UnsupportedOperationException("QQ不支持此操作")
     }
 
-    override fun shareText(text: String, scene: Int) {
+    override fun shareText(text: String) {
         throw UnsupportedOperationException("QQ不支持此操作")
     }
 
-    override fun shareImage(bmp: Bitmap, thumbBmp: Bitmap, scene: Int) {
+    override fun shareImage(bmp: Bitmap, thumbBmp: Bitmap) {
         throw UnsupportedOperationException("QQ不支持此操作")
     }
 
-    override fun shareMusic(title: String, description: String, musicUrl: String, thumbBmp: Bitmap, scene: Int) {
+    override fun shareMusic(title: String, description: String, musicUrl: String, thumbBmp: Bitmap) {
         throw UnsupportedOperationException("QQ不支持此操作")
     }
 
-    override fun shareVideo(title: String, description: String, videoUrl: String, thumbBmp: Bitmap, scene: Int) {
+    override fun shareVideo(title: String, description: String, videoUrl: String, thumbBmp: Bitmap) {
         throw UnsupportedOperationException("QQ不支持此操作")
     }
 
-    override fun shareWebpage(title: String, description: String, webPageUrl: String, thumbBmp: Bitmap, scene: Int) {
+    override fun shareWebpage(title: String, description: String, webPageUrl: String, thumbBmp: Bitmap) {
         throw UnsupportedOperationException("QQ不支持此操作")
     }
 }
