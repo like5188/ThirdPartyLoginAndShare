@@ -8,13 +8,13 @@ import com.like.thirdpartyloginandshare.login.WxLogin
 import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
 import com.like.thirdpartyloginandshare.util.WX_OPEN_ID
 import com.tencent.mm.opensdk.modelmsg.*
-import com.tencent.mm.opensdk.modelmsg.SendMessageToWX.Req.WXSceneSession
+import com.tencent.mm.opensdk.modelmsg.SendMessageToWX.Req.WXSceneTimeline
 import com.tencent.mm.opensdk.openapi.IWXAPI
 import java.io.ByteArrayOutputStream
 import java.io.File
 
 
-class WxShare(activity: Activity) : ShareStrategy(activity) {
+class WxCircleShare(activity: Activity) : ShareStrategy(activity) {
     private val mWxApi: IWXAPI by lazy {
         WxLogin.getInstance(activity).mWxApi
     }
@@ -44,7 +44,7 @@ class WxShare(activity: Activity) : ShareStrategy(activity) {
         val req = SendMessageToWX.Req()
         req.transaction = buildTransaction("text")
         req.message = msg
-        req.scene = WXSceneSession
+        req.scene = WXSceneTimeline
 
         // 调用api接口，发送数据到微信
         mWxApi.sendReq(req)
@@ -70,7 +70,7 @@ class WxShare(activity: Activity) : ShareStrategy(activity) {
         val req = SendMessageToWX.Req()
         req.transaction = buildTransaction("img")
         req.message = msg
-        req.scene = WXSceneSession
+        req.scene = WXSceneTimeline
         req.userOpenId = WX_OPEN_ID
 
         // 调用api接口，发送数据到微信
@@ -104,7 +104,7 @@ class WxShare(activity: Activity) : ShareStrategy(activity) {
         val req = SendMessageToWX.Req()
         req.transaction = buildTransaction("music")
         req.message = msg
-        req.scene = WXSceneSession
+        req.scene = WXSceneTimeline
         req.userOpenId = WX_OPEN_ID
 
         // 调用api接口，发送数据到微信
@@ -134,7 +134,7 @@ class WxShare(activity: Activity) : ShareStrategy(activity) {
         val req = SendMessageToWX.Req()
         req.transaction = buildTransaction("video")
         req.message = msg
-        req.scene = WXSceneSession
+        req.scene = WXSceneTimeline
         req.userOpenId = WX_OPEN_ID
 
         // 调用api接口，发送数据到微信
@@ -164,7 +164,7 @@ class WxShare(activity: Activity) : ShareStrategy(activity) {
         val req = SendMessageToWX.Req()
         req.transaction = buildTransaction("webpage")
         req.message = msg
-        req.scene = WXSceneSession
+        req.scene = WXSceneTimeline
         req.userOpenId = WX_OPEN_ID
 
         // 调用api接口，发送数据到微信
@@ -195,47 +195,47 @@ class WxShare(activity: Activity) : ShareStrategy(activity) {
         imageUrl: String,
         arkStr: String
     ) {
-        throw UnsupportedOperationException("WEIXIN不支持此操作")
+        throw UnsupportedOperationException("WEIXIN_CIRCLE不支持此操作")
     }
 
     override fun shareImage(imageLocalUrl: String) {
-        throw UnsupportedOperationException("WEIXIN不支持此操作")
+        throw UnsupportedOperationException("WEIXIN_CIRCLE不支持此操作")
     }
 
     override fun shareAudio(title: String, audioUrl: String, targetUrl: String, summary: String, imageUrl: String) {
-        throw UnsupportedOperationException("WEIXIN不支持此操作")
+        throw UnsupportedOperationException("WEIXIN_CIRCLE不支持此操作")
     }
 
     override fun shareApp(title: String, summary: String, imageUrl: String) {
-        throw UnsupportedOperationException("WEIXIN不支持此操作")
+        throw UnsupportedOperationException("WEIXIN_CIRCLE不支持此操作")
     }
 
     override fun shareImageAndText(title: String, targetUrl: String, summary: String, imageUrl: ArrayList<String>?) {
-        throw UnsupportedOperationException("WEIXIN不支持此操作")
+        throw UnsupportedOperationException("WEIXIN_CIRCLE不支持此操作")
     }
 
     override fun publishMood(summary: String, imageUrl: ArrayList<String>?, scene: String, callback: String) {
-        throw UnsupportedOperationException("WEIXIN不支持此操作")
+        throw UnsupportedOperationException("WEIXIN_CIRCLE不支持此操作")
     }
 
     override fun publishVideo(videoLocalPath: String, scene: String, callback: String) {
-        throw UnsupportedOperationException("WEIXIN不支持此操作")
+        throw UnsupportedOperationException("WEIXIN_CIRCLE不支持此操作")
     }
 
     override fun shareText(text: String, title: String, actionUrl: String) {
-        throw UnsupportedOperationException("WEIXIN不支持此操作")
+        throw UnsupportedOperationException("WEIXIN_CIRCLE不支持此操作")
     }
 
     override fun shareImage(bmp: Bitmap) {
-        throw UnsupportedOperationException("WEIXIN不支持此操作")
+        throw UnsupportedOperationException("WEIXIN_CIRCLE不支持此操作")
     }
 
     override fun shareMultiImage(images: List<File>) {
-        throw UnsupportedOperationException("WEIXIN不支持此操作")
+        throw UnsupportedOperationException("WEIXIN_CIRCLE不支持此操作")
     }
 
     override fun shareVideo(video: File) {
-        throw UnsupportedOperationException("WEIXIN不支持此操作")
+        throw UnsupportedOperationException("WEIXIN_CIRCLE不支持此操作")
     }
 
     override fun shareMedia(
@@ -245,6 +245,6 @@ class WxShare(activity: Activity) : ShareStrategy(activity) {
         actionUrl: String,
         defaultText: String
     ) {
-        throw UnsupportedOperationException("WEIXIN不支持此操作")
+        throw UnsupportedOperationException("WEIXIN_CIRCLE不支持此操作")
     }
 }

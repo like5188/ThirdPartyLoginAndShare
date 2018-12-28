@@ -151,24 +151,22 @@ abstract class ShareStrategy(protected val activity: Activity) {
 
 
     /**
-     * 微信分享文本
+     * 微信、朋友圈分享文本
      *
      * @param text      文本。长度需大于0且不超过10KB
-     * @param scene     场景。发送到聊天界面：[com.tencent.mm.abstractsdk.modelmsg.SendMessageToWX.Req.WXSceneSession]；发送到朋友圈：[com.tencent.mm.opensdk.modelmsg.SendMessageToWX.Req.WXSceneTimeline]
      */
-    abstract fun shareText(text: String, scene: Int)
+    abstract fun shareText(text: String)
 
     /**
-     * 微信分享图片
+     * 微信、朋友圈分享图片
      *
      * @param bmp       图片。内容大小不超过10MB
      * @param thumbBmp  缩略图
-     * @param scene     场景。发送到聊天界面：[com.tencent.mm.opensdk.modelmsg.SendMessageToWX.Req.WXSceneSession]；发送到朋友圈：[com.tencent.mm.opensdk.modelmsg.SendMessageToWX.Req.WXSceneTimeline]
      */
-    abstract fun shareImage(bmp: Bitmap, thumbBmp: Bitmap, scene: Int)
+    abstract fun shareImage(bmp: Bitmap, thumbBmp: Bitmap)
 
     /**
-     * 微信分享音乐
+     * 微信、朋友圈分享音乐
      *
      * 分享至微信的音乐，直接点击好友会话或朋友圈下的分享内容会跳转至第三方 APP，
      * 点击会话列表顶部的音乐分享内容将跳转至微信原生音乐播放器播放。
@@ -177,29 +175,26 @@ abstract class ShareStrategy(protected val activity: Activity) {
      * @param description   描述
      * @param musicUrl      音频的URL地址。限制长度不超过10KB
      * @param thumbBmp      缩略图
-     * @param scene         场景。发送到聊天界面：[com.tencent.mm.opensdk.modelmsg.SendMessageToWX.Req.WXSceneSession]；发送到朋友圈：[com.tencent.mm.opensdk.modelmsg.SendMessageToWX.Req.WXSceneTimeline]
      */
-    abstract fun shareMusic(title: String, description: String, musicUrl: String, thumbBmp: Bitmap, scene: Int)
+    abstract fun shareMusic(title: String, description: String, musicUrl: String, thumbBmp: Bitmap)
 
     /**
-     * 微信分享视频
+     * 微信、朋友圈分享视频
      *
      * @param title         标题
      * @param description   描述
      * @param videoUrl      视频的URL地址。限制长度不超过10KB
      * @param thumbBmp      缩略图
-     * @param scene         场景。发送到聊天界面：[com.tencent.mm.opensdk.modelmsg.SendMessageToWX.Req.WXSceneSession]；发送到朋友圈：[com.tencent.mm.opensdk.modelmsg.SendMessageToWX.Req.WXSceneTimeline]
      */
-    abstract fun shareVideo(title: String, description: String, videoUrl: String, thumbBmp: Bitmap, scene: Int)
+    abstract fun shareVideo(title: String, description: String, videoUrl: String, thumbBmp: Bitmap)
 
     /**
-     * 微信分享网页
+     * 微信、朋友圈分享网页
      *
      * @param title         标题
      * @param description   描述
      * @param webPageUrl    html链接。限制长度不超过10KB
      * @param thumbBmp      缩略图
-     * @param scene         场景。发送到聊天界面：[com.tencent.mm.opensdk.modelmsg.SendMessageToWX.Req.WXSceneSession]；发送到朋友圈：[com.tencent.mm.opensdk.modelmsg.SendMessageToWX.Req.WXSceneTimeline]
      */
-    abstract fun shareWebpage(title: String, description: String, webPageUrl: String, thumbBmp: Bitmap, scene: Int)
+    abstract fun shareWebpage(title: String, description: String, webPageUrl: String, thumbBmp: Bitmap)
 }
