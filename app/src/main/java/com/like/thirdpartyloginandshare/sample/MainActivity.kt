@@ -10,6 +10,7 @@ import com.like.thirdpartyloginandshare.ThirdPartyLogin
 import com.like.thirdpartyloginandshare.ThirdPartyShare
 import com.like.thirdpartyloginandshare.init.params.QqInitParams
 import com.like.thirdpartyloginandshare.init.params.WbInitParams
+import com.like.thirdpartyloginandshare.share.params.app.QqAppParams
 import com.like.thirdpartyloginandshare.share.params.image.QqImageParams
 import com.like.thirdpartyloginandshare.share.params.image.WbImageParams
 import com.like.thirdpartyloginandshare.share.params.imageandtext.QZoneImageAndTextParams
@@ -161,7 +162,8 @@ class MainActivity : AppCompatActivity() {
                     toast("取消QQ分享")
                 }
             })
-            .shareMusic(QqMusicParams("title", "http://c.y.qq.com/v8/playsong.html?songid=109325260&songmid=000kuo2H2xJqfA&songtype=0&source=mqq&_wv=1"))
+            .shareApp(QqAppParams("title", "http://url.cn/424xgot"))
+//            .shareMusic(QqMusicParams("title", "http://c.y.qq.com/v8/playsong.html?songid=109325260&songmid=000kuo2H2xJqfA&songtype=0&source=mqq&_wv=1"))
 //            .shareImageAndText(QqImageAndTextParams("title","https://www.baidu.com/"))
 //            .shareImage(QqImageParams("/storage/emulated/0/Pictures/Screenshots/S81224-20082955.jpg"))
     }
