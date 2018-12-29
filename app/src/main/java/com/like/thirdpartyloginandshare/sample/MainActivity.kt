@@ -2,6 +2,7 @@ package com.like.thirdpartyloginandshare.sample
 
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
@@ -12,6 +13,7 @@ import com.like.thirdpartyloginandshare.init.params.WbInitParams
 import com.like.thirdpartyloginandshare.share.params.image.QqImageParams
 import com.like.thirdpartyloginandshare.share.params.image.WbImageParams
 import com.like.thirdpartyloginandshare.share.params.imageandtext.QZoneImageAndTextParams
+import com.like.thirdpartyloginandshare.share.params.multiimage.MultiImageParams
 import com.like.thirdpartyloginandshare.share.params.multiimage.WbMultiImageParams
 import com.like.thirdpartyloginandshare.share.params.page.WbPageParams
 import com.like.thirdpartyloginandshare.share.params.page.WxPageParams
@@ -90,17 +92,19 @@ class MainActivity : AppCompatActivity() {
                     toast("取消微博分享")
                 }
             })
-            .sharePage(
-                WbPageParams(
-                    BitmapFactory.decodeFile("$cacheDir/123.jpg"),
-                    "title",
-                    "description",
-                    "https://www.baidu.com/",
-                    "defaultText"
-                )
-            )
+            .shareVideo(WbVideoParams(Uri.fromFile(File(cacheDir, "222.mp4"))))
+//            .shareMultiImage(WbMultiImageParams(listOf(File(cacheDir, "123.jpg"), File(cacheDir, "123.jpg"))))
+//            .sharePage(
+//                WbPageParams(
+//                    BitmapFactory.decodeFile("$cacheDir/123.jpg"),
+//                    "title",
+//                    "description",
+//                    "https://www.baidu.com/",
+//                    "defaultText"
+//                )
+//            )
 //            .shareImage(WbImageParams(BitmapFactory.decodeFile("$cacheDir/123.jpg")))
-//            .shareText(WbTextParams())
+//            .shareText(WbTextParams("hahahah"))
     }
 
     fun wxLogin(view: View) {
