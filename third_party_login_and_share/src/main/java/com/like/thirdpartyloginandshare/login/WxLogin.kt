@@ -2,13 +2,12 @@ package com.like.thirdpartyloginandshare.login
 
 import android.app.Activity
 import android.content.Intent
+import com.like.thirdpartyloginandshare.init.InitUtils
 import com.like.thirdpartyloginandshare.util.ApiFactory
 import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
 import com.like.thirdpartyloginandshare.util.SingletonHolder
-import com.like.thirdpartyloginandshare.util.WX_APP_ID
 import com.tencent.mm.opensdk.modelmsg.SendAuth
 import com.tencent.mm.opensdk.openapi.IWXAPI
-import com.tencent.mm.opensdk.openapi.WXAPIFactory
 import kotlin.jvm.functions.FunctionN
 
 class WxLogin private constructor(activity: Activity) : LoginStrategy(activity) {
@@ -20,7 +19,7 @@ class WxLogin private constructor(activity: Activity) : LoginStrategy(activity) 
         }
     })
 
-    private val mWxApi: IWXAPI by lazy { ApiFactory.createWxApi(applicationContext, WX_APP_ID) }
+    private val mWxApi: IWXAPI by lazy { ApiFactory.createWxApi(applicationContext, InitUtils.wxInitParams.appId) }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
     }

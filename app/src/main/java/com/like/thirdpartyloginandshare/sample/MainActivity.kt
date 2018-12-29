@@ -30,8 +30,8 @@ class MainActivity : AppCompatActivity() {
 
     fun wbLogin(view: View) {
         ThirdPartyLogin.with(this)
-            .setPlatForm(PlatForm.WB)
-            .init(
+            .setPlatForm(
+                PlatForm.WB,
                 WbInitParams(
                     "1929959086",
                     "https://api.weibo.com/oauth2/default.html",
@@ -56,8 +56,8 @@ class MainActivity : AppCompatActivity() {
 
     fun wbShare(view: View) {
         ThirdPartyShare.with(this)
-            .setPlatForm(PlatForm.WB)
-            .init(
+            .setPlatForm(
+                PlatForm.WB,
                 WbInitParams(
                     "1929959086",
                     "https://api.weibo.com/oauth2/default.html",
@@ -94,8 +94,7 @@ class MainActivity : AppCompatActivity() {
 
     fun qqLogin(view: View) {
         ThirdPartyLogin.with(this)
-            .setPlatForm(PlatForm.QQ)
-            .init(QqInitParams("101540498"))
+            .setPlatForm(PlatForm.QQ, QqInitParams("101540498"))
             .setLoginListener(object : OnLoginAndShareListener {
                 override fun onSuccess() {
                     toast("QQ登录成功")
@@ -114,8 +113,7 @@ class MainActivity : AppCompatActivity() {
 
     fun qqShare(view: View) {
         ThirdPartyShare.with(this)
-            .setPlatForm(PlatForm.QQ)
-            .init(QqInitParams("101540498"))
+            .setPlatForm(PlatForm.QQ, QqInitParams("101540498"))
             .setShareListener(object : OnLoginAndShareListener {
                 override fun onSuccess() {
                     toast("QQ分享成功")
@@ -134,8 +132,7 @@ class MainActivity : AppCompatActivity() {
 
     fun qzoneShare(view: View) {
         ThirdPartyShare.with(this)
-            .setPlatForm(PlatForm.QZONE)
-            .init(QqInitParams("101540498"))
+            .setPlatForm(PlatForm.QQ, QqInitParams("101540498"))
             .setShareListener(object : OnLoginAndShareListener {
                 override fun onSuccess() {
                     toast("QZONE分享成功")
