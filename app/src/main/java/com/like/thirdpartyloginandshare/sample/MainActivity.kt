@@ -13,6 +13,7 @@ import com.like.thirdpartyloginandshare.init.params.WbInitParams
 import com.like.thirdpartyloginandshare.share.params.image.QqImageParams
 import com.like.thirdpartyloginandshare.share.params.image.WbImageParams
 import com.like.thirdpartyloginandshare.share.params.imageandtext.QZoneImageAndTextParams
+import com.like.thirdpartyloginandshare.share.params.imageandtext.QqImageAndTextParams
 import com.like.thirdpartyloginandshare.share.params.multiimage.MultiImageParams
 import com.like.thirdpartyloginandshare.share.params.multiimage.WbMultiImageParams
 import com.like.thirdpartyloginandshare.share.params.page.WbPageParams
@@ -159,7 +160,8 @@ class MainActivity : AppCompatActivity() {
                     toast("取消QQ分享")
                 }
             })
-            .shareImage(QqImageParams("/storage/emulated/0/Pictures/Screenshots/S81224-20082955.jpg"))
+            .shareImageAndText(QqImageAndTextParams("title","https://www.baidu.com/"))
+//            .shareImage(QqImageParams("/storage/emulated/0/Pictures/Screenshots/S81224-20082955.jpg"))
     }
 
     fun qzoneShare(view: View) {
