@@ -54,7 +54,7 @@ class QqShare(activity: Activity) : ShareStrategy(activity) {
             // 分享的类型。
             putInt(QQShare.SHARE_TO_QQ_KEY_TYPE, QQShare.SHARE_TO_QQ_TYPE_IMAGE)
             // 需要分享的本地图片路径
-            putString(QQShare.SHARE_TO_QQ_IMAGE_LOCAL_URL, params.imageLocalUrl)
+            putString(QQShare.SHARE_TO_QQ_IMAGE_LOCAL_URL, params.imageLocalPath)
             // 手Q客户端顶部，替换“返回”按钮文字，如果为空，用返回代替
             putString(QQShare.SHARE_TO_QQ_APP_NAME, activity.resources.getString(R.string.app_name))
             // 分享额外选项，两种类型可选（默认是不隐藏分享到QZone按钮且不自动打开分享到QZone的对话框）：

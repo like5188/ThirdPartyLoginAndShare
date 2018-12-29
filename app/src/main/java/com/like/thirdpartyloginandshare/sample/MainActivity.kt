@@ -159,7 +159,7 @@ class MainActivity : AppCompatActivity() {
                     toast("取消QQ分享")
                 }
             })
-            .shareImage(QqImageParams("$cacheDir/123.jpg"))
+            .shareImage(QqImageParams("/storage/emulated/0/Pictures/Screenshots/S81224-20082955.jpg"))
     }
 
     fun qzoneShare(view: View) {
