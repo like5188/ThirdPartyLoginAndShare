@@ -189,10 +189,7 @@ class MainActivity : AppCompatActivity() {
                 QZoneImageAndTextParams(
                     "title",
                     "https://www.baidu.com/",
-                    arrayListOf(
-                        "http://00imgmini.eastday.com/mobile/20181225/20181225104506_468e665a7fa6f448569985138b18c29c_1_mwpm_03200403.jpg",
-                        "/storage/emulated/0/Pictures/Screenshots/S81224-20082955.jpg"
-                    ),
+                    arrayListOf("/storage/emulated/0/Pictures/Screenshots/S81224-20082955.jpg"),
                     "summary"
                 )
             )
