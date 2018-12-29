@@ -86,7 +86,7 @@ class WbShare(activity: Activity) : ShareStrategy(activity) {
         if (params !is WbVideoParams) return
         //获取视频
         val videoSourceObject = VideoSourceObject()
-        videoSourceObject.videoPath = Uri.fromFile(params.video)
+        videoSourceObject.videoPath = params.videoUri
 
         val weiboMessage = WeiboMultiMessage()
         weiboMessage.videoSourceObject = videoSourceObject

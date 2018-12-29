@@ -12,6 +12,7 @@ import com.like.thirdpartyloginandshare.share.params.image.QqImageParams
 import com.like.thirdpartyloginandshare.share.params.imageandtext.QZoneImageAndTextParams
 import com.like.thirdpartyloginandshare.share.params.multiimage.WbMultiImageParams
 import com.like.thirdpartyloginandshare.share.params.text.WbTextParams
+import com.like.thirdpartyloginandshare.share.params.video.WbVideoParams
 import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
 import com.like.thirdpartyloginandshare.util.PlatForm
 import org.jetbrains.anko.toast
@@ -85,7 +86,7 @@ class MainActivity : AppCompatActivity() {
                     toast("取消微博分享")
                 }
             })
-            .shareMultiImage(WbMultiImageParams())
+            .shareVideo(WbVideoParams())
 //            .shareImage(WbImageParams())
 //            .shareText(WbTextParams())
     }
