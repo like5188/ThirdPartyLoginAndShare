@@ -18,7 +18,9 @@ import com.like.thirdpartyloginandshare.share.params.text.TextParams
 import com.like.thirdpartyloginandshare.share.params.text.WxTextParams
 import com.like.thirdpartyloginandshare.share.params.video.VideoParams
 import com.like.thirdpartyloginandshare.share.params.video.WxVideoParams
+import com.like.thirdpartyloginandshare.util.ApiFactory
 import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
+import com.like.thirdpartyloginandshare.util.WX_APP_ID
 import com.like.thirdpartyloginandshare.util.WX_OPEN_ID
 import com.tencent.mm.opensdk.modelmsg.*
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX.Req.WXSceneSession
@@ -27,7 +29,7 @@ import com.tencent.mm.opensdk.openapi.IWXAPI
 import java.io.ByteArrayOutputStream
 
 class WxShare(activity: Activity, private val sence: Int) : ShareStrategy(activity) {
-    private val mWxApi: IWXAPI by lazy { WxLogin.getInstance(activity).mWxApi }
+    private val mWxApi: IWXAPI by lazy { ApiFactory.createWxApi(applicationContext, WX_APP_ID) }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
     }

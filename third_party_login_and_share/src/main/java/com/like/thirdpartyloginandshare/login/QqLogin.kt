@@ -3,6 +3,7 @@ package com.like.thirdpartyloginandshare.login
 import android.app.Activity
 import android.content.Intent
 import android.text.TextUtils
+import com.like.thirdpartyloginandshare.util.ApiFactory
 import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
 import com.like.thirdpartyloginandshare.util.QQ_APP_ID
 import com.tencent.connect.UnionInfo
@@ -18,7 +19,7 @@ import org.json.JSONObject
  * 应用需要在调用接口的Activity的onActivityResult方法中调用[onActivityResult]
  */
 class QqLogin(activity: Activity) : LoginStrategy(activity) {
-    private val mTencent by lazy { Tencent.createInstance(QQ_APP_ID, applicationContext) }
+    private val mTencent by lazy { ApiFactory.createQqApi(applicationContext, QQ_APP_ID) }
     private lateinit var mLoginListener: LoginListener
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

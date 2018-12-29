@@ -16,6 +16,7 @@ import com.like.thirdpartyloginandshare.share.params.music.QqMusicParams
 import com.like.thirdpartyloginandshare.share.params.page.PageParams
 import com.like.thirdpartyloginandshare.share.params.text.TextParams
 import com.like.thirdpartyloginandshare.share.params.video.VideoParams
+import com.like.thirdpartyloginandshare.util.ApiFactory
 import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
 import com.like.thirdpartyloginandshare.util.QQ_APP_ID
 import com.tencent.connect.common.Constants
@@ -30,7 +31,7 @@ import com.tencent.tauth.UiError
  * QQ分享无需QQ登录
  */
 class QqShare(activity: Activity) : ShareStrategy(activity) {
-    private val mTencent by lazy { Tencent.createInstance(QQ_APP_ID, activity.applicationContext) }
+    private val mTencent by lazy { ApiFactory.createQqApi(applicationContext, QQ_APP_ID) }
     private lateinit var mShareListener: ShareListener
 
     override fun setShareListener(listener: OnLoginAndShareListener): ShareStrategy {

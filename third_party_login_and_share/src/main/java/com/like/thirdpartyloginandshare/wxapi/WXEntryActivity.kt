@@ -4,9 +4,12 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import com.like.thirdpartyloginandshare.login.WxLogin
+import com.like.thirdpartyloginandshare.util.ApiFactory
+import com.like.thirdpartyloginandshare.util.WX_APP_ID
 import com.tencent.mm.opensdk.modelbase.BaseReq
 import com.tencent.mm.opensdk.modelbase.BaseResp
 import com.tencent.mm.opensdk.modelmsg.SendAuth
+import com.tencent.mm.opensdk.openapi.IWXAPI
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler
 
 
@@ -14,6 +17,7 @@ import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler
  * 如果你的程序需要接收微信发送的请求，或者接收发送到微信请求的响应结果
  */
 class WXEntryActivity : Activity(), IWXAPIEventHandler {
+    private val mWxApi: IWXAPI by lazy { ApiFactory.createWxApi(applicationContext, WX_APP_ID) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +34,7 @@ class WXEntryActivity : Activity(), IWXAPIEventHandler {
             // 第三方开发者如果使用透明界面来实现WXEntryActivity，需要判断handleIntent的返回值，
             // 如果返回值为false，则说明入参不合法未被SDK处理，
             // 应finish当前透明界面，避免外部通过传递非法参数的Intent导致停留在透明界面，引起用户的疑惑
-            if (!WxLogin.getInstance(this).mWxApi.handleIntent(intent, this)) {
+            if (!mWxApi.handleIntent(intent, this)) {
                 finish()
             }
         } catch (e: Exception) {
