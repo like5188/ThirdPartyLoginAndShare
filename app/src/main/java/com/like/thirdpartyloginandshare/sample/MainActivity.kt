@@ -83,7 +83,8 @@ class MainActivity : AppCompatActivity() {
                     toast("取消微博分享")
                 }
             })
-            .shareText(WbTextParams("内容", "标题", "https://www.baidu.com/"))
+//            .shareImage(WbImageParams())
+            .shareText(WbTextParams())
     }
 
     fun wxLogin(view: View) {

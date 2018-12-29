@@ -44,8 +44,6 @@ class WbShare(activity: Activity) : ShareStrategy(activity) {
         if (params !is WbTextParams) return
         val textObject = TextObject()
         textObject.text = params.text
-        textObject.title = params.title
-        textObject.actionUrl = params.actionUrl
 
         val weiboMessage = WeiboMultiMessage()
         weiboMessage.textObject = textObject
