@@ -171,7 +171,7 @@ class MainActivity : AppCompatActivity() {
     fun qzoneShare(view: View) {
         isLogin = false
         ThirdPartyShare.with(this)
-            .setPlatForm(PlatForm.QQ, QqInitParams("101540498"))
+            .setPlatForm(PlatForm.QZONE, QqInitParams("101540498"))
             .setShareListener(object : OnLoginAndShareListener {
                 override fun onSuccess() {
                     toast("QZONE分享成功")
@@ -189,8 +189,8 @@ class MainActivity : AppCompatActivity() {
                 QZoneImageAndTextParams(
                     "title",
                     "https://www.baidu.com/",
-                    "summary",
-                    arrayListOf("$cacheDir/123.jpg")
+                    arrayListOf("http://inews.gtimg.com/newsapp_bt/0/876781763/1000"),
+                    "summary"
                 )
             )
     }
