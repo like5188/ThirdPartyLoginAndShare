@@ -103,12 +103,10 @@ class QqShare(activity: Activity) : ShareStrategy(activity) {
             putString(QQShare.SHARE_TO_QQ_TITLE, params.title)
             // 分享的消息摘要，最长40个字。
             putString(QQShare.SHARE_TO_QQ_SUMMARY, params.summary)
-            // 这条分享消息被好友点击后的跳转URL。
+            // 音乐文件的远程链接, 以URL的形式传入, 不支持本地音乐。
             putString(QQShare.SHARE_TO_QQ_TARGET_URL, params.targetUrl)
             // 分享图片的URL或者本地路径
             putString(QQShare.SHARE_TO_QQ_IMAGE_URL, params.imageUrl)
-            // 音乐文件的远程链接, 以URL的形式传入, 不支持本地音乐。
-            putString(QQShare.SHARE_TO_QQ_AUDIO_URL, params.audioUrl)
             // 手Q客户端顶部，替换“返回”按钮文字，如果为空，用返回代替
             putString(QQShare.SHARE_TO_QQ_APP_NAME, activity.resources.getString(R.string.app_name))
             // 分享额外选项，两种类型可选（默认是不隐藏分享到QZone按钮且不自动打开分享到QZone的对话框）：
