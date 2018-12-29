@@ -5,13 +5,15 @@ package com.like.thirdpartyloginandshare.share.params.music
  * 点击会话列表顶部的音乐分享内容将跳转至微信原生音乐播放器播放。
  *
  * @param title     分享的标题, 最长30个字符。
+ * @param audioUrl  音乐文件的远程链接, 以URL的形式传入, 不支持本地音乐。
  * @param targetUrl 音乐文件的远程链接, 以URL的形式传入, 不支持本地音乐。
  * @param summary   分享的消息摘要，最长40个字。
  * @param imageUrl  分享图片的URL或者本地路径
  */
 data class QqMusicParams(
     val title: String,
-    val targetUrl: String,
+    val audioUrl: String,
+    val targetUrl: String = audioUrl,
     val summary: String = "",
     val imageUrl: String = ""
 ) : MusicParams

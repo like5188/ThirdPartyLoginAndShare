@@ -104,6 +104,8 @@ class QqShare(activity: Activity) : ShareStrategy(activity) {
             // 分享的消息摘要，最长40个字。
             putString(QQShare.SHARE_TO_QQ_SUMMARY, params.summary)
             // 音乐文件的远程链接, 以URL的形式传入, 不支持本地音乐。
+            putString(QQShare.SHARE_TO_QQ_AUDIO_URL, params.audioUrl)
+            // 音乐文件的远程链接, 以URL的形式传入, 不支持本地音乐。
             putString(QQShare.SHARE_TO_QQ_TARGET_URL, params.targetUrl)
             // 分享图片的URL或者本地路径
             putString(QQShare.SHARE_TO_QQ_IMAGE_URL, params.imageUrl)
