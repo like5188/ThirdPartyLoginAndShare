@@ -16,6 +16,7 @@ import com.like.thirdpartyloginandshare.util.PlatForm
 import org.jetbrains.anko.toast
 
 class MainActivity : AppCompatActivity() {
+    private var isLogin = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,11 +25,15 @@ class MainActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        ThirdPartyLogin.with(this).onActivityResult(requestCode, resultCode, data)
-        ThirdPartyShare.with(this).onActivityResult(requestCode, resultCode, data)
+        if (isLogin) {
+            ThirdPartyLogin.with(this).onActivityResult(requestCode, resultCode, data)
+        } else {
+            ThirdPartyShare.with(this).onActivityResult(requestCode, resultCode, data)
+        }
     }
 
     fun wbLogin(view: View) {
+        isLogin = true
         ThirdPartyLogin.with(this)
             .setPlatForm(
                 PlatForm.WB,
@@ -55,6 +60,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun wbShare(view: View) {
+        isLogin = false
         ThirdPartyShare.with(this)
             .setPlatForm(
                 PlatForm.WB,
@@ -81,18 +87,22 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun wxLogin(view: View) {
+        isLogin = true
 
     }
 
     fun wxShare(view: View) {
+        isLogin = false
 
     }
 
     fun wxCircleShare(view: View) {
+        isLogin = false
 
     }
 
     fun qqLogin(view: View) {
+        isLogin = true
         ThirdPartyLogin.with(this)
             .setPlatForm(PlatForm.QQ, QqInitParams("101540498"))
             .setLoginListener(object : OnLoginAndShareListener {
@@ -112,6 +122,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun qqShare(view: View) {
+        isLogin = false
         ThirdPartyShare.with(this)
             .setPlatForm(PlatForm.QQ, QqInitParams("101540498"))
             .setShareListener(object : OnLoginAndShareListener {
@@ -131,6 +142,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun qzoneShare(view: View) {
+        isLogin = false
         ThirdPartyShare.with(this)
             .setPlatForm(PlatForm.QQ, QqInitParams("101540498"))
             .setShareListener(object : OnLoginAndShareListener {
