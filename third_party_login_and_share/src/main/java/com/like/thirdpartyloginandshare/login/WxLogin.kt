@@ -22,10 +22,6 @@ class WxLogin private constructor(activity: Activity) : LoginStrategy(activity) 
 
     private val mWxApi: IWXAPI by lazy { ApiFactory.createWxApi(applicationContext, WX_APP_ID) }
 
-    init {
-        mWxApi.registerApp(WX_APP_ID)
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
     }
 

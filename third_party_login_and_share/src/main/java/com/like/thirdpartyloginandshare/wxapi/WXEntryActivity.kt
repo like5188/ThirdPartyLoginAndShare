@@ -12,7 +12,6 @@ import com.tencent.mm.opensdk.modelmsg.SendAuth
 import com.tencent.mm.opensdk.openapi.IWXAPI
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler
 
-
 /**
  * 如果你的程序需要接收微信发送的请求，或者接收发送到微信请求的响应结果
  */

@@ -25,7 +25,6 @@ import com.tencent.tauth.IUiListener
 import com.tencent.tauth.Tencent
 import com.tencent.tauth.UiError
 
-
 /**
  * QQ分享工具类
  * QQ分享无需QQ登录

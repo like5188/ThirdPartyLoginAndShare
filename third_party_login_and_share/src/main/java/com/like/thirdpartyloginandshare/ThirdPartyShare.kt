@@ -3,6 +3,11 @@ package com.like.thirdpartyloginandshare
 import android.app.Activity
 import android.content.Intent
 import android.support.v4.app.Fragment
+import com.like.thirdpartyloginandshare.init.InitUtils
+import com.like.thirdpartyloginandshare.init.params.InitParams
+import com.like.thirdpartyloginandshare.init.params.QqInitParams
+import com.like.thirdpartyloginandshare.init.params.WbInitParams
+import com.like.thirdpartyloginandshare.init.params.WxInitParams
 import com.like.thirdpartyloginandshare.share.*
 import com.like.thirdpartyloginandshare.share.params.app.AppParams
 import com.like.thirdpartyloginandshare.share.params.image.ImageParams
@@ -12,6 +17,7 @@ import com.like.thirdpartyloginandshare.share.params.music.MusicParams
 import com.like.thirdpartyloginandshare.share.params.page.PageParams
 import com.like.thirdpartyloginandshare.share.params.text.TextParams
 import com.like.thirdpartyloginandshare.share.params.video.VideoParams
+import com.like.thirdpartyloginandshare.util.ApiFactory
 import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
 import com.like.thirdpartyloginandshare.util.PlatForm
 import com.like.thirdpartyloginandshare.util.SingletonHolder
@@ -32,8 +38,10 @@ class ThirdPartyShare private constructor(activity: Activity) : ShareStrategy(ac
     }
 
     private lateinit var mStrategy: ShareStrategy
+    private lateinit var mPlatForm: PlatForm
 
     fun setPlatForm(platForm: PlatForm): ThirdPartyShare {
+        mPlatForm = platForm
         when (platForm) {
             PlatForm.QQ -> {
                 mStrategy = QqShare(activity)
@@ -50,6 +58,23 @@ class ThirdPartyShare private constructor(activity: Activity) : ShareStrategy(ac
             PlatForm.WB -> {
                 mStrategy = WbShare(activity)
             }
+        }
+        return this
+    }
+
+    fun init(initParams: InitParams): ThirdPartyShare {
+        when (initParams) {
+            is QqInitParams -> InitUtils.initQq()
+            is WxInitParams -> InitUtils.initWx(
+                ApiFactory.createWxApi(applicationContext, initParams.appId),
+                initParams.appId
+            )
+            is WbInitParams -> InitUtils.initWb(
+                applicationContext,
+                initParams.appKey,
+                initParams.redirectUrl,
+                initParams.scope
+            )
         }
         return this
     }
@@ -106,8 +131,35 @@ class ThirdPartyShare private constructor(activity: Activity) : ShareStrategy(ac
     }
 
     private fun checkParams() {
-        if (!::mStrategy.isInitialized) {
+        if (!::mPlatForm.isInitialized) {
             throw UnsupportedOperationException("请先调用setPlatForm(platForm: PlatForm)方法设置对应的第三方分享平台")
+        }
+        when (mPlatForm) {
+            PlatForm.QQ -> {
+                if (!InitUtils.isQqInitialized.get()) {
+                    throw UnsupportedOperationException("请先调用init(initParams: InitParams)方法初始化对应的第三方分享平台")
+                }
+            }
+            PlatForm.QZONE -> {
+                if (!InitUtils.isQqInitialized.get()) {
+                    throw UnsupportedOperationException("请先调用init(initParams: InitParams)方法初始化对应的第三方分享平台")
+                }
+            }
+            PlatForm.WX -> {
+                if (!InitUtils.isWxInitialized.get()) {
+                    throw UnsupportedOperationException("请先调用init(initParams: InitParams)方法初始化对应的第三方分享平台")
+                }
+            }
+            PlatForm.WX_CIRCLE -> {
+                if (!InitUtils.isWxInitialized.get()) {
+                    throw UnsupportedOperationException("请先调用init(initParams: InitParams)方法初始化对应的第三方分享平台")
+                }
+            }
+            PlatForm.WB -> {
+                if (!InitUtils.isWbInitialized.get()) {
+                    throw UnsupportedOperationException("请先调用init(initParams: InitParams)方法初始化对应的第三方分享平台")
+                }
+            }
         }
     }
 }

@@ -3,10 +3,16 @@ package com.like.thirdpartyloginandshare
 import android.app.Activity
 import android.content.Intent
 import android.support.v4.app.Fragment
+import com.like.thirdpartyloginandshare.init.InitUtils
+import com.like.thirdpartyloginandshare.init.params.InitParams
+import com.like.thirdpartyloginandshare.init.params.QqInitParams
+import com.like.thirdpartyloginandshare.init.params.WbInitParams
+import com.like.thirdpartyloginandshare.init.params.WxInitParams
 import com.like.thirdpartyloginandshare.login.LoginStrategy
 import com.like.thirdpartyloginandshare.login.QqLogin
 import com.like.thirdpartyloginandshare.login.WbLogin
 import com.like.thirdpartyloginandshare.login.WxLogin
+import com.like.thirdpartyloginandshare.util.ApiFactory
 import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
 import com.like.thirdpartyloginandshare.util.PlatForm
 import com.like.thirdpartyloginandshare.util.SingletonHolder
@@ -26,8 +32,10 @@ class ThirdPartyLogin private constructor(activity: Activity) : LoginStrategy(ac
     }
 
     private lateinit var mStrategy: LoginStrategy
+    private lateinit var mPlatForm: PlatForm
 
     fun setPlatForm(platForm: PlatForm): ThirdPartyLogin {
+        mPlatForm = platForm
         when (platForm) {
             PlatForm.QQ -> {
                 mStrategy = QqLogin(activity)
@@ -44,6 +52,23 @@ class ThirdPartyLogin private constructor(activity: Activity) : LoginStrategy(ac
             PlatForm.WB -> {
                 mStrategy = WbLogin(activity)
             }
+        }
+        return this
+    }
+
+    fun init(initParams: InitParams): ThirdPartyLogin {
+        when (initParams) {
+            is QqInitParams -> InitUtils.initQq()
+            is WxInitParams -> InitUtils.initWx(
+                ApiFactory.createWxApi(applicationContext, initParams.appId),
+                initParams.appId
+            )
+            is WbInitParams -> InitUtils.initWb(
+                applicationContext,
+                initParams.appKey,
+                initParams.redirectUrl,
+                initParams.scope
+            )
         }
         return this
     }
@@ -70,8 +95,31 @@ class ThirdPartyLogin private constructor(activity: Activity) : LoginStrategy(ac
     }
 
     private fun checkParams() {
-        if (!::mStrategy.isInitialized) {
+        if (!::mPlatForm.isInitialized) {
             throw UnsupportedOperationException("请先调用setPlatForm(platForm: PlatForm)方法设置对应的第三方登录平台")
+        }
+        when (mPlatForm) {
+            PlatForm.QQ -> {
+                if (!InitUtils.isQqInitialized.get()) {
+                    throw UnsupportedOperationException("请先调用init(initParams: InitParams)方法初始化对应的第三方登录平台")
+                }
+            }
+            PlatForm.QZONE -> {
+                throw UnsupportedOperationException("暂不支持 QZONE 进行登录")
+            }
+            PlatForm.WX -> {
+                if (!InitUtils.isWxInitialized.get()) {
+                    throw UnsupportedOperationException("请先调用init(initParams: InitParams)方法初始化对应的第三方登录平台")
+                }
+            }
+            PlatForm.WX_CIRCLE -> {
+                throw UnsupportedOperationException("暂不支持 WX_CIRCLE 进行登录")
+            }
+            PlatForm.WB -> {
+                if (!InitUtils.isWbInitialized.get()) {
+                    throw UnsupportedOperationException("请先调用init(initParams: InitParams)方法初始化对应的第三方登录平台")
+                }
+            }
         }
     }
 }

@@ -1,6 +1,9 @@
 package com.like.thirdpartyloginandshare.util
 
+import android.app.Activity
 import android.content.Context
+import com.sina.weibo.sdk.auth.sso.SsoHandler
+import com.sina.weibo.sdk.share.WbShareHandler
 import com.tencent.mm.opensdk.openapi.IWXAPI
 import com.tencent.mm.opensdk.openapi.WXAPIFactory
 import com.tencent.tauth.Tencent
@@ -44,5 +47,9 @@ object ApiFactory {
             }
         }
     }
+
+    fun createWbApi(activity: Activity) = SsoHandler(activity)
+
+    fun createWbShareApi(activity: Activity) = WbShareHandler(activity)
 
 }

@@ -16,6 +16,7 @@ import com.like.thirdpartyloginandshare.share.params.text.TextParams
 import com.like.thirdpartyloginandshare.share.params.text.WbTextParams
 import com.like.thirdpartyloginandshare.share.params.video.VideoParams
 import com.like.thirdpartyloginandshare.share.params.video.WbVideoParams
+import com.like.thirdpartyloginandshare.util.ApiFactory
 import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
 import com.sina.weibo.sdk.api.*
 import com.sina.weibo.sdk.share.WbShareCallback
@@ -23,7 +24,7 @@ import com.sina.weibo.sdk.share.WbShareHandler
 import com.sina.weibo.sdk.utils.Utility
 
 class WbShare(activity: Activity) : ShareStrategy(activity) {
-    private val shareHandler by lazy { WbShareHandler(activity) }
+    private val shareHandler by lazy { ApiFactory.createWbShareApi(activity) }
     private lateinit var mShareListener: ShareListener
 
     override fun setShareListener(listener: OnLoginAndShareListener): ShareStrategy {

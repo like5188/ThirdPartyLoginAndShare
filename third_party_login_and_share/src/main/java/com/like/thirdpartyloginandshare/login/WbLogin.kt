@@ -2,23 +2,16 @@ package com.like.thirdpartyloginandshare.login
 
 import android.app.Activity
 import android.content.Intent
-import com.like.thirdpartyloginandshare.util.APP_KEY
+import com.like.thirdpartyloginandshare.util.ApiFactory
 import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
-import com.like.thirdpartyloginandshare.util.REDIRECT_URL
-import com.like.thirdpartyloginandshare.util.SCOPE
-import com.sina.weibo.sdk.WbSdk
-import com.sina.weibo.sdk.auth.*
-import com.sina.weibo.sdk.auth.sso.SsoHandler
-
+import com.sina.weibo.sdk.auth.AccessTokenKeeper
+import com.sina.weibo.sdk.auth.Oauth2AccessToken
+import com.sina.weibo.sdk.auth.WbAuthListener
+import com.sina.weibo.sdk.auth.WbConnectErrorMessage
 
 class WbLogin(activity: Activity) : LoginStrategy(activity) {
-    private val mAuthInfo by lazy { AuthInfo(applicationContext, APP_KEY, REDIRECT_URL, SCOPE) }
-    private val mSsoHandler by lazy { SsoHandler(activity) }
+    private val mSsoHandler by lazy { ApiFactory.createWbApi(activity) }
     private lateinit var mLoginListener: LoginListener
-
-    init {
-        WbSdk.install(applicationContext, mAuthInfo)
-    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         mSsoHandler.authorizeCallBack(requestCode, resultCode, data)

@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.like.thirdpartyloginandshare.ThirdPartyLogin
 import com.like.thirdpartyloginandshare.ThirdPartyShare
+import com.like.thirdpartyloginandshare.init.params.QqInitParams
+import com.like.thirdpartyloginandshare.init.params.WbInitParams
 import com.like.thirdpartyloginandshare.share.params.image.QqImageParams
 import com.like.thirdpartyloginandshare.share.params.imageandtext.QZoneImageAndTextParams
 import com.like.thirdpartyloginandshare.share.params.text.WbTextParams
@@ -29,6 +31,13 @@ class MainActivity : AppCompatActivity() {
     fun wbLogin(view: View) {
         ThirdPartyLogin.with(this)
             .setPlatForm(PlatForm.WB)
+            .init(
+                WbInitParams(
+                    "1929959086",
+                    "https://api.weibo.com/oauth2/default.html",
+                    "email,direct_messages_read,direct_messages_write,friendships_groups_read,friendships_groups_write,statuses_to_me_read,follow_app_official_microblog,invitation_write"
+                )
+            )
             .setLoginListener(object : OnLoginAndShareListener {
                 override fun onSuccess() {
                     toast("微博登录成功")
@@ -48,6 +57,13 @@ class MainActivity : AppCompatActivity() {
     fun wbShare(view: View) {
         ThirdPartyShare.with(this)
             .setPlatForm(PlatForm.WB)
+            .init(
+                WbInitParams(
+                    "1929959086",
+                    "https://api.weibo.com/oauth2/default.html",
+                    "email,direct_messages_read,direct_messages_write,friendships_groups_read,friendships_groups_write,statuses_to_me_read,follow_app_official_microblog,invitation_write"
+                )
+            )
             .setShareListener(object : OnLoginAndShareListener {
                 override fun onSuccess() {
                     toast("微博分享成功")
@@ -79,6 +95,7 @@ class MainActivity : AppCompatActivity() {
     fun qqLogin(view: View) {
         ThirdPartyLogin.with(this)
             .setPlatForm(PlatForm.QQ)
+            .init(QqInitParams("101540498"))
             .setLoginListener(object : OnLoginAndShareListener {
                 override fun onSuccess() {
                     toast("QQ登录成功")
@@ -98,6 +115,7 @@ class MainActivity : AppCompatActivity() {
     fun qqShare(view: View) {
         ThirdPartyShare.with(this)
             .setPlatForm(PlatForm.QQ)
+            .init(QqInitParams("101540498"))
             .setShareListener(object : OnLoginAndShareListener {
                 override fun onSuccess() {
                     toast("QQ分享成功")
@@ -117,6 +135,7 @@ class MainActivity : AppCompatActivity() {
     fun qzoneShare(view: View) {
         ThirdPartyShare.with(this)
             .setPlatForm(PlatForm.QZONE)
+            .init(QqInitParams("101540498"))
             .setShareListener(object : OnLoginAndShareListener {
                 override fun onSuccess() {
                     toast("QZONE分享成功")
