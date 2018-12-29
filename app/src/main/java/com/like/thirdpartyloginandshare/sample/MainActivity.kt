@@ -1,7 +1,7 @@
 package com.like.thirdpartyloginandshare.sample
 
 import android.content.Intent
-import android.net.Uri
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
@@ -9,7 +9,11 @@ import com.like.thirdpartyloginandshare.ThirdPartyInit
 import com.like.thirdpartyloginandshare.ThirdPartyLogin
 import com.like.thirdpartyloginandshare.ThirdPartyShare
 import com.like.thirdpartyloginandshare.share.params.app.QqAppParams
+import com.like.thirdpartyloginandshare.share.params.image.WbImageParams
 import com.like.thirdpartyloginandshare.share.params.imageandtext.QZoneImageAndTextParams
+import com.like.thirdpartyloginandshare.share.params.multiimage.WbMultiImageParams
+import com.like.thirdpartyloginandshare.share.params.page.WbPageParams
+import com.like.thirdpartyloginandshare.share.params.text.WbTextParams
 import com.like.thirdpartyloginandshare.share.params.video.WbVideoParams
 import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
 import com.like.thirdpartyloginandshare.util.PlatForm
@@ -79,8 +83,24 @@ class MainActivity : AppCompatActivity() {
                     toast("取消微博分享")
                 }
             })
-            .shareVideo(WbVideoParams(Uri.fromFile(File(cacheDir, "222.mp4"))))
-//            .shareMultiImage(WbMultiImageParams(listOf(File(cacheDir, "123.jpg"), File(cacheDir, "123.jpg"))))
+            .shareVideo(
+                WbVideoParams(
+                    PathUtils.getUriFromFile(
+                        this,
+                        File(cacheDir, "222.mp4")
+                    )
+                )
+            )
+//            .shareMultiImage(
+//                WbMultiImageParams(
+//                    arrayListOf(
+//                        PathUtils.getUriFromFile(
+//                            this,
+//                            File(cacheDir, "123.jpg")
+//                        )
+//                    )
+//                )
+//            )
 //            .sharePage(
 //                WbPageParams(
 //                    BitmapFactory.decodeFile("$cacheDir/123.jpg"),

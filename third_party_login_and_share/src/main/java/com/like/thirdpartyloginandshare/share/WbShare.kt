@@ -20,7 +20,6 @@ import com.like.thirdpartyloginandshare.util.ApiFactory
 import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
 import com.sina.weibo.sdk.api.*
 import com.sina.weibo.sdk.share.WbShareCallback
-import com.sina.weibo.sdk.share.WbShareHandler
 import com.sina.weibo.sdk.utils.Utility
 
 class WbShare(activity: Activity) : ShareStrategy(activity) {
@@ -65,9 +64,7 @@ class WbShare(activity: Activity) : ShareStrategy(activity) {
         val multiImageObject = MultiImageObject()
         //pathList设置的是本地本件的路径,并且是当前应用可以访问的路径，现在不支持网络路径（多图分享依靠微博最新版本的支持，所以当分享到低版本的微博应用时，多图分享失效
         // 可以通过WbSdk.hasSupportMultiImage 方法判断是否支持多图分享,h5分享微博暂时不支持多图）多图分享接入程序必须有文件读写权限，否则会造成分享失败
-        val pathList = ArrayList<Uri>()
-        params.images?.mapTo(pathList) { Uri.fromFile(it) }
-        multiImageObject.setImageList(pathList)
+        multiImageObject.setImageList(params.imageUris)
 
         val weiboMessage = WeiboMultiMessage()
         weiboMessage.multiImageObject = multiImageObject

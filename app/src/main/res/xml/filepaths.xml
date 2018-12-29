@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+    root-path	        .
+    files-path	        Context.getFilesDir()
+    cache-path	        Context.getCacheDir()
+    external-path	    Environment.getExternalStorageDirectory()
+    external-files-path	Context.getExternalFilesDir(null)
+    external-cache-path	Context.getExternalCacheDir()
+    -->
+    <paths>
+        <!--拍照需要-->
+        <external-path
+            name="camera_photos"
+            path="" />
+        <!--获取apk文件进行安装时需要-->
+        <external-path
+            name="external_storage_root"
+            path="." />
+        <external-path
+            name="external_storage_root"
+            path="." />
+        <files-path
+            name="files"
+            path="." />
+        <external-path
+            name="download"
+            path="" />
+        <external-files-path
+            name="Download"
+            path="" />
+        <external-path
+            name="my_images"
+            path="Pictures" />
+        <cache-path
+            name="my_download_file"
+            path="" />
+    </paths>
+</resources>
