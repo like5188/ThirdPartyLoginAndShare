@@ -3,7 +3,7 @@ package com.like.thirdpartyloginandshare.wxapi
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import com.like.thirdpartyloginandshare.init.InitUtils
+import com.like.thirdpartyloginandshare.ThirdPartyInit
 import com.like.thirdpartyloginandshare.login.WxLogin
 import com.like.thirdpartyloginandshare.util.ApiFactory
 import com.tencent.mm.opensdk.modelbase.BaseReq
@@ -16,7 +16,7 @@ import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler
  * 如果你的程序需要接收微信发送的请求，或者接收发送到微信请求的响应结果
  */
 class WXEntryActivity : Activity(), IWXAPIEventHandler {
-    private val mWxApi: IWXAPI by lazy { ApiFactory.createWxApi(applicationContext, InitUtils.wxInitParams.appId) }
+    private val mWxApi: IWXAPI by lazy { ApiFactory.createWxApi(applicationContext, ThirdPartyInit.wxInitParams.appId) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

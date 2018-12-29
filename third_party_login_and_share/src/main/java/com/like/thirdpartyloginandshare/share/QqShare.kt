@@ -4,7 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import com.like.thirdpartyloginandshare.R
-import com.like.thirdpartyloginandshare.init.InitUtils
+import com.like.thirdpartyloginandshare.ThirdPartyInit
 import com.like.thirdpartyloginandshare.share.params.app.AppParams
 import com.like.thirdpartyloginandshare.share.params.app.QqAppParams
 import com.like.thirdpartyloginandshare.share.params.image.ImageParams
@@ -30,7 +30,7 @@ import com.tencent.tauth.UiError
  * QQ分享无需QQ登录
  */
 class QqShare(activity: Activity) : ShareStrategy(activity) {
-    private val mTencent by lazy { ApiFactory.createQqApi(applicationContext, InitUtils.qqInitParams.appId) }
+    private val mTencent by lazy { ApiFactory.createQqApi(applicationContext, ThirdPartyInit.qqInitParams.appId) }
     private lateinit var mShareListener: ShareListener
 
     override fun setShareListener(listener: OnLoginAndShareListener): ShareStrategy {

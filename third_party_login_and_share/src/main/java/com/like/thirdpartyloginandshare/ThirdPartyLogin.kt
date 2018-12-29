@@ -3,13 +3,10 @@ package com.like.thirdpartyloginandshare
 import android.app.Activity
 import android.content.Intent
 import android.support.v4.app.Fragment
-import com.like.thirdpartyloginandshare.init.InitUtils
-import com.like.thirdpartyloginandshare.init.params.InitParams
 import com.like.thirdpartyloginandshare.login.LoginStrategy
 import com.like.thirdpartyloginandshare.login.QqLogin
 import com.like.thirdpartyloginandshare.login.WbLogin
 import com.like.thirdpartyloginandshare.login.WxLogin
-import com.like.thirdpartyloginandshare.util.ApiFactory
 import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
 import com.like.thirdpartyloginandshare.util.PlatForm
 import com.like.thirdpartyloginandshare.util.SingletonHolder
@@ -30,24 +27,22 @@ class ThirdPartyLogin private constructor(activity: Activity) : LoginStrategy(ac
 
     private lateinit var mStrategy: LoginStrategy
 
-    fun setPlatForm(platForm: PlatForm, initParams: InitParams): ThirdPartyLogin {
+    fun setPlatForm(platForm: PlatForm): ThirdPartyLogin {
+        ThirdPartyInit.checkInit(platForm)
         when (platForm) {
             PlatForm.QQ -> {
-                InitUtils.initQq(activity, initParams)
                 mStrategy = QqLogin(activity)
             }
             PlatForm.QZONE -> {
                 throw UnsupportedOperationException("暂不支持 QZONE 进行登录")
             }
             PlatForm.WX -> {
-                InitUtils.initWx(activity, initParams)
                 mStrategy = WxLogin.getInstance(activity)
             }
             PlatForm.WX_CIRCLE -> {
                 throw UnsupportedOperationException("暂不支持 WX_CIRCLE 进行登录")
             }
             PlatForm.WB -> {
-                InitUtils.initWb(activity, initParams)
                 mStrategy = WbLogin(activity)
             }
         }

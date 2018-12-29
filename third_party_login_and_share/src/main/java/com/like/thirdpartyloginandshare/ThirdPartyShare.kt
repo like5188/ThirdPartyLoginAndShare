@@ -3,8 +3,6 @@ package com.like.thirdpartyloginandshare
 import android.app.Activity
 import android.content.Intent
 import android.support.v4.app.Fragment
-import com.like.thirdpartyloginandshare.init.InitUtils
-import com.like.thirdpartyloginandshare.init.params.InitParams
 import com.like.thirdpartyloginandshare.share.*
 import com.like.thirdpartyloginandshare.share.params.app.AppParams
 import com.like.thirdpartyloginandshare.share.params.image.ImageParams
@@ -35,26 +33,22 @@ class ThirdPartyShare private constructor(activity: Activity) : ShareStrategy(ac
 
     private lateinit var mStrategy: ShareStrategy
 
-    fun setPlatForm(platForm: PlatForm, initParams: InitParams): ThirdPartyShare {
+    fun setPlatForm(platForm: PlatForm): ThirdPartyShare {
+        ThirdPartyInit.checkInit(platForm)
         when (platForm) {
             PlatForm.QQ -> {
-                InitUtils.initQq(activity, initParams)
                 mStrategy = QqShare(activity)
             }
             PlatForm.QZONE -> {
-                InitUtils.initQq(activity, initParams)
                 mStrategy = QZoneShare(activity)
             }
             PlatForm.WX -> {
-                InitUtils.initWx(activity, initParams)
                 mStrategy = WxShare(activity, SendMessageToWX.Req.WXSceneSession)
             }
             PlatForm.WX_CIRCLE -> {
-                InitUtils.initWx(activity, initParams)
                 mStrategy = WxShare(activity, SendMessageToWX.Req.WXSceneTimeline)
             }
             PlatForm.WB -> {
-                InitUtils.initWb(activity, initParams)
                 mStrategy = WbShare(activity)
             }
         }

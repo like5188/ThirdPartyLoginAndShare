@@ -3,7 +3,7 @@ package com.like.thirdpartyloginandshare.login
 import android.app.Activity
 import android.content.Intent
 import android.text.TextUtils
-import com.like.thirdpartyloginandshare.init.InitUtils
+import com.like.thirdpartyloginandshare.ThirdPartyInit
 import com.like.thirdpartyloginandshare.util.ApiFactory
 import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
 import com.tencent.connect.UnionInfo
@@ -19,7 +19,7 @@ import org.json.JSONObject
  * 应用需要在调用接口的Activity的onActivityResult方法中调用[onActivityResult]
  */
 class QqLogin(activity: Activity) : LoginStrategy(activity) {
-    private val mTencent by lazy { ApiFactory.createQqApi(applicationContext, InitUtils.qqInitParams.appId) }
+    private val mTencent by lazy { ApiFactory.createQqApi(applicationContext, ThirdPartyInit.qqInitParams.appId) }
     private lateinit var mLoginListener: LoginListener
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -34,8 +34,8 @@ class QqLogin(activity: Activity) : LoginStrategy(activity) {
     }
 
     override fun login() {
-        if (mTencent.checkSessionValid(InitUtils.qqInitParams.appId)) {
-            mTencent.initSessionCache(mTencent.loadSession(InitUtils.qqInitParams.appId))
+        if (mTencent.checkSessionValid(ThirdPartyInit.qqInitParams.appId)) {
+            mTencent.initSessionCache(mTencent.loadSession(ThirdPartyInit.qqInitParams.appId))
             mLoginListener.onSuccess()
         } else {// token过期，请调用登录接口拉起手Q授权登录
             mTencent.login(activity, "all", mLoginListener as IUiListener)
