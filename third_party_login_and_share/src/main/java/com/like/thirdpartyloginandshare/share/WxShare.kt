@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Bitmap.CompressFormat
 import com.like.thirdpartyloginandshare.ThirdPartyInit
+import com.like.thirdpartyloginandshare.login.WxLogin
 import com.like.thirdpartyloginandshare.share.params.app.AppParams
 import com.like.thirdpartyloginandshare.share.params.image.ImageParams
 import com.like.thirdpartyloginandshare.share.params.image.WxImageParams
@@ -73,7 +74,7 @@ class WxShare(activity: Activity, private val sence: Int) : ShareStrategy(activi
         req.transaction = buildTransaction("img")
         req.message = msg
         req.scene = sence
-        req.userOpenId = ThirdPartyInit.wxInitParams.openId
+        req.userOpenId = WxLogin.openId
 
         // 调用api接口，发送数据到微信
         mWxApi.sendReq(req)
@@ -111,7 +112,7 @@ class WxShare(activity: Activity, private val sence: Int) : ShareStrategy(activi
         req.transaction = buildTransaction("music")
         req.message = msg
         req.scene = sence
-        req.userOpenId = ThirdPartyInit.wxInitParams.openId
+        req.userOpenId = WxLogin.openId
 
         // 调用api接口，发送数据到微信
         mWxApi.sendReq(req)
@@ -134,7 +135,7 @@ class WxShare(activity: Activity, private val sence: Int) : ShareStrategy(activi
         req.transaction = buildTransaction("video")
         req.message = msg
         req.scene = sence
-        req.userOpenId = ThirdPartyInit.wxInitParams.openId
+        req.userOpenId = WxLogin.openId
 
         // 调用api接口，发送数据到微信
         mWxApi.sendReq(req)
@@ -164,7 +165,7 @@ class WxShare(activity: Activity, private val sence: Int) : ShareStrategy(activi
         req.transaction = buildTransaction("webpage")
         req.message = msg
         req.scene = sence
-        req.userOpenId = ThirdPartyInit.wxInitParams.openId
+        req.userOpenId = WxLogin.openId
 
         // 调用api接口，发送数据到微信
         mWxApi.sendReq(req)

@@ -2,12 +2,18 @@ package com.like.thirdpartyloginandshare.login
 
 import android.app.Activity
 import android.content.Intent
+import android.util.Log
+import com.like.retrofit.RequestConfig
+import com.like.retrofit.RetrofitUtils
+import com.like.retrofit.interceptor.BaseParamsInterceptor
 import com.like.thirdpartyloginandshare.ThirdPartyInit
 import com.like.thirdpartyloginandshare.util.ApiFactory
 import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
 import com.like.thirdpartyloginandshare.util.SingletonHolder
 import com.tencent.mm.opensdk.modelmsg.SendAuth
 import com.tencent.mm.opensdk.openapi.IWXAPI
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlin.jvm.functions.FunctionN
 
 class WxLogin private constructor(activity: Activity) : LoginStrategy(activity) {
@@ -17,7 +23,20 @@ class WxLogin private constructor(activity: Activity) : LoginStrategy(activity) 
         override fun invoke(vararg args: Any?): WxLogin {
             return WxLogin(args[0] as Activity)
         }
-    })
+    }) {
+        var openId = ""
+    }
+
+    private val mRetrofitUtils: RetrofitUtils by lazy {
+        RetrofitUtils(
+            customRequestConfig = RequestConfig.Builder()
+                .application(activity.application)
+                .scheme(RequestConfig.SCHEME_HTTPS)
+                .ip("api.weixin.qq.com")
+                .interceptors(BaseParamsInterceptor())// 这里可以设置拦截器。库中默认已经实现了3个基础拦截器
+                .build()
+        )
+    }
 
     private val mWxApi: IWXAPI by lazy { ApiFactory.createWxApi(applicationContext, ThirdPartyInit.wxInitParams.appId) }
 
@@ -46,7 +65,17 @@ class WxLogin private constructor(activity: Activity) : LoginStrategy(activity) 
     }
 
     fun onGetCodeSuccess(code: String) {
-
+        GlobalScope.launch {
+            val result = mRetrofitUtils.getService<RetrofitApi>()?.getAccessTokenByCode(
+                mapOf(
+                    "appid" to ThirdPartyInit.wxInitParams.appId,
+                    "secret" to ThirdPartyInit.wxInitParams.appSecret,
+                    "code" to code,
+                    "grant_type" to "authorization_code"
+                )
+            )?.await()
+            Log.e("WxLogin", result.toString())
+        }
     }
 
     fun onGetCodeFailure(errCode: Int?) {

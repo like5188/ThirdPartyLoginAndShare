@@ -14,6 +14,7 @@ import com.like.thirdpartyloginandshare.share.params.imageandtext.QZoneImageAndT
 import com.like.thirdpartyloginandshare.share.params.multiimage.WbMultiImageParams
 import com.like.thirdpartyloginandshare.share.params.page.WbPageParams
 import com.like.thirdpartyloginandshare.share.params.text.WbTextParams
+import com.like.thirdpartyloginandshare.share.params.text.WxTextParams
 import com.like.thirdpartyloginandshare.share.params.video.WbVideoParams
 import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
 import com.like.thirdpartyloginandshare.util.PlatForm
@@ -27,7 +28,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         ThirdPartyInit.initQq(this, ThirdPartyInit.QqInitParams("101540498"))
-        ThirdPartyInit.initWx(this, ThirdPartyInit.WxInitParams("wxa9cce595f2c0b87b", "openId"))
+        ThirdPartyInit.initWx(
+            this,
+            ThirdPartyInit.WxInitParams("wxa9cce595f2c0b87b", "be1debc537972665632b773b0e97bf8d")
+        )
         ThirdPartyInit.initWb(
             this, ThirdPartyInit.WbInitParams(
                 "1929959086",
@@ -116,12 +120,42 @@ class MainActivity : AppCompatActivity() {
 
     fun wxLogin(view: View) {
         isLogin = true
+        ThirdPartyLogin.with(this)
+            .setPlatForm(PlatForm.WX)
+            .setLoginListener(object : OnLoginAndShareListener {
+                override fun onSuccess() {
+                    toast("微信登录成功")
+                }
 
+                override fun onFailure(errorMessage: String) {
+                    toast("微信登录失败：$errorMessage")
+                }
+
+                override fun onCancel() {
+                    toast("取消微信登录")
+                }
+            })
+            .login()
     }
 
     fun wxShare(view: View) {
         isLogin = false
+        ThirdPartyShare.with(this)
+            .setPlatForm(PlatForm.WX)
+            .setShareListener(object : OnLoginAndShareListener {
+                override fun onSuccess() {
+                    toast("微信分享成功")
+                }
 
+                override fun onFailure(errorMessage: String) {
+                    toast("微信分享失败：$errorMessage")
+                }
+
+                override fun onCancel() {
+                    toast("取消微信分享")
+                }
+            })
+            .shareText(WxTextParams("adfdsafds"))
     }
 
     fun wxCircleShare(view: View) {
