@@ -44,6 +44,7 @@ class WXEntryActivity : Activity(), IWXAPIEventHandler {
 
     // 第三方应用发送到微信的请求处理后的响应结果，会回调到该方法
     override fun onResp(resp: BaseResp?) {
+        // 注意：新版微信把cancel状态也变成了success状态。
         if (resp?.type == 2) {// 分享
             when (resp.errCode) {
                 BaseResp.ErrCode.ERR_OK -> WxShare.getInstance(this).onShareSuccess()
