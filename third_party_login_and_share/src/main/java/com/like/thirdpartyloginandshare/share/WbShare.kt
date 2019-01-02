@@ -61,15 +61,16 @@ class WbShare(activity: Activity) : ShareStrategy(activity) {
 
     // todo 由于微博sdk中的getPath(Context context, Uri uri)方法有问题，所以暂时不能在7.0以上的系统进行分享
     override fun shareMultiImage(params: MultiImageParams) {
-        if (params !is WbMultiImageParams) return
-        val multiImageObject = MultiImageObject()
-        //pathList设置的是本地本件的路径,并且是当前应用可以访问的路径，现在不支持网络路径（多图分享依靠微博最新版本的支持，所以当分享到低版本的微博应用时，多图分享失效
-        // 可以通过WbSdk.hasSupportMultiImage 方法判断是否支持多图分享,h5分享微博暂时不支持多图）多图分享接入程序必须有文件读写权限，否则会造成分享失败
-        multiImageObject.setImageList(params.imageUris)
-
-        val weiboMessage = WeiboMultiMessage()
-        weiboMessage.multiImageObject = multiImageObject
-        shareHandler.shareMessage(weiboMessage, false)
+        throw UnsupportedOperationException("SINA不支持此操作")
+//        if (params !is WbMultiImageParams) return
+//        val multiImageObject = MultiImageObject()
+//        //pathList设置的是本地本件的路径,并且是当前应用可以访问的路径，现在不支持网络路径（多图分享依靠微博最新版本的支持，所以当分享到低版本的微博应用时，多图分享失效
+//        // 可以通过WbSdk.hasSupportMultiImage 方法判断是否支持多图分享,h5分享微博暂时不支持多图）多图分享接入程序必须有文件读写权限，否则会造成分享失败
+//        multiImageObject.setImageList(params.imageUris)
+//
+//        val weiboMessage = WeiboMultiMessage()
+//        weiboMessage.multiImageObject = multiImageObject
+//        shareHandler.shareMessage(weiboMessage, false)
     }
 
     override fun shareImageAndText(params: ImageAndTextParams) {
@@ -82,14 +83,15 @@ class WbShare(activity: Activity) : ShareStrategy(activity) {
 
     // todo 由于微博sdk中的getPath(Context context, Uri uri)方法有问题，所以暂时不能在7.0以上的系统进行分享
     override fun shareVideo(params: VideoParams) {
-        if (params !is WbVideoParams) return
-        //获取视频
-        val videoSourceObject = VideoSourceObject()
-        videoSourceObject.videoPath = params.videoUri
-
-        val weiboMessage = WeiboMultiMessage()
-        weiboMessage.videoSourceObject = videoSourceObject
-        shareHandler.shareMessage(weiboMessage, false)
+        throw UnsupportedOperationException("SINA不支持此操作")
+//        if (params !is WbVideoParams) return
+//        //获取视频
+//        val videoSourceObject = VideoSourceObject()
+//        videoSourceObject.videoPath = params.videoUri
+//
+//        val weiboMessage = WeiboMultiMessage()
+//        weiboMessage.videoSourceObject = videoSourceObject
+//        shareHandler.shareMessage(weiboMessage, false)
     }
 
     override fun shareApp(params: AppParams) {
