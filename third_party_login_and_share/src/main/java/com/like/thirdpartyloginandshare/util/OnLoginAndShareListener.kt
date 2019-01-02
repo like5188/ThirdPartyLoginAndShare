@@ -1,7 +1,7 @@
 package com.like.thirdpartyloginandshare.util
 
 interface OnLoginAndShareListener {
-    fun onSuccess()
+    fun onSuccess(content: String = "")
 
     fun onFailure(errorMessage: String)
 

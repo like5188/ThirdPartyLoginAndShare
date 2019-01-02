@@ -59,8 +59,8 @@ class WxShare(activity: Activity) : ShareStrategy(activity) {
         mShareListener.onSuccess()
     }
 
-    fun onShareFailure(errCode: Int?) {
-        mShareListener.onFailure("分享失败：$errCode")
+    fun onShareFailure(errStr: String?) {
+        mShareListener.onFailure(errStr ?: "")
     }
 
     fun onCancel() {

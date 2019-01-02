@@ -48,13 +48,13 @@ class WXEntryActivity : Activity(), IWXAPIEventHandler {
             when (resp.errCode) {
                 BaseResp.ErrCode.ERR_OK -> WxShare.getInstance(this).onShareSuccess()
                 BaseResp.ErrCode.ERR_USER_CANCEL -> WxShare.getInstance(this).onCancel()
-                else -> WxShare.getInstance(this).onShareFailure(resp.errCode)
+                else -> WxShare.getInstance(this).onShareFailure(resp.errStr)
             }
         } else if (resp?.type == 1) {// 登录
             when (resp.errCode) {
                 BaseResp.ErrCode.ERR_OK -> WxLogin.getInstance(this).onGetCodeSuccess((resp as SendAuth.Resp).code)// 获取授权码
                 BaseResp.ErrCode.ERR_USER_CANCEL -> WxLogin.getInstance(this).onGetCodeCancel()
-                else -> WxLogin.getInstance(this).onGetCodeFailure(resp.errCode)
+                else -> WxLogin.getInstance(this).onGetCodeFailure(resp.errStr)
             }
         }
         finish()

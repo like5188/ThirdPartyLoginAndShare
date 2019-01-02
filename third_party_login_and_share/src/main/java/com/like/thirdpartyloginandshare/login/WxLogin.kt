@@ -38,12 +38,14 @@ class WxLogin private constructor(activity: Activity) : LoginStrategy(activity) 
         )
     }
 
+    private lateinit var mShareListener: OnLoginAndShareListener
     private val mWxApi: IWXAPI by lazy { ApiFactory.createWxApi(applicationContext, ThirdPartyInit.wxInitParams.appId) }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
     }
 
     override fun setLoginListener(listener: OnLoginAndShareListener): LoginStrategy {
+        this.mShareListener = listener
         return this
     }
 
@@ -72,14 +74,15 @@ class WxLogin private constructor(activity: Activity) : LoginStrategy(activity) 
             )?.await()
             Log.e("WxLogin", result.toString())
         }
+        mShareListener.onSuccess("code")
     }
 
     fun onGetCodeCancel() {
-
+        mShareListener.onCancel()
     }
 
-    fun onGetCodeFailure(errCode: Int?) {
-
+    fun onGetCodeFailure(errStr: String?) {
+        mShareListener.onFailure(errStr ?: "")
     }
 
 }

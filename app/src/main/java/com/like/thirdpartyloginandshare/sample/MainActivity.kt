@@ -1,5 +1,6 @@
 package com.like.thirdpartyloginandshare.sample
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
@@ -55,7 +56,7 @@ class MainActivity : AppCompatActivity() {
         ThirdPartyLogin.with(this)
             .setPlatForm(PlatForm.WB)
             .setLoginListener(object : OnLoginAndShareListener {
-                override fun onSuccess() {
+                override fun onSuccess(content: String) {
                     toast("微博登录成功")
                 }
 
@@ -75,7 +76,7 @@ class MainActivity : AppCompatActivity() {
         ThirdPartyShare.with(this)
             .setPlatForm(PlatForm.WB)
             .setShareListener(object : OnLoginAndShareListener {
-                override fun onSuccess() {
+                override fun onSuccess(content: String) {
                     toast("微博分享成功")
                 }
 
@@ -123,8 +124,8 @@ class MainActivity : AppCompatActivity() {
         ThirdPartyLogin.with(this)
             .setPlatForm(PlatForm.WX)
             .setLoginListener(object : OnLoginAndShareListener {
-                override fun onSuccess() {
-                    toast("微信登录成功")
+                override fun onSuccess(content: String) {
+                    toast("微信登录获取code成功：$content")
                 }
 
                 override fun onFailure(errorMessage: String) {
@@ -143,7 +144,7 @@ class MainActivity : AppCompatActivity() {
         ThirdPartyShare.with(this)
             .setPlatForm(PlatForm.WX)
             .setShareListener(object : OnLoginAndShareListener {
-                override fun onSuccess() {
+                override fun onSuccess(content: String) {
                     toast("微信分享成功")
                 }
 
@@ -163,7 +164,7 @@ class MainActivity : AppCompatActivity() {
         ThirdPartyShare.with(this)
             .setPlatForm(PlatForm.WX_CIRCLE)
             .setShareListener(object : OnLoginAndShareListener {
-                override fun onSuccess() {
+                override fun onSuccess(content: String) {
                     toast("微信朋友圈分享成功")
                 }
 
@@ -183,7 +184,7 @@ class MainActivity : AppCompatActivity() {
         ThirdPartyLogin.with(this)
             .setPlatForm(PlatForm.QQ)
             .setLoginListener(object : OnLoginAndShareListener {
-                override fun onSuccess() {
+                override fun onSuccess(content: String) {
                     toast("QQ登录成功")
                 }
 
@@ -203,7 +204,7 @@ class MainActivity : AppCompatActivity() {
         ThirdPartyShare.with(this)
             .setPlatForm(PlatForm.QQ)
             .setShareListener(object : OnLoginAndShareListener {
-                override fun onSuccess() {
+                override fun onSuccess(content: String) {
                     toast("QQ分享成功")
                 }
 
@@ -226,7 +227,7 @@ class MainActivity : AppCompatActivity() {
         ThirdPartyShare.with(this)
             .setPlatForm(PlatForm.QZONE)
             .setShareListener(object : OnLoginAndShareListener {
-                override fun onSuccess() {
+                override fun onSuccess(content: String) {
                     toast("QZONE分享成功")
                 }
 
