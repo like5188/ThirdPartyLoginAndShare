@@ -1,4 +1,4 @@
-package com.like.thirdpartyloginandshare.sample.wxapi
+package com.like.thirdpartyloginandshare.wxapi
 
 import android.app.Activity
 import android.content.Intent
