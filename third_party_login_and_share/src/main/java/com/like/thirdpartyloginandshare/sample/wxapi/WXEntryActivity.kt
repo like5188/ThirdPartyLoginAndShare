@@ -1,10 +1,11 @@
-package com.like.thirdpartyloginandshare.wxapi
+package com.like.thirdpartyloginandshare.sample.wxapi
 
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import com.like.thirdpartyloginandshare.ThirdPartyInit
 import com.like.thirdpartyloginandshare.login.WxLogin
+import com.like.thirdpartyloginandshare.share.WxShare
 import com.like.thirdpartyloginandshare.util.ApiFactory
 import com.tencent.mm.opensdk.modelbase.BaseReq
 import com.tencent.mm.opensdk.modelbase.BaseResp
@@ -43,10 +44,20 @@ class WXEntryActivity : Activity(), IWXAPIEventHandler {
 
     // 第三方应用发送到微信的请求处理后的响应结果，会回调到该方法
     override fun onResp(resp: BaseResp?) {
-        when (resp?.errCode) {
-            BaseResp.ErrCode.ERR_OK -> WxLogin.getInstance(this).onGetCodeSuccess((resp as SendAuth.Resp).code)// 获取授权码
-            else -> WxLogin.getInstance(this).onGetCodeFailure(resp?.errCode)
+        if (resp?.type == 2) {// 分享
+            when (resp.errCode) {
+                BaseResp.ErrCode.ERR_OK -> WxShare.getInstance(this).onShareSuccess()
+                BaseResp.ErrCode.ERR_USER_CANCEL -> WxShare.getInstance(this).onCancel()
+                else -> WxShare.getInstance(this).onShareFailure(resp.errCode)
+            }
+        } else if (resp?.type == 1) {// 登录
+            when (resp.errCode) {
+                BaseResp.ErrCode.ERR_OK -> WxLogin.getInstance(this).onGetCodeSuccess((resp as SendAuth.Resp).code)// 获取授权码
+                BaseResp.ErrCode.ERR_USER_CANCEL -> WxLogin.getInstance(this).onGetCodeCancel()
+                else -> WxLogin.getInstance(this).onGetCodeFailure(resp.errCode)
+            }
         }
+        finish()
     }
 
     // 微信发送请求到第三方应用时，会回调到该方法

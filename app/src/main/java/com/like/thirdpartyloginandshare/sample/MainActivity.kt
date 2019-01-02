@@ -155,12 +155,27 @@ class MainActivity : AppCompatActivity() {
                     toast("取消微信分享")
                 }
             })
-            .shareText(WxTextParams("adfdsafds"))
+            .shareText(WxTextParams("111"))
     }
 
     fun wxCircleShare(view: View) {
         isLogin = false
+        ThirdPartyShare.with(this)
+            .setPlatForm(PlatForm.WX_CIRCLE)
+            .setShareListener(object : OnLoginAndShareListener {
+                override fun onSuccess() {
+                    toast("微信朋友圈分享成功")
+                }
 
+                override fun onFailure(errorMessage: String) {
+                    toast("微信朋友圈分享失败：$errorMessage")
+                }
+
+                override fun onCancel() {
+                    toast("取消微信朋友圈分享")
+                }
+            })
+            .shareText(WxTextParams("222"))
     }
 
     fun qqLogin(view: View) {

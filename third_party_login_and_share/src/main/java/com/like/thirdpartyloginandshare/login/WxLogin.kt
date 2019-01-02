@@ -74,6 +74,10 @@ class WxLogin private constructor(activity: Activity) : LoginStrategy(activity) 
         }
     }
 
+    fun onGetCodeCancel() {
+
+    }
+
     fun onGetCodeFailure(errCode: Int?) {
 
     }

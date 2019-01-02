@@ -43,10 +43,10 @@ class ThirdPartyShare private constructor(activity: Activity) : ShareStrategy(ac
                 mStrategy = QZoneShare(activity)
             }
             PlatForm.WX -> {
-                mStrategy = WxShare(activity, SendMessageToWX.Req.WXSceneSession)
+                mStrategy = WxShare.getInstance(activity).setSence(SendMessageToWX.Req.WXSceneSession)
             }
             PlatForm.WX_CIRCLE -> {
-                mStrategy = WxShare(activity, SendMessageToWX.Req.WXSceneTimeline)
+                mStrategy = WxShare.getInstance(activity).setSence(SendMessageToWX.Req.WXSceneTimeline)
             }
             PlatForm.WB -> {
                 mStrategy = WbShare(activity)

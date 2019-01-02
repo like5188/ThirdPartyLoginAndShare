@@ -27,7 +27,7 @@
                 android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
         <!--WX-->
         <activity
-                android:name=".wxapi.WXEntryActivity"
+                android:name="com.like.thirdpartyloginandshare.sample.wxapi.WXEntryActivity"
                 android:label="@string/app_name"
                 android:theme="@android:style/Theme.Translucent.NoTitleBar"
                 android:exported="true"

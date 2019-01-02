@@ -21,20 +21,50 @@ import com.like.thirdpartyloginandshare.share.params.video.VideoParams
 import com.like.thirdpartyloginandshare.share.params.video.WxVideoParams
 import com.like.thirdpartyloginandshare.util.ApiFactory
 import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
+import com.like.thirdpartyloginandshare.util.SingletonHolder
 import com.tencent.mm.opensdk.modelmsg.*
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX.Req.WXSceneSession
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX.Req.WXSceneTimeline
 import com.tencent.mm.opensdk.openapi.IWXAPI
 import java.io.ByteArrayOutputStream
+import kotlin.jvm.functions.FunctionN
 
-class WxShare(activity: Activity, private val sence: Int) : ShareStrategy(activity) {
+class WxShare(activity: Activity) : ShareStrategy(activity) {
+    companion object : SingletonHolder<WxShare>(object : FunctionN<WxShare> {
+        override val arity: Int = 1 // number of arguments that must be passed to constructor
+
+        override fun invoke(vararg args: Any?): WxShare {
+            return WxShare(args[0] as Activity)
+        }
+    })
+
+    private var sence: Int = SendMessageToWX.Req.WXSceneSession
     private val mWxApi: IWXAPI by lazy { ApiFactory.createWxApi(applicationContext, ThirdPartyInit.wxInitParams.appId) }
+    private lateinit var mShareListener: OnLoginAndShareListener
+
+    fun setSence(sence: Int): ShareStrategy {
+        this.sence = sence
+        return this
+    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
     }
 
     override fun setShareListener(listener: OnLoginAndShareListener): ShareStrategy {
+        this.mShareListener = listener
         return this
+    }
+
+    fun onShareSuccess() {
+        mShareListener.onSuccess()
+    }
+
+    fun onShareFailure(errCode: Int?) {
+        mShareListener.onFailure("分享失败：$errCode")
+    }
+
+    fun onCancel() {
+        mShareListener.onCancel()
     }
 
     override fun shareText(params: TextParams) {
