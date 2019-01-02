@@ -27,3 +27,6 @@
 
 # 微博
 -keep class com.sina.weibo.sdk.** {*;}
+
+# QQ
+-keep class * extends android.app.Dialog

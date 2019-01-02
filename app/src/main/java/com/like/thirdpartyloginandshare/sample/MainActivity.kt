@@ -11,6 +11,7 @@ import com.like.thirdpartyloginandshare.ThirdPartyLogin
 import com.like.thirdpartyloginandshare.ThirdPartyShare
 import com.like.thirdpartyloginandshare.share.params.app.QqAppParams
 import com.like.thirdpartyloginandshare.share.params.image.WbImageParams
+import com.like.thirdpartyloginandshare.share.params.image.WxImageParams
 import com.like.thirdpartyloginandshare.share.params.imageandtext.QZoneImageAndTextParams
 import com.like.thirdpartyloginandshare.share.params.multiimage.WbMultiImageParams
 import com.like.thirdpartyloginandshare.share.params.page.WbPageParams
@@ -156,7 +157,13 @@ class MainActivity : AppCompatActivity() {
                     toast("取消微信分享")
                 }
             })
-            .shareText(WxTextParams("111"))
+            .shareImage(
+                WxImageParams(
+                    BitmapFactory.decodeFile("$cacheDir/123.jpg"),
+                    BitmapFactory.decodeFile("$cacheDir/123.jpg"),
+                    "123"
+                )
+            )
     }
 
     fun wxCircleShare(view: View) {

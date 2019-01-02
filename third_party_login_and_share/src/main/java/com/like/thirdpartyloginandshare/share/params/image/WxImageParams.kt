@@ -5,4 +5,4 @@ import android.graphics.Bitmap
 /**
  * @param bmp 内容大小不超过10MB
  */
-data class WxImageParams(val bmp: Bitmap, val thumbBmp: Bitmap) : ImageParams
+data class WxImageParams(val bmp: Bitmap, val thumbBmp: Bitmap, val openId: String) : ImageParams

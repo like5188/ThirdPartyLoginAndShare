@@ -104,7 +104,7 @@ class WxShare(activity: Activity) : ShareStrategy(activity) {
         req.transaction = buildTransaction("img")
         req.message = msg
         req.scene = sence
-        req.userOpenId = WxLogin.openId
+        req.userOpenId = params.openId
 
         // 调用api接口，发送数据到微信
         mWxApi.sendReq(req)
@@ -142,7 +142,7 @@ class WxShare(activity: Activity) : ShareStrategy(activity) {
         req.transaction = buildTransaction("music")
         req.message = msg
         req.scene = sence
-        req.userOpenId = WxLogin.openId
+        req.userOpenId = params.openId
 
         // 调用api接口，发送数据到微信
         mWxApi.sendReq(req)
@@ -165,7 +165,7 @@ class WxShare(activity: Activity) : ShareStrategy(activity) {
         req.transaction = buildTransaction("video")
         req.message = msg
         req.scene = sence
-        req.userOpenId = WxLogin.openId
+        req.userOpenId = params.openId
 
         // 调用api接口，发送数据到微信
         mWxApi.sendReq(req)
@@ -195,7 +195,7 @@ class WxShare(activity: Activity) : ShareStrategy(activity) {
         req.transaction = buildTransaction("webpage")
         req.message = msg
         req.scene = sence
-        req.userOpenId = WxLogin.openId
+        req.userOpenId = params.openId
 
         // 调用api接口，发送数据到微信
         mWxApi.sendReq(req)
