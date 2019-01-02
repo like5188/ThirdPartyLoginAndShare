@@ -65,14 +65,10 @@ class WxLogin private constructor(activity: Activity) : LoginStrategy(activity) 
     }
 
     fun onGetCodeSuccess(code: String) {
+        // 从后台获取AccessToken
         GlobalScope.launch {
             val result = mRetrofitUtils.getService<RetrofitApi>()?.getAccessTokenByCode(
-                mapOf(
-                    "appid" to ThirdPartyInit.wxInitParams.appId,
-                    "secret" to ThirdPartyInit.wxInitParams.appSecret,
-                    "code" to code,
-                    "grant_type" to "authorization_code"
-                )
+                mapOf("code" to code)
             )?.await()
             Log.e("WxLogin", result.toString())
         }
