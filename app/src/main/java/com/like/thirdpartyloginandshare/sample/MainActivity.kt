@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         ThirdPartyInit.initQq(this, ThirdPartyInit.QqInitParams("101540498"))
-        ThirdPartyInit.initWx(this, ThirdPartyInit.WxInitParams("appId", "openId"))
+        ThirdPartyInit.initWx(this, ThirdPartyInit.WxInitParams("wxa9cce595f2c0b87b", "openId"))
         ThirdPartyInit.initWb(
             this, ThirdPartyInit.WbInitParams(
                 "1929959086",
