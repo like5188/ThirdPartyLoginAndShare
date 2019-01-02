@@ -59,6 +59,7 @@ class WbShare(activity: Activity) : ShareStrategy(activity) {
         shareHandler.shareMessage(weiboMessage, false)
     }
 
+    // todo 由于微博sdk中的getPath(Context context, Uri uri)方法有问题，所以暂时不能在7.0以上的系统进行分享
     override fun shareMultiImage(params: MultiImageParams) {
         if (params !is WbMultiImageParams) return
         val multiImageObject = MultiImageObject()
@@ -79,6 +80,7 @@ class WbShare(activity: Activity) : ShareStrategy(activity) {
         throw UnsupportedOperationException("SINA不支持此操作")
     }
 
+    // todo 由于微博sdk中的getPath(Context context, Uri uri)方法有问题，所以暂时不能在7.0以上的系统进行分享
     override fun shareVideo(params: VideoParams) {
         if (params !is WbVideoParams) return
         //获取视频
