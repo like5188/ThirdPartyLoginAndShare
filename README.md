@@ -8,6 +8,10 @@
 
 1、集成了第三方登录和分享。
 
+2、登录包括：QQ、微信、微博。
+
+3、分享包括：QQ、QQ空间、微信、微信朋友圈、微博
+
 ## 使用方法：
 
 1、引用
@@ -28,7 +32,79 @@
     }
 ```
 
-2、Proguard
+2、QQ登录分享配置
+```java
+    defaultConfig {
+        ...
+        manifestPlaceholders = [tencentAuthId: "tencent+appid"]
+    }
+```
+
+3、初始化
+```java
+    ThirdPartyInit.initQq(context, ThirdPartyInit.QqInitParams("appid"))
+    ThirdPartyInit.initWx(context, ThirdPartyInit.WxInitParams("appid"))
+    ThirdPartyInit.initWb(context, ThirdPartyInit.WbInitParams("appKey", "redirectUrl", "scope"))
+```
+
+4、登录
+```java
+    ThirdPartyLogin.with(this)
+        .setPlatForm(PlatForm.WB)
+        .setLoginListener(object : OnLoginAndShareListener {
+            override fun onSuccess(content: String) {
+                toast("登录成功")
+            }
+
+            override fun onFailure(errorMessage: String) {
+                toast("登录失败：$errorMessage")
+            }
+
+            override fun onCancel() {
+                toast("取消登录")
+            }
+        })
+        .login()
+```
+
+5、分享
+```java
+    ThirdPartyShare.with(this)
+        .setPlatForm(PlatForm.WX)
+        .setShareListener(object : OnLoginAndShareListener {
+            override fun onSuccess(content: String) {
+                toast("分享成功")
+            }
+
+            override fun onFailure(errorMessage: String) {
+                toast("分享失败：$errorMessage")
+            }
+
+            override fun onCancel() {
+                toast("取消分享")
+            }
+        })
+        .shareText(WxTextParams("111"))
+
+    ThirdPartyShare.with(this)
+        .setPlatForm(PlatForm.QQ)
+        .setShareListener(object : OnLoginAndShareListener {
+            override fun onSuccess(content: String) {
+                toast("分享成功")
+            }
+
+            override fun onFailure(errorMessage: String) {
+                toast("分享失败：$errorMessage")
+            }
+
+            override fun onCancel() {
+                toast("取消分享")
+            }
+        })
+        .shareApp(QqAppParams("title", "url"))
+```
+
+6、Proguard
 ```java
 
 ```
