@@ -3,6 +3,7 @@ package com.like.thirdpartyloginandshare.sample
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
@@ -22,6 +23,7 @@ import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
 import com.like.thirdpartyloginandshare.util.PlatForm
 import org.jetbrains.anko.toast
 import java.io.File
+import java.io.FileOutputStream
 
 class MainActivity : AppCompatActivity() {
     private var isLogin = false
@@ -41,6 +43,34 @@ class MainActivity : AppCompatActivity() {
                 "email,direct_messages_read,direct_messages_write,friendships_groups_read,friendships_groups_write,statuses_to_me_read,follow_app_official_microblog,invitation_write"
             )
         )
+        copyFile("eeee.mp4")
+        copyFile("aaa.png")
+        copyFile("bbbb.jpg")
+        copyFile("ccc.JPG")
+        copyFile("eee.jpg")
+        copyFile("ddd.jpg")
+        copyFile("fff.jpg")
+        copyFile("ggg.JPG")
+        copyFile("hhhh.jpg")
+        copyFile("kkk.JPG")
+    }
+
+    private fun copyFile(fileName: String) {
+        val file = File(getExternalFilesDir(null)!!.path + "/" + fileName)
+        if (!file.exists()) {
+            //复制文件
+            val thread = Thread(Runnable {
+                try {
+                    assets.open(fileName).use { inputStream ->
+                        FileOutputStream(file).use { outputStream ->
+                            outputStream.write(inputStream.readBytes())
+                        }
+                    }
+                } catch (e: Exception) {
+                }
+            })
+            thread.start()
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -89,24 +119,29 @@ class MainActivity : AppCompatActivity() {
                     toast("取消微博分享")
                 }
             })
-            .shareVideo(
-                WbVideoParams(
-                    PathUtils.getUriFromFile(
-                        this,
-                        File(cacheDir, "222.mp4")
-                    )
-                )
-            )
-//            .shareMultiImage(
-//                WbMultiImageParams(
-//                    arrayListOf(
-//                        PathUtils.getUriFromFile(
-//                            this,
-//                            File(cacheDir, "123.jpg")
-//                        )
+//            .shareVideo(
+//                WbVideoParams(
+//                    PathUtils.getUriFromFile(
+//                        this,
+//                        File(cacheDir, "222.mp4")
 //                    )
 //                )
 //            )
+            .shareMultiImage(
+                WbMultiImageParams(
+                    arrayListOf(
+                        Uri.fromFile(File(getExternalFilesDir(null)!!.toString() + "/aaa.png")),
+                        Uri.fromFile(File(getExternalFilesDir(null)!!.toString() + "/bbbb.jpg")),
+                        Uri.fromFile(File(getExternalFilesDir(null)!!.toString() + "/ccc.JPG")),
+                        Uri.fromFile(File(getExternalFilesDir(null)!!.toString() + "/ddd.jpg")),
+                        Uri.fromFile(File(getExternalFilesDir(null)!!.toString() + "/fff.jpg")),
+                        Uri.fromFile(File(getExternalFilesDir(null)!!.toString() + "/ggg.JPG")),
+                        Uri.fromFile(File(getExternalFilesDir(null)!!.toString() + "/eee.jpg")),
+                        Uri.fromFile(File(getExternalFilesDir(null)!!.toString() + "/hhhh.jpg")),
+                        Uri.fromFile(File(getExternalFilesDir(null)!!.toString() + "/kkk.JPG"))
+                    )
+                )
+            )
 //            .sharePage(
 //                WbPageParams(
 //                    BitmapFactory.decodeFile("$cacheDir/123.jpg"),
