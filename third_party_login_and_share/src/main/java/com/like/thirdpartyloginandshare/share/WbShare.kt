@@ -2,7 +2,6 @@ package com.like.thirdpartyloginandshare.share
 
 import android.app.Activity
 import android.content.Intent
-import android.net.Uri
 import com.like.thirdpartyloginandshare.share.params.app.AppParams
 import com.like.thirdpartyloginandshare.share.params.image.ImageParams
 import com.like.thirdpartyloginandshare.share.params.image.WbImageParams
@@ -59,9 +58,7 @@ class WbShare(activity: Activity) : ShareStrategy(activity) {
         shareHandler.shareMessage(weiboMessage, false)
     }
 
-    // todo 由于微博sdk中的getPath(Context context, Uri uri)方法有问题，所以暂时不能在7.0以上的系统进行分享
     override fun shareMultiImage(params: MultiImageParams) {
-//        throw UnsupportedOperationException("SINA不支持此操作")
         if (params !is WbMultiImageParams) return
 
         // 分享多图时，必须添加TextObject，否则会报错java.lang.SecurityException: No permission to write APN settings
@@ -87,9 +84,7 @@ class WbShare(activity: Activity) : ShareStrategy(activity) {
         throw UnsupportedOperationException("SINA不支持此操作")
     }
 
-    // todo 由于微博sdk中的getPath(Context context, Uri uri)方法有问题，所以暂时不能在7.0以上的系统进行分享
     override fun shareVideo(params: VideoParams) {
-//        throw UnsupportedOperationException("SINA不支持此操作")
         if (params !is WbVideoParams) return
 
         // 分享视频时，必须添加TextObject，否则会报错java.lang.SecurityException: No permission to write APN settings
