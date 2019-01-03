@@ -127,15 +127,15 @@ class MainActivity : AppCompatActivity() {
             .shareMultiImage(
                 WbMultiImageParams(
                     arrayListOf(
-                        Uri.fromFile(File(getExternalFilesDir(null)!!.toString() + "/aaa.png")),
-                        Uri.fromFile(File(getExternalFilesDir(null)!!.toString() + "/bbbb.jpg")),
-                        Uri.fromFile(File(getExternalFilesDir(null)!!.toString() + "/ccc.JPG")),
-                        Uri.fromFile(File(getExternalFilesDir(null)!!.toString() + "/ddd.jpg")),
-                        Uri.fromFile(File(getExternalFilesDir(null)!!.toString() + "/fff.jpg")),
-                        Uri.fromFile(File(getExternalFilesDir(null)!!.toString() + "/ggg.JPG")),
-                        Uri.fromFile(File(getExternalFilesDir(null)!!.toString() + "/eee.jpg")),
-                        Uri.fromFile(File(getExternalFilesDir(null)!!.toString() + "/hhhh.jpg")),
-                        Uri.fromFile(File(getExternalFilesDir(null)!!.toString() + "/kkk.JPG"))
+                        Uri.fromFile(File(getExternalFilesDir(null), "/aaa.png")),
+                        Uri.fromFile(File(getExternalFilesDir(null), "/bbbb.jpg")),
+                        Uri.fromFile(File(getExternalFilesDir(null), "/ccc.JPG")),
+                        Uri.fromFile(File(getExternalFilesDir(null), "/ddd.jpg")),
+                        Uri.fromFile(File(getExternalFilesDir(null), "/fff.jpg")),
+                        Uri.fromFile(File(getExternalFilesDir(null), "/ggg.JPG")),
+                        Uri.fromFile(File(getExternalFilesDir(null), "/eee.jpg")),
+                        Uri.fromFile(File(getExternalFilesDir(null), "/hhhh.jpg")),
+                        Uri.fromFile(File(getExternalFilesDir(null), "/kkk.JPG"))
                     )
                 )
             )
