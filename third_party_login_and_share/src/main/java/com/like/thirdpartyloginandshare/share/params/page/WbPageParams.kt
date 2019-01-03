@@ -1,6 +1,7 @@
 package com.like.thirdpartyloginandshare.share.params.page
 
 import android.graphics.Bitmap
+import com.like.thirdpartyloginandshare.share.params.ShareParams
 
 /**
  * @param thumbBmp      缩略图。不得超过 32kb
@@ -12,4 +13,4 @@ data class WbPageParams(
     val description: String = "",
     val actionUrl: String = "",
     val defaultText: String = ""
-) : PageParams
+) : ShareParams

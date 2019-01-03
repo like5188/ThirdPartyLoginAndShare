@@ -18,8 +18,13 @@ import org.json.JSONObject
  * QQ登录工具类
  * 应用需要在调用接口的Activity的onActivityResult方法中调用[onActivityResult]
  */
-class QqLogin(activity: Activity) : LoginStrategy(activity) {
-    private val mTencent by lazy { ApiFactory.createQqApi(applicationContext, ThirdPartyInit.qqInitParams.appId) }
+class QqLogin(private val activity: Activity) : LoginStrategy {
+    private val mTencent by lazy {
+        ApiFactory.createQqApi(
+            activity.applicationContext,
+            ThirdPartyInit.qqInitParams.appId
+        )
+    }
     private lateinit var mLoginListener: LoginListener
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -43,7 +48,7 @@ class QqLogin(activity: Activity) : LoginStrategy(activity) {
     }
 
     override fun logout() {
-        mTencent.logout(applicationContext)
+        mTencent.logout(activity.applicationContext)
     }
 
     inner class LoginListener(private val listener: OnLoginAndShareListener) : IUiListener {
@@ -82,7 +87,7 @@ class QqLogin(activity: Activity) : LoginStrategy(activity) {
 
     fun getUserInfo(listener: GetUserInfoListener) {
         if (mTencent.isSessionValid) {
-            UserInfo(applicationContext, mTencent.qqToken).getUserInfo(listener)
+            UserInfo(activity.applicationContext, mTencent.qqToken).getUserInfo(listener)
         } else {
             listener.onFailure("获取用户信息失败 尚未登录")
         }
@@ -90,7 +95,7 @@ class QqLogin(activity: Activity) : LoginStrategy(activity) {
 
     fun getUnionId(listener: GetUnionIdListener) {
         if (mTencent.isSessionValid) {
-            UnionInfo(applicationContext, mTencent.qqToken).getUnionId(listener)
+            UnionInfo(activity.applicationContext, mTencent.qqToken).getUnionId(listener)
         } else {
             listener.onFailure("获取unionId失败 尚未登录")
         }

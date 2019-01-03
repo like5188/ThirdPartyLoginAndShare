@@ -1,5 +1,7 @@
 package com.like.thirdpartyloginandshare.share.params.app
 
+import com.like.thirdpartyloginandshare.share.params.ShareParams
+
 /**
  * @param title         分享的标题, 最长30个字符。
  * @param targetUrl     App链接
@@ -11,4 +13,4 @@ data class QqAppParams(
     val targetUrl: String,
     val summary: String = "",
     val imageUrl: String = ""
-) : AppParams
+) : ShareParams

@@ -1,6 +1,7 @@
 package com.like.thirdpartyloginandshare.share.params.music
 
 import android.graphics.Bitmap
+import com.like.thirdpartyloginandshare.share.params.ShareParams
 
 /**
  * 分享至微信的音乐，直接点击好友会话或朋友圈下的分享内容会跳转至第三方 APP，
@@ -14,4 +15,4 @@ data class WxMusicParams(
     val musicUrl: String,
     val thumbBmp: Bitmap,
     val openId: String
-) : MusicParams
+) : ShareParams

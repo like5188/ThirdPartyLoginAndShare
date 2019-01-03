@@ -10,7 +10,7 @@ import com.tencent.mm.opensdk.modelmsg.SendAuth
 import com.tencent.mm.opensdk.openapi.IWXAPI
 import kotlin.jvm.functions.FunctionN
 
-class WxLogin private constructor(activity: Activity) : LoginStrategy(activity) {
+class WxLogin private constructor(private val activity: Activity) : LoginStrategy {
     companion object : SingletonHolder<WxLogin>(object : FunctionN<WxLogin> {
         override val arity: Int = 1 // number of arguments that must be passed to constructor
 
@@ -20,7 +20,12 @@ class WxLogin private constructor(activity: Activity) : LoginStrategy(activity) 
     })
 
     private lateinit var mShareListener: OnLoginAndShareListener
-    private val mWxApi: IWXAPI by lazy { ApiFactory.createWxApi(applicationContext, ThirdPartyInit.wxInitParams.appId) }
+    private val mWxApi: IWXAPI by lazy {
+        ApiFactory.createWxApi(
+            activity.applicationContext,
+            ThirdPartyInit.wxInitParams.appId
+        )
+    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
     }

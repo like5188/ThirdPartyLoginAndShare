@@ -1,5 +1,7 @@
 package com.like.thirdpartyloginandshare.share.params.imageandtext
 
+import com.like.thirdpartyloginandshare.share.params.ShareParams
+
 /**
  * @param title         分享的标题, 最长30个字符。
  * @param targetUrl     这条分享消息被好友点击后的跳转URL
@@ -13,4 +15,4 @@ data class QqImageAndTextParams(
     val summary: String = "",
     val imageUrl: String = "",
     val arkStr: String = ""
-) : ImageAndTextParams
+) : ShareParams

@@ -1,5 +1,7 @@
 package com.like.thirdpartyloginandshare.share.params.imageandtext
 
+import com.like.thirdpartyloginandshare.share.params.ShareParams
+
 /**
  * @param title         分享的标题，最多200个字符
  * @param targetUrl     需要跳转的链接，URL字符串
@@ -11,4 +13,4 @@ data class QZoneImageAndTextParams(
     val targetUrl: String,
     val imageUrls: ArrayList<String>,
     val summary: String = ""
-) : ImageAndTextParams
+) : ShareParams

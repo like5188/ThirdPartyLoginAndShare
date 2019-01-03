@@ -5,18 +5,11 @@ import android.content.Intent
 import android.os.Bundle
 import com.like.thirdpartyloginandshare.R
 import com.like.thirdpartyloginandshare.ThirdPartyInit
-import com.like.thirdpartyloginandshare.share.params.app.AppParams
+import com.like.thirdpartyloginandshare.share.params.ShareParams
 import com.like.thirdpartyloginandshare.share.params.app.QqAppParams
-import com.like.thirdpartyloginandshare.share.params.image.ImageParams
 import com.like.thirdpartyloginandshare.share.params.image.QqImageParams
-import com.like.thirdpartyloginandshare.share.params.imageandtext.ImageAndTextParams
 import com.like.thirdpartyloginandshare.share.params.imageandtext.QqImageAndTextParams
-import com.like.thirdpartyloginandshare.share.params.multiimage.MultiImageParams
-import com.like.thirdpartyloginandshare.share.params.music.MusicParams
 import com.like.thirdpartyloginandshare.share.params.music.QqMusicParams
-import com.like.thirdpartyloginandshare.share.params.page.PageParams
-import com.like.thirdpartyloginandshare.share.params.text.TextParams
-import com.like.thirdpartyloginandshare.share.params.video.VideoParams
 import com.like.thirdpartyloginandshare.util.ApiFactory
 import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
 import com.tencent.connect.common.Constants
@@ -29,14 +22,14 @@ import com.tencent.tauth.UiError
  * QQ分享工具类
  * QQ分享无需QQ登录
  */
-class QqShare(activity: Activity) : ShareStrategy(activity) {
-    private val mTencent by lazy { ApiFactory.createQqApi(applicationContext, ThirdPartyInit.qqInitParams.appId) }
-    private lateinit var mShareListener: ShareListener
-
-    override fun setShareListener(listener: OnLoginAndShareListener): ShareStrategy {
-        mShareListener = ShareListener(listener)
-        return this
+class QqShare(private val activity: Activity) : ShareStrategy {
+    private val mTencent by lazy {
+        ApiFactory.createQqApi(
+            activity.applicationContext,
+            ThirdPartyInit.qqInitParams.appId
+        )
     }
+    private lateinit var mShareListener: ShareListener
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == Constants.REQUEST_QQ_SHARE) {
@@ -44,12 +37,30 @@ class QqShare(activity: Activity) : ShareStrategy(activity) {
         }
     }
 
-    override fun shareText(params: TextParams) {
-        throw UnsupportedOperationException("QQ不支持此操作")
+    override fun setShareListener(listener: OnLoginAndShareListener): ShareStrategy {
+        mShareListener = ShareListener(listener)
+        return this
     }
 
-    override fun shareImage(params: ImageParams) {
-        if (params !is QqImageParams) return
+    override fun share(params: ShareParams) {
+        when (params) {
+            is QqImageParams -> {
+                shareImage(params)
+            }
+            is QqImageAndTextParams -> {
+                shareImageAndText(params)
+            }
+            is QqMusicParams -> {
+                shareMusic(params)
+            }
+            is QqAppParams -> {
+                shareApp(params)
+            }
+            else -> throw UnsupportedOperationException("QQ不支持此操作")
+        }
+    }
+
+    private fun shareImage(params: QqImageParams) {
         with(Bundle()) {
             // 分享的类型。
             putInt(QQShare.SHARE_TO_QQ_KEY_TYPE, QQShare.SHARE_TO_QQ_TYPE_IMAGE)
@@ -65,12 +76,7 @@ class QqShare(activity: Activity) : ShareStrategy(activity) {
         }
     }
 
-    override fun shareMultiImage(params: MultiImageParams) {
-        throw UnsupportedOperationException("QQ不支持此操作")
-    }
-
-    override fun shareImageAndText(params: ImageAndTextParams) {
-        if (params !is QqImageAndTextParams) return
+    private fun shareImageAndText(params: QqImageAndTextParams) {
         with(Bundle()) {
             // 分享的类型。图文分享(普通分享)
             putInt(QQShare.SHARE_TO_QQ_KEY_TYPE, QQShare.SHARE_TO_QQ_TYPE_DEFAULT)
@@ -94,8 +100,7 @@ class QqShare(activity: Activity) : ShareStrategy(activity) {
         }
     }
 
-    override fun shareMusic(params: MusicParams) {
-        if (params !is QqMusicParams) return
+    private fun shareMusic(params: QqMusicParams) {
         with(Bundle()) {
             // 分享的类型。图文分享(普通分享)
             putInt(QQShare.SHARE_TO_QQ_KEY_TYPE, QQShare.SHARE_TO_QQ_TYPE_AUDIO)
@@ -119,12 +124,7 @@ class QqShare(activity: Activity) : ShareStrategy(activity) {
         }
     }
 
-    override fun shareVideo(params: VideoParams) {
-        throw UnsupportedOperationException("QQ不支持此操作")
-    }
-
-    override fun shareApp(params: AppParams) {
-        if (params !is QqAppParams) return
+    private fun shareApp(params: QqAppParams) {
         with(Bundle()) {
             // 分享的类型。图文分享(普通分享)
             putInt(QQShare.SHARE_TO_QQ_KEY_TYPE, QQShare.SHARE_TO_QQ_TYPE_APP)
@@ -144,10 +144,6 @@ class QqShare(activity: Activity) : ShareStrategy(activity) {
             putInt(QQShare.SHARE_TO_QQ_EXT_INT, QQShare.SHARE_TO_QQ_FLAG_QZONE_ITEM_HIDE)
             mTencent.shareToQQ(activity, this, mShareListener)
         }
-    }
-
-    override fun sharePage(params: PageParams) {
-        throw UnsupportedOperationException("QQ不支持此操作")
     }
 
     class ShareListener(private val listener: OnLoginAndShareListener) : IUiListener {

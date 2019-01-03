@@ -1,6 +1,5 @@
 package com.like.thirdpartyloginandshare.sample
 
-import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -15,16 +14,12 @@ import com.like.thirdpartyloginandshare.share.params.app.QqAppParams
 import com.like.thirdpartyloginandshare.share.params.image.WbImageParams
 import com.like.thirdpartyloginandshare.share.params.image.WxImageParams
 import com.like.thirdpartyloginandshare.share.params.imageandtext.QZoneImageAndTextParams
-import com.like.thirdpartyloginandshare.share.params.multiimage.WbMultiImageParams
-import com.like.thirdpartyloginandshare.share.params.page.WbPageParams
-import com.like.thirdpartyloginandshare.share.params.text.WbTextParams
 import com.like.thirdpartyloginandshare.share.params.text.WxTextParams
 import com.like.thirdpartyloginandshare.share.params.video.WbVideoParams
 import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
 import com.like.thirdpartyloginandshare.util.PlatForm
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
 import java.io.File
 import java.io.FileOutputStream
@@ -125,7 +120,7 @@ class MainActivity : AppCompatActivity() {
                     toast("取消微博分享")
                 }
             })
-//            .shareMultiImage(
+//            .share(
 //                WbMultiImageParams(
 //                    arrayListOf(
 //                        Uri.fromFile(File(getExternalFilesDir(null), "/aaa.png")),
@@ -140,22 +135,22 @@ class MainActivity : AppCompatActivity() {
 //                    )
 //                )
 //            )
-            .shareVideo(
-                WbVideoParams(
-                    Uri.fromFile(File(getExternalFilesDir(null), "/eeee.mp4"))
-                )
-            )
-//            .sharePage(
+//            .share(
+//                WbVideoParams(
+//                    Uri.fromFile(File(getExternalFilesDir(null), "/eeee.mp4"))
+//                )
+//            )
+//            .share(
 //                WbPageParams(
-//                    BitmapFactory.decodeFile("$cacheDir/123.jpg"),
+//                    BitmapFactory.decodeFile("${getExternalFilesDir(null)}/aaa.png"),
 //                    "title",
 //                    "description",
 //                    "https://www.baidu.com/",
 //                    "defaultText"
 //                )
 //            )
-//            .shareImage(WbImageParams(BitmapFactory.decodeFile("$cacheDir/123.jpg")))
-//            .shareText(WbTextParams("hahahah"))
+            .share(WbImageParams(BitmapFactory.decodeFile("${getExternalFilesDir(null)}/aaa.png")))
+//            .share(WbTextParams("hahahah"))
     }
 
     fun wxLogin(view: View) {
@@ -195,10 +190,10 @@ class MainActivity : AppCompatActivity() {
                     toast("取消微信分享")
                 }
             })
-            .shareImage(
+            .share(
                 WxImageParams(
-                    BitmapFactory.decodeFile("$cacheDir/123.jpg"),
-                    BitmapFactory.decodeFile("$cacheDir/123.jpg"),
+                    BitmapFactory.decodeFile("${getExternalFilesDir(null)}/aaa.png"),
+                    BitmapFactory.decodeFile("${getExternalFilesDir(null)}/bbbb.jpg"),
                     "123"
                 )
             )
@@ -221,7 +216,7 @@ class MainActivity : AppCompatActivity() {
                     toast("取消微信朋友圈分享")
                 }
             })
-            .shareText(WxTextParams("222"))
+            .share(WxTextParams("222"))
     }
 
     fun qqLogin(view: View) {
@@ -261,10 +256,10 @@ class MainActivity : AppCompatActivity() {
                     toast("取消QQ分享")
                 }
             })
-            .shareApp(QqAppParams("title", "http://url.cn/424xgot"))
-//            .shareMusic(QqMusicParams("title", "http://c.y.qq.com/v8/playsong.html?songid=109325260&songmid=000kuo2H2xJqfA&songtype=0&source=mqq&_wv=1"))
-//            .shareImageAndText(QqImageAndTextParams("title","https://www.baidu.com/"))
-//            .shareImage(QqImageParams("/storage/emulated/0/Pictures/Screenshots/S81224-20082955.jpg"))
+            .share(QqAppParams("title", "http://url.cn/424xgot"))
+//            .share(QqMusicParams("title", "http://c.y.qq.com/v8/playsong.html?songid=109325260&songmid=000kuo2H2xJqfA&songtype=0&source=mqq&_wv=1"))
+//            .share(QqImageAndTextParams("title","https://www.baidu.com/"))
+//            .share(QqImageParams("/storage/emulated/0/Pictures/Screenshots/S81224-20082955.jpg"))
     }
 
     fun qzoneShare(view: View) {
@@ -284,7 +279,7 @@ class MainActivity : AppCompatActivity() {
                     toast("取消QZONE分享")
                 }
             })
-            .shareImageAndText(
+            .share(
                 QZoneImageAndTextParams(
                     "title",
                     "https://www.baidu.com/",

@@ -12,7 +12,7 @@ import com.like.thirdpartyloginandshare.util.PlatForm
 import com.like.thirdpartyloginandshare.util.SingletonHolder
 import kotlin.jvm.functions.FunctionN
 
-class ThirdPartyLogin private constructor(activity: Activity) : LoginStrategy(activity) {
+class ThirdPartyLogin private constructor(private val activity: Activity) : LoginStrategy {
     companion object : SingletonHolder<ThirdPartyLogin>(object : FunctionN<ThirdPartyLogin> {
         override val arity: Int = 1 // number of arguments that must be passed to constructor
 

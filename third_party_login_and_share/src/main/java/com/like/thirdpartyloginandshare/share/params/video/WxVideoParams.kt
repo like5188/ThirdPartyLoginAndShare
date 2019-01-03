@@ -1,6 +1,7 @@
 package com.like.thirdpartyloginandshare.share.params.video
 
 import android.graphics.Bitmap
+import com.like.thirdpartyloginandshare.share.params.ShareParams
 
 /**
  * @param videoUrl  视频的URL地址。限制长度不超过10KB
@@ -11,4 +12,4 @@ data class WxVideoParams(
     val videoUrl: String,
     val thumbBmp: Bitmap,
     val openId: String
-) : VideoParams
+) : ShareParams

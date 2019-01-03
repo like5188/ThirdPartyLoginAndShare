@@ -9,7 +9,7 @@ import com.sina.weibo.sdk.auth.Oauth2AccessToken
 import com.sina.weibo.sdk.auth.WbAuthListener
 import com.sina.weibo.sdk.auth.WbConnectErrorMessage
 
-class WbLogin(activity: Activity) : LoginStrategy(activity) {
+class WbLogin(private val activity: Activity) : LoginStrategy {
     private val mSsoHandler by lazy { ApiFactory.createWbApi(activity) }
     private lateinit var mLoginListener: LoginListener
 
@@ -23,7 +23,7 @@ class WbLogin(activity: Activity) : LoginStrategy(activity) {
     }
 
     override fun login() {
-        if (AccessTokenKeeper.readAccessToken(applicationContext).isSessionValid) {
+        if (AccessTokenKeeper.readAccessToken(activity.applicationContext).isSessionValid) {
             mLoginListener.onSuccess()
         } else {
             mSsoHandler.authorize(mLoginListener)
@@ -31,7 +31,7 @@ class WbLogin(activity: Activity) : LoginStrategy(activity) {
     }
 
     override fun logout() {
-        AccessTokenKeeper.clear(applicationContext)
+        AccessTokenKeeper.clear(activity.applicationContext)
     }
 
     inner class LoginListener(private val listener: OnLoginAndShareListener) : WbAuthListener {
@@ -40,7 +40,7 @@ class WbLogin(activity: Activity) : LoginStrategy(activity) {
                 if (token.isSessionValid) {
                     listener.onSuccess()
                     // 保存 Token 到 SharedPreferences
-                    AccessTokenKeeper.writeAccessToken(applicationContext, token)
+                    AccessTokenKeeper.writeAccessToken(activity.applicationContext, token)
                 }
             } else {
                 listener.onFailure("登录失败 返回为空")

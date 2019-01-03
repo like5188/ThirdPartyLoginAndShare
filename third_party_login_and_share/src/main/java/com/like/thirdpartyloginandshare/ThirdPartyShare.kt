@@ -4,21 +4,14 @@ import android.app.Activity
 import android.content.Intent
 import android.support.v4.app.Fragment
 import com.like.thirdpartyloginandshare.share.*
-import com.like.thirdpartyloginandshare.share.params.app.AppParams
-import com.like.thirdpartyloginandshare.share.params.image.ImageParams
-import com.like.thirdpartyloginandshare.share.params.imageandtext.ImageAndTextParams
-import com.like.thirdpartyloginandshare.share.params.multiimage.MultiImageParams
-import com.like.thirdpartyloginandshare.share.params.music.MusicParams
-import com.like.thirdpartyloginandshare.share.params.page.PageParams
-import com.like.thirdpartyloginandshare.share.params.text.TextParams
-import com.like.thirdpartyloginandshare.share.params.video.VideoParams
+import com.like.thirdpartyloginandshare.share.params.ShareParams
 import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
 import com.like.thirdpartyloginandshare.util.PlatForm
 import com.like.thirdpartyloginandshare.util.SingletonHolder
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX
 import kotlin.jvm.functions.FunctionN
 
-class ThirdPartyShare private constructor(activity: Activity) : ShareStrategy(activity) {
+class ThirdPartyShare private constructor(private val activity: Activity) : ShareStrategy {
     companion object : SingletonHolder<ThirdPartyShare>(object : FunctionN<ThirdPartyShare> {
         override val arity: Int = 1 // number of arguments that must be passed to constructor
 
@@ -66,44 +59,35 @@ class ThirdPartyShare private constructor(activity: Activity) : ShareStrategy(ac
         return this
     }
 
-    override fun shareText(params: TextParams) {
+    /**
+     * @param params    对应平台的对应参数
+     * <p>
+     * [com.like.thirdpartyloginandshare.util.PlatForm.QQ]：
+     * [com.like.thirdpartyloginandshare.share.params.app.QqAppParams]、
+     * [com.like.thirdpartyloginandshare.share.params.image.QqImageParams]、
+     * [com.like.thirdpartyloginandshare.share.params.imageandtext.QqImageAndTextParams]、
+     * [com.like.thirdpartyloginandshare.share.params.music.QqMusicParams]
+     * <p>
+     * [com.like.thirdpartyloginandshare.util.PlatForm.QZONE]：
+     * [com.like.thirdpartyloginandshare.share.params.imageandtext.QZoneImageAndTextParams]
+     * <p>
+     * [com.like.thirdpartyloginandshare.util.PlatForm.WX]、[com.like.thirdpartyloginandshare.util.PlatForm.WX_CIRCLE]：
+     * [com.like.thirdpartyloginandshare.share.params.image.WxImageParams]、
+     * [com.like.thirdpartyloginandshare.share.params.music.WxMusicParams]、
+     * [com.like.thirdpartyloginandshare.share.params.page.WxPageParams]、
+     * [com.like.thirdpartyloginandshare.share.params.text.WxTextParams]、
+     * [com.like.thirdpartyloginandshare.share.params.video.WxVideoParams]
+     * <p>
+     * [com.like.thirdpartyloginandshare.util.PlatForm.WB]：
+     * [com.like.thirdpartyloginandshare.share.params.image.WbImageParams]、
+     * [com.like.thirdpartyloginandshare.share.params.multiimage.WbMultiImageParams]、
+     * [com.like.thirdpartyloginandshare.share.params.page.WbPageParams]、
+     * [com.like.thirdpartyloginandshare.share.params.text.WbTextParams]、
+     * [com.like.thirdpartyloginandshare.share.params.video.WbVideoParams]
+     */
+    override fun share(params: ShareParams) {
         checkParams()
-        mStrategy.shareText(params)
-    }
-
-    override fun shareImage(params: ImageParams) {
-        checkParams()
-        mStrategy.shareImage(params)
-    }
-
-    override fun shareMultiImage(params: MultiImageParams) {
-        checkParams()
-        mStrategy.shareMultiImage(params)
-    }
-
-    override fun shareImageAndText(params: ImageAndTextParams) {
-        checkParams()
-        mStrategy.shareImageAndText(params)
-    }
-
-    override fun shareMusic(params: MusicParams) {
-        checkParams()
-        mStrategy.shareMusic(params)
-    }
-
-    override fun shareVideo(params: VideoParams) {
-        checkParams()
-        mStrategy.shareVideo(params)
-    }
-
-    override fun shareApp(params: AppParams) {
-        checkParams()
-        mStrategy.shareApp(params)
-    }
-
-    override fun sharePage(params: PageParams) {
-        checkParams()
-        mStrategy.sharePage(params)
+        mStrategy.share(params)
     }
 
     private fun checkParams() {

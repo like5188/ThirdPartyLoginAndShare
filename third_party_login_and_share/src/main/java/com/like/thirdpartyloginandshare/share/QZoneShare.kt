@@ -4,15 +4,8 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import com.like.thirdpartyloginandshare.ThirdPartyInit
-import com.like.thirdpartyloginandshare.share.params.app.AppParams
-import com.like.thirdpartyloginandshare.share.params.image.ImageParams
-import com.like.thirdpartyloginandshare.share.params.imageandtext.ImageAndTextParams
+import com.like.thirdpartyloginandshare.share.params.ShareParams
 import com.like.thirdpartyloginandshare.share.params.imageandtext.QZoneImageAndTextParams
-import com.like.thirdpartyloginandshare.share.params.multiimage.MultiImageParams
-import com.like.thirdpartyloginandshare.share.params.music.MusicParams
-import com.like.thirdpartyloginandshare.share.params.page.PageParams
-import com.like.thirdpartyloginandshare.share.params.text.TextParams
-import com.like.thirdpartyloginandshare.share.params.video.VideoParams
 import com.like.thirdpartyloginandshare.util.ApiFactory
 import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
 import com.tencent.connect.common.Constants
@@ -25,14 +18,14 @@ import com.tencent.tauth.UiError
  * QQ空间分享工具类
  * QQ空间分享无需QQ登录
  */
-class QZoneShare(activity: Activity) : ShareStrategy(activity) {
-    private val mTencent by lazy { ApiFactory.createQqApi(applicationContext, ThirdPartyInit.qqInitParams.appId) }
-    private lateinit var mShareListener: ShareListener
-
-    override fun setShareListener(listener: OnLoginAndShareListener): ShareStrategy {
-        mShareListener = ShareListener(listener)
-        return this
+class QZoneShare(private val activity: Activity) : ShareStrategy {
+    private val mTencent by lazy {
+        ApiFactory.createQqApi(
+            activity.applicationContext,
+            ThirdPartyInit.qqInitParams.appId
+        )
     }
+    private lateinit var mShareListener: ShareListener
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == Constants.REQUEST_QZONE_SHARE) {
@@ -40,20 +33,21 @@ class QZoneShare(activity: Activity) : ShareStrategy(activity) {
         }
     }
 
-    override fun shareText(params: TextParams) {
-        throw UnsupportedOperationException("QZONE不支持此操作")
+    override fun setShareListener(listener: OnLoginAndShareListener): ShareStrategy {
+        mShareListener = ShareListener(listener)
+        return this
     }
 
-    override fun shareImage(params: ImageParams) {
-        throw UnsupportedOperationException("QZONE不支持此操作")
+    override fun share(params: ShareParams) {
+        when (params) {
+            is QZoneImageAndTextParams -> {
+                shareImageAndText(params)
+            }
+            else -> throw UnsupportedOperationException("QZONE不支持此操作")
+        }
     }
 
-    override fun shareMultiImage(params: MultiImageParams) {
-        throw UnsupportedOperationException("QZONE不支持此操作")
-    }
-
-    override fun shareImageAndText(params: ImageAndTextParams) {
-        if (params !is QZoneImageAndTextParams) return
+    private fun shareImageAndText(params: QZoneImageAndTextParams) {
         with(Bundle()) {
             // 分享的类型。
             putInt(QzoneShare.SHARE_TO_QZONE_KEY_TYPE, QzoneShare.SHARE_TO_QZONE_TYPE_IMAGE_TEXT)
@@ -67,22 +61,6 @@ class QZoneShare(activity: Activity) : ShareStrategy(activity) {
             putStringArrayList(QzoneShare.SHARE_TO_QQ_IMAGE_URL, params.imageUrls)
             mTencent.shareToQzone(activity, this, mShareListener)
         }
-    }
-
-    override fun shareMusic(params: MusicParams) {
-        throw UnsupportedOperationException("QZONE不支持此操作")
-    }
-
-    override fun shareVideo(params: VideoParams) {
-        throw UnsupportedOperationException("QZONE不支持此操作")
-    }
-
-    override fun shareApp(params: AppParams) {
-        throw UnsupportedOperationException("QZONE不支持此操作")
-    }
-
-    override fun sharePage(params: PageParams) {
-        throw UnsupportedOperationException("QZONE不支持此操作")
     }
 
     class ShareListener(private val listener: OnLoginAndShareListener) : IUiListener {

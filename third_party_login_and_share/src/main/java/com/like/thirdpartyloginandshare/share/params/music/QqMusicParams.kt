@@ -1,5 +1,7 @@
 package com.like.thirdpartyloginandshare.share.params.music
 
+import com.like.thirdpartyloginandshare.share.params.ShareParams
+
 /**
  * 分享至微信的音乐，直接点击好友会话或朋友圈下的分享内容会跳转至第三方 APP，
  * 点击会话列表顶部的音乐分享内容将跳转至微信原生音乐播放器播放。
@@ -16,4 +18,4 @@ data class QqMusicParams(
     val targetUrl: String = audioUrl,
     val summary: String = "",
     val imageUrl: String = ""
-) : MusicParams
+) : ShareParams

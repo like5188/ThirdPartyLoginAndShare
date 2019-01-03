@@ -5,19 +5,11 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Bitmap.CompressFormat
 import com.like.thirdpartyloginandshare.ThirdPartyInit
-import com.like.thirdpartyloginandshare.login.WxLogin
-import com.like.thirdpartyloginandshare.share.params.app.AppParams
-import com.like.thirdpartyloginandshare.share.params.image.ImageParams
+import com.like.thirdpartyloginandshare.share.params.ShareParams
 import com.like.thirdpartyloginandshare.share.params.image.WxImageParams
-import com.like.thirdpartyloginandshare.share.params.imageandtext.ImageAndTextParams
-import com.like.thirdpartyloginandshare.share.params.multiimage.MultiImageParams
-import com.like.thirdpartyloginandshare.share.params.music.MusicParams
 import com.like.thirdpartyloginandshare.share.params.music.WxMusicParams
-import com.like.thirdpartyloginandshare.share.params.page.PageParams
 import com.like.thirdpartyloginandshare.share.params.page.WxPageParams
-import com.like.thirdpartyloginandshare.share.params.text.TextParams
 import com.like.thirdpartyloginandshare.share.params.text.WxTextParams
-import com.like.thirdpartyloginandshare.share.params.video.VideoParams
 import com.like.thirdpartyloginandshare.share.params.video.WxVideoParams
 import com.like.thirdpartyloginandshare.util.ApiFactory
 import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
@@ -29,7 +21,7 @@ import com.tencent.mm.opensdk.openapi.IWXAPI
 import java.io.ByteArrayOutputStream
 import kotlin.jvm.functions.FunctionN
 
-class WxShare(activity: Activity) : ShareStrategy(activity) {
+class WxShare(private val activity: Activity) : ShareStrategy {
     companion object : SingletonHolder<WxShare>(object : FunctionN<WxShare> {
         override val arity: Int = 1 // number of arguments that must be passed to constructor
 
@@ -39,7 +31,12 @@ class WxShare(activity: Activity) : ShareStrategy(activity) {
     })
 
     private var sence: Int = SendMessageToWX.Req.WXSceneSession
-    private val mWxApi: IWXAPI by lazy { ApiFactory.createWxApi(applicationContext, ThirdPartyInit.wxInitParams.appId) }
+    private val mWxApi: IWXAPI by lazy {
+        ApiFactory.createWxApi(
+            activity.applicationContext,
+            ThirdPartyInit.wxInitParams.appId
+        )
+    }
     private lateinit var mShareListener: OnLoginAndShareListener
 
     fun setSence(sence: Int): ShareStrategy {
@@ -55,6 +52,30 @@ class WxShare(activity: Activity) : ShareStrategy(activity) {
         return this
     }
 
+    override fun share(params: ShareParams) {
+        when (params) {
+            is WxTextParams -> {
+                shareText(params)
+            }
+            is WxImageParams -> {
+                shareImage(params)
+            }
+            is WxMusicParams -> {
+                shareMusic(params)
+            }
+            is WxVideoParams -> {
+                shareVideo(params)
+            }
+            is WxPageParams -> {
+                sharePage(params)
+            }
+            else -> when (sence) {
+                WXSceneSession -> throw UnsupportedOperationException("WX不支持此操作")
+                WXSceneTimeline -> throw UnsupportedOperationException("WX_CIRCLE不支持此操作")
+            }
+        }
+    }
+
     fun onShareSuccess() {
         mShareListener.onSuccess()
     }
@@ -67,8 +88,7 @@ class WxShare(activity: Activity) : ShareStrategy(activity) {
         mShareListener.onCancel()
     }
 
-    override fun shareText(params: TextParams) {
-        if (params !is WxTextParams) return
+    private fun shareText(params: WxTextParams) {
         // 初始化一个 WXTextObject 对象，填写分享的文本内容
         val textObj = WXTextObject()
         textObj.text = params.text
@@ -88,8 +108,7 @@ class WxShare(activity: Activity) : ShareStrategy(activity) {
         mWxApi.sendReq(req)
     }
 
-    override fun shareImage(params: ImageParams) {
-        if (params !is WxImageParams) return
+    private fun shareImage(params: WxImageParams) {
         // 初始化一个 WXImageObject 对象
         val imgObj = WXImageObject(params.bmp)
         params.bmp.recycle()
@@ -110,22 +129,7 @@ class WxShare(activity: Activity) : ShareStrategy(activity) {
         mWxApi.sendReq(req)
     }
 
-    override fun shareMultiImage(params: MultiImageParams) {
-        when (sence) {
-            WXSceneSession -> throw UnsupportedOperationException("WX不支持此操作")
-            WXSceneTimeline -> throw UnsupportedOperationException("WX_CIRCLE不支持此操作")
-        }
-    }
-
-    override fun shareImageAndText(params: ImageAndTextParams) {
-        when (sence) {
-            WXSceneSession -> throw UnsupportedOperationException("WX不支持此操作")
-            WXSceneTimeline -> throw UnsupportedOperationException("WX_CIRCLE不支持此操作")
-        }
-    }
-
-    override fun shareMusic(params: MusicParams) {
-        if (params !is WxMusicParams) return
+    private fun shareMusic(params: WxMusicParams) {
         // 初始化一个WXMusicObject，填写url
         val music = WXMusicObject()
         music.musicUrl = params.musicUrl
@@ -135,7 +139,7 @@ class WxShare(activity: Activity) : ShareStrategy(activity) {
         msg.mediaObject = music
         msg.title = params.title
         msg.description = params.description
-        msg.thumbData = bmpToByteArray(params.thumbBmp, true);
+        msg.thumbData = bmpToByteArray(params.thumbBmp, true)
 
         // 构造一个Req
         val req = SendMessageToWX.Req()
@@ -148,8 +152,7 @@ class WxShare(activity: Activity) : ShareStrategy(activity) {
         mWxApi.sendReq(req)
     }
 
-    override fun shareVideo(params: VideoParams) {
-        if (params !is WxVideoParams) return
+    private fun shareVideo(params: WxVideoParams) {
         // 初始化一个WXVideoObject，填写url
         val video = WXVideoObject()
         video.videoUrl = params.videoUrl
@@ -171,15 +174,7 @@ class WxShare(activity: Activity) : ShareStrategy(activity) {
         mWxApi.sendReq(req)
     }
 
-    override fun shareApp(params: AppParams) {
-        when (sence) {
-            WXSceneSession -> throw UnsupportedOperationException("WX不支持此操作")
-            WXSceneTimeline -> throw UnsupportedOperationException("WX_CIRCLE不支持此操作")
-        }
-    }
-
-    override fun sharePage(params: PageParams) {
-        if (params !is WxPageParams) return
+    private fun sharePage(params: WxPageParams) {
         // 初始化一个WXWebpageObject，填写url
         val webpage = WXWebpageObject()
         webpage.webpageUrl = params.webPageUrl
