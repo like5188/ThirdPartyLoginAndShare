@@ -65,6 +65,6 @@ dependencies {
     implementation('org.jetbrains.anko:anko:0.10.8') {
         exclude group: 'com.android.support'
     }
-    implementation 'com.sina.weibo.sdk:core:4.3.6:openDefaultRelease@aar'
+
     implementation project(':third_party_login_and_share')
 }
