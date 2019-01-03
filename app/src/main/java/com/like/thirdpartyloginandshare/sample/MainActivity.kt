@@ -110,22 +110,21 @@ class MainActivity : AppCompatActivity() {
 
     fun wbShare(view: View) {
         isLogin = false
-        startActivity(Intent(this, WBShareActivity::class.java))
-//        ThirdPartyShare.with(this)
-//            .setPlatForm(PlatForm.WB)
-//            .setShareListener(object : OnLoginAndShareListener {
-//                override fun onSuccess(content: String) {
-//                    toast("微博分享成功")
-//                }
-//
-//                override fun onFailure(errorMessage: String) {
-//                    toast("微博分享失败：$errorMessage")
-//                }
-//
-//                override fun onCancel() {
-//                    toast("取消微博分享")
-//                }
-//            })
+        ThirdPartyShare.with(this)
+            .setPlatForm(PlatForm.WB)
+            .setShareListener(object : OnLoginAndShareListener {
+                override fun onSuccess(content: String) {
+                    toast("微博分享成功")
+                }
+
+                override fun onFailure(errorMessage: String) {
+                    toast("微博分享失败：$errorMessage")
+                }
+
+                override fun onCancel() {
+                    toast("取消微博分享")
+                }
+            })
 //            .shareMultiImage(
 //                WbMultiImageParams(
 //                    arrayListOf(
@@ -141,14 +140,11 @@ class MainActivity : AppCompatActivity() {
 //                    )
 //                )
 //            )
-//            .shareVideo(
-//                WbVideoParams(
-//                    PathUtils.getUriFromFile(
-//                        this,
-//                        File(cacheDir, "222.mp4")
-//                    )
-//                )
-//            )
+            .shareVideo(
+                WbVideoParams(
+                    Uri.fromFile(File(getExternalFilesDir(null), "/eeee.mp4"))
+                )
+            )
 //            .sharePage(
 //                WbPageParams(
 //                    BitmapFactory.decodeFile("$cacheDir/123.jpg"),
