@@ -124,14 +124,6 @@ class MainActivity : AppCompatActivity() {
                     toast("取消微博分享")
                 }
             })
-//            .shareVideo(
-//                WbVideoParams(
-//                    PathUtils.getUriFromFile(
-//                        this,
-//                        File(cacheDir, "222.mp4")
-//                    )
-//                )
-//            )
             .shareMultiImage(
                 WbMultiImageParams(
                     arrayListOf(
@@ -147,6 +139,14 @@ class MainActivity : AppCompatActivity() {
                     )
                 )
             )
+//            .shareVideo(
+//                WbVideoParams(
+//                    PathUtils.getUriFromFile(
+//                        this,
+//                        File(cacheDir, "222.mp4")
+//                    )
+//                )
+//            )
 //            .sharePage(
 //                WbPageParams(
 //                    BitmapFactory.decodeFile("$cacheDir/123.jpg"),
