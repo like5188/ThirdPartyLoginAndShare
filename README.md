@@ -70,7 +70,7 @@
 5、分享
 ```java
     ThirdPartyShare.with(this)
-        .setPlatForm(PlatForm.WX)
+        .setPlatForm(PlatForm.WX)// 平台类型
         .setShareListener(object : OnLoginAndShareListener {
             override fun onSuccess(content: String) {
                 toast("分享成功")
@@ -84,27 +84,19 @@
                 toast("取消分享")
             }
         })
-        .shareText(WxTextParams("111"))
-
-    ThirdPartyShare.with(this)
-        .setPlatForm(PlatForm.QQ)
-        .setShareListener(object : OnLoginAndShareListener {
-            override fun onSuccess(content: String) {
-                toast("分享成功")
-            }
-
-            override fun onFailure(errorMessage: String) {
-                toast("分享失败：$errorMessage")
-            }
-
-            override fun onCancel() {
-                toast("取消分享")
-            }
-        })
-        .shareApp(QqAppParams("title", "url"))
+        .share(WxTextParams("111"))// 对应平台类型的参数
 ```
 
 6、Proguard
 ```java
+    # 微信
+    -keep class com.tencent.mm.opensdk.** {*;}
+    -keep class com.tencent.wxop.** {*;}
+    -keep class com.tencent.mm.sdk.** {*;}
 
+    # 微博
+    -keep class com.sina.weibo.sdk.** {*;}
+
+    # QQ
+    -keep class * extends android.app.Dialog
 ```
