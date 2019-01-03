@@ -24,6 +24,7 @@ import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
 import com.like.thirdpartyloginandshare.util.PlatForm
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
 import java.io.File
 import java.io.FileOutputStream
@@ -109,36 +110,37 @@ class MainActivity : AppCompatActivity() {
 
     fun wbShare(view: View) {
         isLogin = false
-        ThirdPartyShare.with(this)
-            .setPlatForm(PlatForm.WB)
-            .setShareListener(object : OnLoginAndShareListener {
-                override fun onSuccess(content: String) {
-                    toast("微博分享成功")
-                }
-
-                override fun onFailure(errorMessage: String) {
-                    toast("微博分享失败：$errorMessage")
-                }
-
-                override fun onCancel() {
-                    toast("取消微博分享")
-                }
-            })
-            .shareMultiImage(
-                WbMultiImageParams(
-                    arrayListOf(
-                        Uri.fromFile(File(getExternalFilesDir(null), "/aaa.png")),
-                        Uri.fromFile(File(getExternalFilesDir(null), "/bbbb.jpg")),
-                        Uri.fromFile(File(getExternalFilesDir(null), "/ccc.JPG")),
-                        Uri.fromFile(File(getExternalFilesDir(null), "/ddd.jpg")),
-                        Uri.fromFile(File(getExternalFilesDir(null), "/fff.jpg")),
-                        Uri.fromFile(File(getExternalFilesDir(null), "/ggg.JPG")),
-                        Uri.fromFile(File(getExternalFilesDir(null), "/eee.jpg")),
-                        Uri.fromFile(File(getExternalFilesDir(null), "/hhhh.jpg")),
-                        Uri.fromFile(File(getExternalFilesDir(null), "/kkk.JPG"))
-                    )
-                )
-            )
+        startActivity(Intent(this, WBShareActivity::class.java))
+//        ThirdPartyShare.with(this)
+//            .setPlatForm(PlatForm.WB)
+//            .setShareListener(object : OnLoginAndShareListener {
+//                override fun onSuccess(content: String) {
+//                    toast("微博分享成功")
+//                }
+//
+//                override fun onFailure(errorMessage: String) {
+//                    toast("微博分享失败：$errorMessage")
+//                }
+//
+//                override fun onCancel() {
+//                    toast("取消微博分享")
+//                }
+//            })
+//            .shareMultiImage(
+//                WbMultiImageParams(
+//                    arrayListOf(
+//                        Uri.fromFile(File(getExternalFilesDir(null), "/aaa.png")),
+//                        Uri.fromFile(File(getExternalFilesDir(null), "/bbbb.jpg")),
+//                        Uri.fromFile(File(getExternalFilesDir(null), "/ccc.JPG")),
+//                        Uri.fromFile(File(getExternalFilesDir(null), "/ddd.jpg")),
+//                        Uri.fromFile(File(getExternalFilesDir(null), "/fff.jpg")),
+//                        Uri.fromFile(File(getExternalFilesDir(null), "/ggg.JPG")),
+//                        Uri.fromFile(File(getExternalFilesDir(null), "/eee.jpg")),
+//                        Uri.fromFile(File(getExternalFilesDir(null), "/hhhh.jpg")),
+//                        Uri.fromFile(File(getExternalFilesDir(null), "/kkk.JPG"))
+//                    )
+//                )
+//            )
 //            .shareVideo(
 //                WbVideoParams(
 //                    PathUtils.getUriFromFile(
