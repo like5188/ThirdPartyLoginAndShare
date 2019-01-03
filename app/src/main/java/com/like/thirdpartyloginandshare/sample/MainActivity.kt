@@ -22,6 +22,8 @@ import com.like.thirdpartyloginandshare.share.params.text.WxTextParams
 import com.like.thirdpartyloginandshare.share.params.video.WbVideoParams
 import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
 import com.like.thirdpartyloginandshare.util.PlatForm
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.jetbrains.anko.toast
 import java.io.File
 import java.io.FileOutputStream
@@ -57,10 +59,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun copyFile(fileName: String) {
-        val file = File(getExternalFilesDir(null)!!.path + "/" + fileName)
+        val file = File(getExternalFilesDir(null), fileName)
         if (!file.exists()) {
-            //复制文件
-            val thread = Thread(Runnable {
+            GlobalScope.launch {
                 try {
                     assets.open(fileName).use { inputStream ->
                         FileOutputStream(file).use { outputStream ->
@@ -69,10 +70,11 @@ class MainActivity : AppCompatActivity() {
                     }
                     Log.d("MainActivity", "copyFile成功：$fileName")
                 } catch (e: Exception) {
-                    e.printStackTrace()
+                    Log.d("MainActivity", "copyFile失败：${e.message}")
                 }
-            })
-            thread.start()
+            }
+        } else {
+            Log.w("MainActivity", "文件已经存在：$fileName")
         }
     }
 
