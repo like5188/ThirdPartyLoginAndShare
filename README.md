@@ -36,7 +36,7 @@
 ```java
     defaultConfig {
         ...
-        manifestPlaceholders = [tencentAuthId: "tencent+appid"]
+        manifestPlaceholders = [tencentAuthId: "tencent123456"]// tencent+appid
     }
 ```
 
@@ -49,7 +49,8 @@
 
 4、登录
 ```java
-    ThirdPartyLogin.with(this)
+    private val mThirdPartyLogin: ThirdPartyLogin by lazy { ThirdPartyLogin(this) }
+    mThirdPartyLogin
         .setPlatForm(PlatForm.WB)
         .setLoginListener(object : OnLoginAndShareListener {
             override fun onSuccess(content: String) {
@@ -69,7 +70,8 @@
 
 5、分享
 ```java
-    ThirdPartyShare.with(this)
+    private val mThirdPartyShare: ThirdPartyShare by lazy { ThirdPartyShare(this) }
+    mThirdPartyShare
         .setPlatForm(PlatForm.WX)// 平台类型
         .setShareListener(object : OnLoginAndShareListener {
             override fun onSuccess(content: String) {
