@@ -50,6 +50,7 @@
 4、登录
 ```java
     private val mThirdPartyLogin: ThirdPartyLogin by lazy { ThirdPartyLogin(this) }
+
     mThirdPartyLogin
         .setPlatForm(PlatForm.WB)
         .setLoginListener(object : OnLoginAndShareListener {
@@ -66,11 +67,17 @@
             }
         })
         .login()
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        mThirdPartyLogin.onActivityResult(requestCode, resultCode, data)
+    }
 ```
 
 5、分享
 ```java
     private val mThirdPartyShare: ThirdPartyShare by lazy { ThirdPartyShare(this) }
+
     mThirdPartyShare
         .setPlatForm(PlatForm.WX)// 平台类型
         .setShareListener(object : OnLoginAndShareListener {
@@ -87,4 +94,9 @@
             }
         })
         .share(WxTextParams("111"))// 对应平台类型的参数
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        mThirdPartyShare.onActivityResult(requestCode, resultCode, data)
+    }
 ```
