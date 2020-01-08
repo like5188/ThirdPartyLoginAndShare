@@ -18,6 +18,8 @@ import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler
  */
 class WXEntryActivity : Activity(), IWXAPIEventHandler {
     private val mWxApi: IWXAPI by lazy { ApiFactory.createWxApi(applicationContext, ThirdPartyInit.wxInitParams.appId) }
+    private val mWxShare: WxShare by lazy { WxShare(this) }
+    private val mWxLogin: WxLogin by lazy { WxLogin(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,15 +49,15 @@ class WXEntryActivity : Activity(), IWXAPIEventHandler {
         // 注意：新版微信把cancel状态也变成了success状态。
         if (resp?.type == 2) {// 分享
             when (resp.errCode) {
-                BaseResp.ErrCode.ERR_OK -> WxShare.getInstance(this).onShareSuccess()
-                BaseResp.ErrCode.ERR_USER_CANCEL -> WxShare.getInstance(this).onCancel()
-                else -> WxShare.getInstance(this).onShareFailure(resp.errStr)
+                BaseResp.ErrCode.ERR_OK -> mWxShare.onShareSuccess()
+                BaseResp.ErrCode.ERR_USER_CANCEL -> mWxShare.onCancel()
+                else -> mWxShare.onShareFailure(resp.errStr)
             }
         } else if (resp?.type == 1) {// 登录
             when (resp.errCode) {
-                BaseResp.ErrCode.ERR_OK -> WxLogin.getInstance(this).onGetCodeSuccess((resp as SendAuth.Resp).code)// 获取授权码
-                BaseResp.ErrCode.ERR_USER_CANCEL -> WxLogin.getInstance(this).onGetCodeCancel()
-                else -> WxLogin.getInstance(this).onGetCodeFailure(resp.errStr)
+                BaseResp.ErrCode.ERR_OK -> mWxLogin.onGetCodeSuccess((resp as SendAuth.Resp).code)// 获取授权码
+                BaseResp.ErrCode.ERR_USER_CANCEL -> mWxLogin.onGetCodeCancel()
+                else -> mWxLogin.onGetCodeFailure(resp.errStr)
             }
         }
         finish()

@@ -2,21 +2,17 @@ package com.like.thirdpartyloginandshare.sample
 
 import android.content.Intent
 import android.graphics.BitmapFactory
-import android.net.Uri
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import com.like.thirdpartyloginandshare.ThirdPartyInit
 import com.like.thirdpartyloginandshare.ThirdPartyLogin
 import com.like.thirdpartyloginandshare.ThirdPartyShare
 import com.like.thirdpartyloginandshare.share.params.app.QqAppParams
 import com.like.thirdpartyloginandshare.share.params.image.WbImageParams
-import com.like.thirdpartyloginandshare.share.params.image.WxImageParams
 import com.like.thirdpartyloginandshare.share.params.imageandtext.QZoneImageAndTextParams
-import com.like.thirdpartyloginandshare.share.params.music.WxMusicParams
 import com.like.thirdpartyloginandshare.share.params.text.WxTextParams
-import com.like.thirdpartyloginandshare.share.params.video.WbVideoParams
 import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
 import com.like.thirdpartyloginandshare.util.PlatForm
 import kotlinx.coroutines.GlobalScope
@@ -27,17 +23,19 @@ import java.io.FileOutputStream
 
 class MainActivity : AppCompatActivity() {
     private var isLogin = false
+    private val mThirdPartyLogin: ThirdPartyLogin by lazy { ThirdPartyLogin(this) }
+    private val mThirdPartyShare: ThirdPartyShare by lazy { ThirdPartyShare(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         ThirdPartyInit.initQq(this, ThirdPartyInit.QqInitParams("101540498"))
         ThirdPartyInit.initWx(
-            this,
-            ThirdPartyInit.WxInitParams("wxa9cce595f2c0b87b")
+            this, ThirdPartyInit.WxInitParams("wxa9cce595f2c0b87b")
         )
         ThirdPartyInit.initWb(
-            this, ThirdPartyInit.WbInitParams(
+            this,
+            ThirdPartyInit.WbInitParams(
                 "1929959086",
                 "https://api.weibo.com/oauth2/default.html",
                 "email,direct_messages_read,direct_messages_write,friendships_groups_read,friendships_groups_write,statuses_to_me_read,follow_app_official_microblog,invitation_write"
@@ -78,15 +76,15 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (isLogin) {
-            ThirdPartyLogin.with(this).onActivityResult(requestCode, resultCode, data)
+            mThirdPartyLogin.onActivityResult(requestCode, resultCode, data)
         } else {
-            ThirdPartyShare.with(this).onActivityResult(requestCode, resultCode, data)
+            mThirdPartyShare.onActivityResult(requestCode, resultCode, data)
         }
     }
 
     fun wbLogin(view: View) {
         isLogin = true
-        ThirdPartyLogin.with(this)
+        mThirdPartyLogin
             .setPlatForm(PlatForm.WB)
             .setLoginListener(object : OnLoginAndShareListener {
                 override fun onSuccess(content: String) {
@@ -106,7 +104,7 @@ class MainActivity : AppCompatActivity() {
 
     fun wbShare(view: View) {
         isLogin = false
-        ThirdPartyShare.with(this)
+        mThirdPartyShare
             .setPlatForm(PlatForm.WB)
             .setShareListener(object : OnLoginAndShareListener {
                 override fun onSuccess(content: String) {
@@ -156,7 +154,7 @@ class MainActivity : AppCompatActivity() {
 
     fun wxLogin(view: View) {
         isLogin = true
-        ThirdPartyLogin.with(this)
+        mThirdPartyLogin
             .setPlatForm(PlatForm.WX)
             .setLoginListener(object : OnLoginAndShareListener {
                 override fun onSuccess(content: String) {
@@ -176,7 +174,7 @@ class MainActivity : AppCompatActivity() {
 
     fun wxShare(view: View) {
         isLogin = false
-        ThirdPartyShare.with(this)
+        mThirdPartyShare
             .setPlatForm(PlatForm.WX)
             .setShareListener(object : OnLoginAndShareListener {
                 override fun onSuccess(content: String) {
@@ -212,7 +210,7 @@ class MainActivity : AppCompatActivity() {
 
     fun wxCircleShare(view: View) {
         isLogin = false
-        ThirdPartyShare.with(this)
+        mThirdPartyShare
             .setPlatForm(PlatForm.WX_CIRCLE)
             .setShareListener(object : OnLoginAndShareListener {
                 override fun onSuccess(content: String) {
@@ -232,7 +230,7 @@ class MainActivity : AppCompatActivity() {
 
     fun qqLogin(view: View) {
         isLogin = true
-        ThirdPartyLogin.with(this)
+        mThirdPartyLogin
             .setPlatForm(PlatForm.QQ)
             .setLoginListener(object : OnLoginAndShareListener {
                 override fun onSuccess(content: String) {
@@ -252,7 +250,7 @@ class MainActivity : AppCompatActivity() {
 
     fun qqShare(view: View) {
         isLogin = false
-        ThirdPartyShare.with(this)
+        mThirdPartyShare
             .setPlatForm(PlatForm.QQ)
             .setShareListener(object : OnLoginAndShareListener {
                 override fun onSuccess(content: String) {
@@ -275,7 +273,7 @@ class MainActivity : AppCompatActivity() {
 
     fun qzoneShare(view: View) {
         isLogin = false
-        ThirdPartyShare.with(this)
+        mThirdPartyShare
             .setPlatForm(PlatForm.QZONE)
             .setShareListener(object : OnLoginAndShareListener {
                 override fun onSuccess(content: String) {

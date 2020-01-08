@@ -13,34 +13,21 @@ import com.like.thirdpartyloginandshare.share.params.text.WxTextParams
 import com.like.thirdpartyloginandshare.share.params.video.WxVideoParams
 import com.like.thirdpartyloginandshare.util.ApiFactory
 import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
-import com.like.thirdpartyloginandshare.util.SingletonHolder
 import com.tencent.mm.opensdk.modelmsg.*
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX.Req.WXSceneSession
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX.Req.WXSceneTimeline
 import com.tencent.mm.opensdk.openapi.IWXAPI
 import java.io.ByteArrayOutputStream
-import kotlin.jvm.functions.FunctionN
 
 class WxShare(private val activity: Activity) : ShareStrategy {
-    companion object : SingletonHolder<WxShare>(object : FunctionN<WxShare> {
-        override val arity: Int = 1 // number of arguments that must be passed to constructor
-
-        override fun invoke(vararg args: Any?): WxShare {
-            return WxShare(args[0] as Activity)
-        }
-    })
-
-    private var sence: Int = SendMessageToWX.Req.WXSceneSession
+    private var scene: Int = WXSceneSession
     private val mWxApi: IWXAPI by lazy {
-        ApiFactory.createWxApi(
-            activity.applicationContext,
-            ThirdPartyInit.wxInitParams.appId
-        )
+        ApiFactory.createWxApi(activity.applicationContext, ThirdPartyInit.wxInitParams.appId)
     }
     private lateinit var mShareListener: OnLoginAndShareListener
 
-    fun setSence(sence: Int): ShareStrategy {
-        this.sence = sence
+    fun setScene(scene: Int): ShareStrategy {
+        this.scene = scene
         return this
     }
 
@@ -69,7 +56,7 @@ class WxShare(private val activity: Activity) : ShareStrategy {
             is WxPageParams -> {
                 sharePage(params)
             }
-            else -> when (sence) {
+            else -> when (scene) {
                 WXSceneSession -> throw UnsupportedOperationException("WX不支持此操作")
                 WXSceneTimeline -> throw UnsupportedOperationException("WX_CIRCLE不支持此操作")
             }
@@ -102,7 +89,7 @@ class WxShare(private val activity: Activity) : ShareStrategy {
         val req = SendMessageToWX.Req()
         req.transaction = buildTransaction("text")
         req.message = msg
-        req.scene = sence
+        req.scene = scene
 
         // 调用api接口，发送数据到微信
         mWxApi.sendReq(req)
@@ -122,7 +109,7 @@ class WxShare(private val activity: Activity) : ShareStrategy {
         val req = SendMessageToWX.Req()
         req.transaction = buildTransaction("img")
         req.message = msg
-        req.scene = sence
+        req.scene = scene
         req.userOpenId = params.openId
 
         // 调用api接口，发送数据到微信
@@ -145,7 +132,7 @@ class WxShare(private val activity: Activity) : ShareStrategy {
         val req = SendMessageToWX.Req()
         req.transaction = buildTransaction("music")
         req.message = msg
-        req.scene = sence
+        req.scene = scene
         req.userOpenId = params.openId
 
         // 调用api接口，发送数据到微信
@@ -167,7 +154,7 @@ class WxShare(private val activity: Activity) : ShareStrategy {
         val req = SendMessageToWX.Req()
         req.transaction = buildTransaction("video")
         req.message = msg
-        req.scene = sence
+        req.scene = scene
         req.userOpenId = params.openId
 
         // 调用api接口，发送数据到微信
@@ -189,7 +176,7 @@ class WxShare(private val activity: Activity) : ShareStrategy {
         val req = SendMessageToWX.Req()
         req.transaction = buildTransaction("webpage")
         req.message = msg
-        req.scene = sence
+        req.scene = scene
         req.userOpenId = params.openId
 
         // 调用api接口，发送数据到微信

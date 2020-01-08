@@ -2,29 +2,14 @@ package com.like.thirdpartyloginandshare
 
 import android.app.Activity
 import android.content.Intent
-import android.support.v4.app.Fragment
 import com.like.thirdpartyloginandshare.login.LoginStrategy
 import com.like.thirdpartyloginandshare.login.QqLogin
 import com.like.thirdpartyloginandshare.login.WbLogin
 import com.like.thirdpartyloginandshare.login.WxLogin
 import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
 import com.like.thirdpartyloginandshare.util.PlatForm
-import com.like.thirdpartyloginandshare.util.SingletonHolder
-import kotlin.jvm.functions.FunctionN
 
-class ThirdPartyLogin private constructor(private val activity: Activity) : LoginStrategy {
-    companion object : SingletonHolder<ThirdPartyLogin>(object : FunctionN<ThirdPartyLogin> {
-        override val arity: Int = 1 // number of arguments that must be passed to constructor
-
-        override fun invoke(vararg args: Any?): ThirdPartyLogin {
-            return ThirdPartyLogin(args[0] as Activity)
-        }
-    }) {
-        fun with(activity: Activity): ThirdPartyLogin = getInstance(activity)
-
-        fun with(fragment: Fragment): ThirdPartyLogin = getInstance(fragment.activity)
-    }
-
+class ThirdPartyLogin(private val activity: Activity) : LoginStrategy {
     private lateinit var mStrategy: LoginStrategy
 
     fun setPlatForm(platForm: PlatForm): ThirdPartyLogin {
@@ -37,7 +22,7 @@ class ThirdPartyLogin private constructor(private val activity: Activity) : Logi
                 throw UnsupportedOperationException("暂不支持 QZONE 进行登录")
             }
             PlatForm.WX -> {
-                mStrategy = WxLogin.getInstance(activity)
+                mStrategy = WxLogin(activity)
             }
             PlatForm.WX_CIRCLE -> {
                 throw UnsupportedOperationException("暂不支持 WX_CIRCLE 进行登录")

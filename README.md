@@ -86,17 +86,3 @@
         })
         .share(WxTextParams("111"))// 对应平台类型的参数
 ```
-
-6、Proguard
-```java
-    # 微信
-    -keep class com.tencent.mm.opensdk.** {*;}
-    -keep class com.tencent.wxop.** {*;}
-    -keep class com.tencent.mm.sdk.** {*;}
-
-    # 微博
-    -keep class com.sina.weibo.sdk.** {*;}
-
-    # QQ
-    -keep class * extends android.app.Dialog
-```

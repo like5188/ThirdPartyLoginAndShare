@@ -24,10 +24,7 @@ import com.tencent.tauth.UiError
  */
 class QqShare(private val activity: Activity) : ShareStrategy {
     private val mTencent by lazy {
-        ApiFactory.createQqApi(
-            activity.applicationContext,
-            ThirdPartyInit.qqInitParams.appId
-        )
+        ApiFactory.createQqApi(activity.applicationContext, ThirdPartyInit.qqInitParams.appId)
     }
     private lateinit var mShareListener: ShareListener
 

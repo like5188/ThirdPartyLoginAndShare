@@ -2,28 +2,13 @@ package com.like.thirdpartyloginandshare
 
 import android.app.Activity
 import android.content.Intent
-import android.support.v4.app.Fragment
 import com.like.thirdpartyloginandshare.share.*
 import com.like.thirdpartyloginandshare.share.params.ShareParams
 import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
 import com.like.thirdpartyloginandshare.util.PlatForm
-import com.like.thirdpartyloginandshare.util.SingletonHolder
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX
-import kotlin.jvm.functions.FunctionN
 
-class ThirdPartyShare private constructor(private val activity: Activity) : ShareStrategy {
-    companion object : SingletonHolder<ThirdPartyShare>(object : FunctionN<ThirdPartyShare> {
-        override val arity: Int = 1 // number of arguments that must be passed to constructor
-
-        override fun invoke(vararg args: Any?): ThirdPartyShare {
-            return ThirdPartyShare(args[0] as Activity)
-        }
-    }) {
-        fun with(activity: Activity): ThirdPartyShare = getInstance(activity)
-
-        fun with(fragment: Fragment): ThirdPartyShare = getInstance(fragment.activity)
-    }
-
+class ThirdPartyShare(private val activity: Activity) : ShareStrategy {
     private lateinit var mStrategy: ShareStrategy
 
     fun setPlatForm(platForm: PlatForm): ThirdPartyShare {
@@ -36,10 +21,10 @@ class ThirdPartyShare private constructor(private val activity: Activity) : Shar
                 mStrategy = QZoneShare(activity)
             }
             PlatForm.WX -> {
-                mStrategy = WxShare.getInstance(activity).setSence(SendMessageToWX.Req.WXSceneSession)
+                mStrategy = WxShare(activity).setScene(SendMessageToWX.Req.WXSceneSession)
             }
             PlatForm.WX_CIRCLE -> {
-                mStrategy = WxShare.getInstance(activity).setSence(SendMessageToWX.Req.WXSceneTimeline)
+                mStrategy = WxShare(activity).setScene(SendMessageToWX.Req.WXSceneTimeline)
             }
             PlatForm.WB -> {
                 mStrategy = WbShare(activity)

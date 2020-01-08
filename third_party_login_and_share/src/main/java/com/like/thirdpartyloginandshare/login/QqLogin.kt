@@ -20,10 +20,7 @@ import org.json.JSONObject
  */
 class QqLogin(private val activity: Activity) : LoginStrategy {
     private val mTencent by lazy {
-        ApiFactory.createQqApi(
-            activity.applicationContext,
-            ThirdPartyInit.qqInitParams.appId
-        )
+        ApiFactory.createQqApi(activity.applicationContext, ThirdPartyInit.qqInitParams.appId)
     }
     private lateinit var mLoginListener: LoginListener
 
