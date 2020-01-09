@@ -22,7 +22,8 @@ class QZoneShare(private val activity: Activity) : ShareStrategy {
     private val mTencent by lazy {
         ApiFactory.createQqApi(activity.applicationContext, ThirdPartyInit.qqInitParams.appId)
     }
-    private lateinit var mShareListener: ShareListener
+    private var mShareListener: ShareListener? = null
+    private var mOnLoginAndShareListener: OnLoginAndShareListener? = null
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == Constants.REQUEST_QZONE_SHARE) {
@@ -31,11 +32,16 @@ class QZoneShare(private val activity: Activity) : ShareStrategy {
     }
 
     override fun setShareListener(listener: OnLoginAndShareListener): ShareStrategy {
+        mOnLoginAndShareListener = listener
         mShareListener = ShareListener(listener)
         return this
     }
 
     override fun share(params: ShareParams) {
+        if (!mTencent.isQQInstalled(activity.applicationContext)) {
+            mOnLoginAndShareListener?.onFailure("您的手机没有安装QQ")
+            return
+        }
         when (params) {
             is QZoneImageAndTextParams -> {
                 shareImageAndText(params)

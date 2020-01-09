@@ -10,28 +10,35 @@ import com.like.thirdpartyloginandshare.share.params.text.WbTextParams
 import com.like.thirdpartyloginandshare.share.params.video.WbVideoParams
 import com.like.thirdpartyloginandshare.util.ApiFactory
 import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
+import com.sina.weibo.sdk.WbSdk
 import com.sina.weibo.sdk.api.*
 import com.sina.weibo.sdk.share.WbShareCallback
 import com.sina.weibo.sdk.utils.Utility
 
 class WbShare(private val activity: Activity) : ShareStrategy {
-    private val shareHandler by lazy { ApiFactory.createWbShareApi(activity) }
-    private lateinit var mShareListener: ShareListener
+    private val mWbShareHandler by lazy { ApiFactory.createWbShareApi(activity) }
+    private var mShareListener: ShareListener? = null
+    private var mOnLoginAndShareListener: OnLoginAndShareListener? = null
 
     init {
-        shareHandler.registerApp()
+        mWbShareHandler.registerApp()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        shareHandler.doResultIntent(data, mShareListener)
+        mWbShareHandler.doResultIntent(data, mShareListener)
     }
 
     override fun setShareListener(listener: OnLoginAndShareListener): ShareStrategy {
+        mOnLoginAndShareListener = listener
         mShareListener = ShareListener(listener)
         return this
     }
 
     override fun share(params: ShareParams) {
+        if (!WbSdk.isWbInstall(activity.applicationContext)) {
+            mOnLoginAndShareListener?.onFailure("您的手机没有安装微博")
+            return
+        }
         when (params) {
             is WbTextParams -> {
                 shareText(params)
@@ -58,7 +65,7 @@ class WbShare(private val activity: Activity) : ShareStrategy {
 
         val weiboMessage = WeiboMultiMessage()
         weiboMessage.textObject = textObject
-        shareHandler.shareMessage(weiboMessage, false)
+        mWbShareHandler.shareMessage(weiboMessage, false)
     }
 
     private fun shareImage(params: WbImageParams) {
@@ -67,7 +74,7 @@ class WbShare(private val activity: Activity) : ShareStrategy {
 
         val weiboMessage = WeiboMultiMessage()
         weiboMessage.imageObject = imageObject
-        shareHandler.shareMessage(weiboMessage, false)
+        mWbShareHandler.shareMessage(weiboMessage, false)
     }
 
     private fun shareMultiImage(params: WbMultiImageParams) {
@@ -83,7 +90,7 @@ class WbShare(private val activity: Activity) : ShareStrategy {
         val weiboMessage = WeiboMultiMessage()
         weiboMessage.textObject = textObject
         weiboMessage.multiImageObject = multiImageObject
-        shareHandler.shareMessage(weiboMessage, false)
+        mWbShareHandler.shareMessage(weiboMessage, false)
     }
 
     private fun shareVideo(params: WbVideoParams) {
@@ -98,7 +105,7 @@ class WbShare(private val activity: Activity) : ShareStrategy {
         val weiboMessage = WeiboMultiMessage()
         weiboMessage.textObject = textObject
         weiboMessage.videoSourceObject = videoSourceObject
-        shareHandler.shareMessage(weiboMessage, false)
+        mWbShareHandler.shareMessage(weiboMessage, false)
     }
 
     private fun sharePage(params: WbPageParams) {
@@ -114,7 +121,7 @@ class WbShare(private val activity: Activity) : ShareStrategy {
 
         val weiboMessage = WeiboMultiMessage()
         weiboMessage.mediaObject = mediaObject
-        shareHandler.shareMessage(weiboMessage, false)
+        mWbShareHandler.shareMessage(weiboMessage, false)
     }
 
     class ShareListener(private val listener: OnLoginAndShareListener) : WbShareCallback {
