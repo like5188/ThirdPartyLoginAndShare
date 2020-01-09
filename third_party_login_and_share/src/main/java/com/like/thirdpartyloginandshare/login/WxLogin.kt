@@ -7,7 +7,6 @@ import com.like.thirdpartyloginandshare.util.ApiFactory
 import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
 import com.tencent.mm.opensdk.modelmsg.SendAuth
 import com.tencent.mm.opensdk.openapi.IWXAPI
-import kotlin.jvm.functions.FunctionN
 
 class WxLogin(private val activity: Activity) : LoginStrategy {
     private lateinit var mShareListener: OnLoginAndShareListener
