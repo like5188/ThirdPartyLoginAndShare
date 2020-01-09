@@ -40,7 +40,7 @@ class QqLogin(private val activity: Activity) : LoginStrategy {
             mTencent.initSessionCache(mTencent.loadSession(ThirdPartyInit.qqInitParams.appId))
             mLoginListener.onSuccess()
         } else {// token过期，请调用登录接口拉起手Q授权登录
-            mTencent.login(activity, "all", mLoginListener as IUiListener)
+            mTencent.login(activity, "all", mLoginListener)
         }
     }
 
