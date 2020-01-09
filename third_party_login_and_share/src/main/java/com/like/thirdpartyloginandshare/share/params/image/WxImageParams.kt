@@ -6,4 +6,4 @@ import com.like.thirdpartyloginandshare.share.params.ShareParams
 /**
  * @param bmp 内容大小不超过10MB
  */
-data class WxImageParams(val bmp: Bitmap, val thumbBmp: Bitmap, val openId: String) : ShareParams
+data class WxImageParams(val bmp: Bitmap, val thumbBmp: Bitmap) : ShareParams

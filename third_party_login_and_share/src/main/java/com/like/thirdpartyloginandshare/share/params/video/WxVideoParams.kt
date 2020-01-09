@@ -10,6 +10,5 @@ data class WxVideoParams(
     val title: String,
     val description: String,
     val videoUrl: String,
-    val thumbBmp: Bitmap,
-    val openId: String
+    val thumbBmp: Bitmap
 ) : ShareParams

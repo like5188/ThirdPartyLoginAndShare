@@ -20,14 +20,14 @@ import com.tencent.mm.opensdk.openapi.IWXAPI
 import java.io.ByteArrayOutputStream
 
 class WxShare(private val activity: Activity) : ShareStrategy {
-    private var scene: Int = WXSceneSession
+    private var mTargetScene: Int = WXSceneSession
     private val mWxApi: IWXAPI by lazy {
         ApiFactory.createWxApi(activity.applicationContext, ThirdPartyInit.wxInitParams.appId)
     }
     private lateinit var mShareListener: OnLoginAndShareListener
 
     fun setScene(scene: Int): ShareStrategy {
-        this.scene = scene
+        this.mTargetScene = scene
         return this
     }
 
@@ -56,7 +56,7 @@ class WxShare(private val activity: Activity) : ShareStrategy {
             is WxPageParams -> {
                 sharePage(params)
             }
-            else -> when (scene) {
+            else -> when (mTargetScene) {
                 WXSceneSession -> throw UnsupportedOperationException("WX不支持此操作")
                 WXSceneTimeline -> throw UnsupportedOperationException("WX_CIRCLE不支持此操作")
             }
@@ -75,90 +75,59 @@ class WxShare(private val activity: Activity) : ShareStrategy {
         mShareListener.onCancel()
     }
 
+    private fun sendMessageToWX(transaction: String, msg: WXMediaMessage) {
+        val req = SendMessageToWX.Req()
+        req.transaction = "$transaction${System.currentTimeMillis()}"
+        req.message = msg
+        req.scene = mTargetScene
+        mWxApi.sendReq(req)
+    }
+
     private fun shareText(params: WxTextParams) {
-        // 初始化一个 WXTextObject 对象，填写分享的文本内容
         val textObj = WXTextObject()
         textObj.text = params.text
 
-        // 初始化一个 WXMediaMessage 对象
         val msg = WXMediaMessage()
         msg.mediaObject = textObj
         msg.description = params.text
 
-        // 构造一个Req
-        val req = SendMessageToWX.Req()
-        req.transaction = buildTransaction("text")
-        req.message = msg
-        req.scene = scene
-
-        // 调用api接口，发送数据到微信
-        mWxApi.sendReq(req)
+        sendMessageToWX("text", msg)
     }
 
     private fun shareImage(params: WxImageParams) {
-        // 初始化一个 WXImageObject 对象
         val imgObj = WXImageObject(params.bmp)
         params.bmp.recycle()
 
-        // 初始化一个 WXMediaMessage 对象
         val msg = WXMediaMessage()
         msg.mediaObject = imgObj
         msg.thumbData = bmpToByteArray(params.thumbBmp, true)
 
-        // 构造一个Req
-        val req = SendMessageToWX.Req()
-        req.transaction = buildTransaction("img")
-        req.message = msg
-        req.scene = scene
-        req.userOpenId = params.openId
-
-        // 调用api接口，发送数据到微信
-        mWxApi.sendReq(req)
+        sendMessageToWX("img", msg)
     }
 
     private fun shareMusic(params: WxMusicParams) {
-        // 初始化一个WXMusicObject，填写url
         val music = WXMusicObject()
         music.musicUrl = params.musicUrl
 
-        // 用 WXMusicObject 对象初始化一个 WXMediaMessage 对象
         val msg = WXMediaMessage()
         msg.mediaObject = music
         msg.title = params.title
         msg.description = params.description
         msg.thumbData = bmpToByteArray(params.thumbBmp, true)
 
-        // 构造一个Req
-        val req = SendMessageToWX.Req()
-        req.transaction = buildTransaction("music")
-        req.message = msg
-        req.scene = scene
-        req.userOpenId = params.openId
-
-        // 调用api接口，发送数据到微信
-        mWxApi.sendReq(req)
+        sendMessageToWX("music", msg)
     }
 
     private fun shareVideo(params: WxVideoParams) {
-        // 初始化一个WXVideoObject，填写url
         val video = WXVideoObject()
         video.videoUrl = params.videoUrl
 
-        // 用 WXVideoObject 对象初始化一个 WXMediaMessage 对象
         val msg = WXMediaMessage(video)
         msg.title = params.title
         msg.description = params.description
         msg.thumbData = bmpToByteArray(params.thumbBmp, true)
 
-        // 构造一个Req
-        val req = SendMessageToWX.Req()
-        req.transaction = buildTransaction("video")
-        req.message = msg
-        req.scene = scene
-        req.userOpenId = params.openId
-
-        // 调用api接口，发送数据到微信
-        mWxApi.sendReq(req)
+        sendMessageToWX("video", msg)
     }
 
     private fun sharePage(params: WxPageParams) {
@@ -172,18 +141,8 @@ class WxShare(private val activity: Activity) : ShareStrategy {
         msg.description = params.description
         msg.thumbData = bmpToByteArray(params.thumbBmp, true)
 
-        // 构造一个Req
-        val req = SendMessageToWX.Req()
-        req.transaction = buildTransaction("webpage")
-        req.message = msg
-        req.scene = scene
-        req.userOpenId = params.openId
-
-        // 调用api接口，发送数据到微信
-        mWxApi.sendReq(req)
+        sendMessageToWX("webpage", msg)
     }
-
-    private fun buildTransaction(str: String): String? = "$str${System.currentTimeMillis()}"
 
     private fun bmpToByteArray(bmp: Bitmap, needRecycle: Boolean): ByteArray {
         val output = ByteArrayOutputStream()

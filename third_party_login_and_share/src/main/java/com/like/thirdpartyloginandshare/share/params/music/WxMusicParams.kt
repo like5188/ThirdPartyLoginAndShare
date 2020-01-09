@@ -13,6 +13,5 @@ data class WxMusicParams(
     val title: String,
     val description: String,
     val musicUrl: String,
-    val thumbBmp: Bitmap,
-    val openId: String
+    val thumbBmp: Bitmap
 ) : ShareParams

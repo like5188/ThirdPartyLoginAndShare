@@ -10,6 +10,5 @@ data class WxPageParams(
     val title: String,
     val description: String,
     val webPageUrl: String,
-    val thumbBmp: Bitmap,
-    val openId: String
+    val thumbBmp: Bitmap
 ) : ShareParams
