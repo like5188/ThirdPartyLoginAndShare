@@ -63,15 +63,15 @@ class WxShare(private val activity: Activity) : ShareStrategy {
         }
     }
 
-    fun onShareSuccess() {
+    internal fun onShareSuccess() {
         mShareListener.onSuccess()
     }
 
-    fun onShareFailure(errStr: String?) {
+    internal fun onShareFailure(errStr: String?) {
         mShareListener.onFailure(errStr ?: "")
     }
 
-    fun onCancel() {
+    internal fun onCancel() {
         mShareListener.onCancel()
     }
 
