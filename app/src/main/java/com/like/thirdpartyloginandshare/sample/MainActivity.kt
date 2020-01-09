@@ -12,8 +12,8 @@ import com.like.thirdpartyloginandshare.ThirdPartyLogin
 import com.like.thirdpartyloginandshare.ThirdPartyShare
 import com.like.thirdpartyloginandshare.share.params.app.QqAppParams
 import com.like.thirdpartyloginandshare.share.params.image.WbImageParams
-import com.like.thirdpartyloginandshare.share.params.image.WxImageParams
 import com.like.thirdpartyloginandshare.share.params.imageandtext.QZoneImageAndTextParams
+import com.like.thirdpartyloginandshare.share.params.music.WxMusicParams
 import com.like.thirdpartyloginandshare.share.params.text.WxTextParams
 import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
 import com.like.thirdpartyloginandshare.util.PlatForm
@@ -190,24 +190,30 @@ class MainActivity : AppCompatActivity() {
                 }
             })
 //            .share(WxTextParams("222"))
+//            .share(
+//                WxImageParams(
+//                    BitmapFactory.decodeFile("${getExternalFilesDir(null)}/aaa.png"),
+//                    BitmapFactory.decodeFile("${getExternalFilesDir(null)}/bbbb.jpg").let {
+//                        // 128kb以内
+//                        val thumbBmp = Bitmap.createScaledBitmap(it, 150, 150, true)
+//                        it.recycle()
+//                        thumbBmp
+//                    }
+//                )
+//            )
             .share(
-                WxImageParams(
-                    BitmapFactory.decodeFile("${getExternalFilesDir(null)}/aaa.png"),
-                    BitmapFactory.decodeFile("${getExternalFilesDir(null)}/bbbb.jpg").let {
+                WxMusicParams(
+                    "title",
+                    "description",
+                    "http://c.y.qq.com/v8/playsong.html?songid=109325260&songmid=000kuo2H2xJqfA&songtype=0&source=mqq&_wv=1",
+                    BitmapFactory.decodeFile("${getExternalFilesDir(null)}/aaa.png").let {
+                        // 128kb以内
                         val thumbBmp = Bitmap.createScaledBitmap(it, 150, 150, true)
                         it.recycle()
                         thumbBmp
                     }
                 )
             )
-//            .share(
-//                WxMusicParams(
-//                    "title",
-//                    "description",
-//                    "http://c.y.qq.com/v8/playsong.html?songid=109325260&songmid=000kuo2H2xJqfA&songtype=0&source=mqq&_wv=1",
-//                    BitmapFactory.decodeFile("${getExternalFilesDir(null)}/aaa.png")
-//                )
-//            )
     }
 
     fun wxCircleShare(view: View) {
