@@ -188,7 +188,7 @@ class WxLogin(private val activity: Activity) : LoginStrategy {
     }
 
     /**
-     * 登录并获取用户个人信息
+     * 授权并获取到用户个人信息才算登录成功
      */
     override fun login() {
         // 获取授权码
