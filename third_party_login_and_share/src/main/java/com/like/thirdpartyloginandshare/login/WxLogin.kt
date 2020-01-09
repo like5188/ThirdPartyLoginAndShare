@@ -9,7 +9,7 @@ import com.tencent.mm.opensdk.modelmsg.SendAuth
 import com.tencent.mm.opensdk.openapi.IWXAPI
 
 class WxLogin(private val activity: Activity) : LoginStrategy {
-    private lateinit var mListener: OnLoginAndShareListener
+    private lateinit var mLoginListener: OnLoginAndShareListener
     private val mWxApi: IWXAPI by lazy {
         ApiFactory.createWxApi(activity.applicationContext, ThirdPartyInit.wxInitParams.appId)
     }
@@ -18,7 +18,7 @@ class WxLogin(private val activity: Activity) : LoginStrategy {
     }
 
     override fun setLoginListener(listener: OnLoginAndShareListener): LoginStrategy {
-        this.mListener = listener
+        this.mLoginListener = listener
         return this
     }
 
@@ -41,15 +41,15 @@ class WxLogin(private val activity: Activity) : LoginStrategy {
     }
 
     fun onGetCodeSuccess(code: String) {
-        mListener.onSuccess(code)
+        mLoginListener.onSuccess(code)
     }
 
     fun onGetCodeCancel() {
-        mListener.onCancel()
+        mLoginListener.onCancel()
     }
 
     fun onGetCodeFailure(errStr: String?) {
-        mListener.onFailure(errStr ?: "")
+        mLoginListener.onFailure(errStr ?: "")
     }
 
 }
