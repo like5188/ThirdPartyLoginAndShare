@@ -5,6 +5,7 @@ import com.like.thirdpartyloginandshare.share.params.ShareParams
 
 /**
  * @param webPageUrl    html链接。限制长度不超过10KB
+ * @param thumbBmp      128kb以内
  */
 data class WxPageParams(
     val title: String,

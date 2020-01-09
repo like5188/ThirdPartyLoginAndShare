@@ -1,6 +1,7 @@
 package com.like.thirdpartyloginandshare.sample
 
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
@@ -192,7 +193,11 @@ class MainActivity : AppCompatActivity() {
             .share(
                 WxImageParams(
                     BitmapFactory.decodeFile("${getExternalFilesDir(null)}/aaa.png"),
-                    BitmapFactory.decodeFile("${getExternalFilesDir(null)}/bbbb.jpg")
+                    BitmapFactory.decodeFile("${getExternalFilesDir(null)}/bbbb.jpg").let {
+                        val thumbBmp = Bitmap.createScaledBitmap(it, 150, 150, true)
+                        it.recycle()
+                        thumbBmp
+                    }
                 )
             )
 //            .share(

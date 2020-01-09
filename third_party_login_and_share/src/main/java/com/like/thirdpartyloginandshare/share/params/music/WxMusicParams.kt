@@ -8,6 +8,7 @@ import com.like.thirdpartyloginandshare.share.params.ShareParams
  * 点击会话列表顶部的音乐分享内容将跳转至微信原生音乐播放器播放。
  *
  * @param musicUrl  音频的URL地址。限制长度不超过10KB
+ * @param thumbBmp  128kb以内
  */
 data class WxMusicParams(
     val title: String,
