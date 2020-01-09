@@ -55,7 +55,14 @@ class WXEntryActivity : Activity(), IWXAPIEventHandler {
             }
         } else if (resp?.type == 1) {// 登录
             when (resp.errCode) {
-                BaseResp.ErrCode.ERR_OK -> mWxLogin.onGetCodeSuccess((resp as SendAuth.Resp).code)// 获取授权码
+                BaseResp.ErrCode.ERR_OK -> {
+                    val r = resp as SendAuth.Resp
+                    if ("wechat_sdk_demo_test" == r.state) {
+                        mWxLogin.onGetCodeSuccess(r.code)// 获取授权码
+                    } else {
+                        mWxLogin.onGetCodeFailure("invalid state")
+                    }
+                }
                 BaseResp.ErrCode.ERR_USER_CANCEL -> mWxLogin.onGetCodeCancel()
                 else -> mWxLogin.onGetCodeFailure(resp.errStr)
             }

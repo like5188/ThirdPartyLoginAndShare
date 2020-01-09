@@ -24,7 +24,7 @@ class WxShare(private val activity: Activity) : ShareStrategy {
     private val mWxApi: IWXAPI by lazy {
         ApiFactory.createWxApi(activity.applicationContext, ThirdPartyInit.wxInitParams.appId)
     }
-    private lateinit var mShareListener: OnLoginAndShareListener
+    private lateinit var mListener: OnLoginAndShareListener
 
     fun setScene(scene: Int): ShareStrategy {
         this.scene = scene
@@ -35,7 +35,7 @@ class WxShare(private val activity: Activity) : ShareStrategy {
     }
 
     override fun setShareListener(listener: OnLoginAndShareListener): ShareStrategy {
-        this.mShareListener = listener
+        this.mListener = listener
         return this
     }
 
@@ -64,15 +64,15 @@ class WxShare(private val activity: Activity) : ShareStrategy {
     }
 
     fun onShareSuccess() {
-        mShareListener.onSuccess()
+        mListener.onSuccess()
     }
 
     fun onShareFailure(errStr: String?) {
-        mShareListener.onFailure(errStr ?: "")
+        mListener.onFailure(errStr ?: "")
     }
 
     fun onCancel() {
-        mShareListener.onCancel()
+        mListener.onCancel()
     }
 
     private fun shareText(params: WxTextParams) {
