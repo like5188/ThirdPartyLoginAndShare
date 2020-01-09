@@ -53,11 +53,11 @@ class QqLogin(private val activity: Activity) : LoginStrategy {
             val jsonObject = response as JSONObject?
             if (null != jsonObject && jsonObject.length() != 0) {
                 try {
-                    val token = jsonObject.getString(Constants.PARAM_ACCESS_TOKEN)
-                    val expires = jsonObject.getString(Constants.PARAM_EXPIRES_IN)
+                    val accessToken = jsonObject.getString(Constants.PARAM_ACCESS_TOKEN)
+                    val expiresIn = jsonObject.getString(Constants.PARAM_EXPIRES_IN)
                     val openId = jsonObject.getString(Constants.PARAM_OPEN_ID)
-                    if (!TextUtils.isEmpty(token) && !TextUtils.isEmpty(expires) && !TextUtils.isEmpty(openId)) {
-                        mTencent.setAccessToken(token, expires)
+                    if (!TextUtils.isEmpty(accessToken) && !TextUtils.isEmpty(expiresIn) && !TextUtils.isEmpty(openId)) {
+                        mTencent.setAccessToken(accessToken, expiresIn)
                         mTencent.openId = openId
                     }
                 } catch (e: Exception) {
