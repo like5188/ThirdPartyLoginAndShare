@@ -17,7 +17,7 @@ import java.nio.charset.Charset
 class WxLogin(private val activity: Activity) : LoginStrategy {
     companion object {
         private const val BASE_URL = "https://api.weixin.qq.com/"
-        private lateinit var mLoginListener: OnLoginAndShareListener
+        private var mOnLoginAndShareListener: OnLoginAndShareListener? = null
         private val handler: MyHandler = MyHandler()
         /**
          * 授权用户唯一标识
@@ -47,7 +47,7 @@ class WxLogin(private val activity: Activity) : LoginStrategy {
          */
         private fun getToken(code: String?) {
             if (code.isNullOrEmpty()) {
-                mLoginListener.onFailure("code is null or empty")
+                mOnLoginAndShareListener?.onFailure("code is null or empty")
                 return
             }
             val getTokenUrl =
@@ -57,7 +57,7 @@ class WxLogin(private val activity: Activity) : LoginStrategy {
 
         private fun checkToken(accessToken: String?, openId: String?) {
             if (accessToken.isNullOrEmpty() || openId.isNullOrEmpty()) {
-                mLoginListener.onFailure("accessToken or openId is null or empty")
+                mOnLoginAndShareListener?.onFailure("accessToken or openId is null or empty")
                 return
             }
             val checkTokenUrl = "${BASE_URL}sns/auth?access_token=$accessToken&openid=$openId"
@@ -66,7 +66,7 @@ class WxLogin(private val activity: Activity) : LoginStrategy {
 
         private fun refreshToken(refreshToken: String?) {
             if (refreshToken.isNullOrEmpty()) {
-                mLoginListener.onFailure("refreshToken is null or empty")
+                mOnLoginAndShareListener?.onFailure("refreshToken is null or empty")
                 return
             }
             val refreshTokenUrl =
@@ -85,7 +85,7 @@ class WxLogin(private val activity: Activity) : LoginStrategy {
          */
         private fun getInfo(accessToken: String?, openId: String?) {
             if (accessToken.isNullOrEmpty() || openId.isNullOrEmpty()) {
-                mLoginListener.onFailure("accessToken or openId is null or empty")
+                mOnLoginAndShareListener?.onFailure("accessToken or openId is null or empty")
                 return
             }
             val getInfoUrl = "${BASE_URL}sns/userinfo?access_token=$accessToken&openid=$openId"
@@ -120,7 +120,7 @@ class WxLogin(private val activity: Activity) : LoginStrategy {
                             scope = json.getString("scope")
                             checkToken(accessToken, openId)
                         } catch (e: JSONException) {
-                            mLoginListener.onFailure(e.message ?: "get token error")
+                            mOnLoginAndShareListener?.onFailure(e.message ?: "get token error")
                         }
                     }
                     NetworkUtil.CHECK_TOKEN -> {
@@ -134,7 +134,7 @@ class WxLogin(private val activity: Activity) : LoginStrategy {
                                 refreshToken(refreshToken)
                             }
                         } catch (e: JSONException) {
-                            mLoginListener.onFailure(e.message ?: "check token error")
+                            mOnLoginAndShareListener?.onFailure(e.message ?: "check token error")
                         }
                     }
                     NetworkUtil.REFRESH_TOKEN -> {
@@ -147,7 +147,7 @@ class WxLogin(private val activity: Activity) : LoginStrategy {
                             scope = json.getString("scope")
                             getInfo(accessToken, openId)
                         } catch (e: JSONException) {
-                            mLoginListener.onFailure(e.message ?: "refresh token error")
+                            mOnLoginAndShareListener?.onFailure(e.message ?: "refresh token error")
                         }
                     }
                     NetworkUtil.GET_INFO -> {
@@ -163,9 +163,9 @@ class WxLogin(private val activity: Activity) : LoginStrategy {
                             userInfo.city = json.getString("city")
                             userInfo.country = json.getString("country")
                             userInfo.unionid = json.getString("unionid")
-                            mLoginListener.onSuccess(userInfo)
+                            mOnLoginAndShareListener?.onSuccess(userInfo)
                         } catch (e: JSONException) {
-                            mLoginListener.onFailure(e.message ?: "get info error")
+                            mOnLoginAndShareListener?.onFailure(e.message ?: "get info error")
                         }
                     }
                 }
@@ -197,7 +197,7 @@ class WxLogin(private val activity: Activity) : LoginStrategy {
     }
 
     override fun setLoginListener(listener: OnLoginAndShareListener): LoginStrategy {
-        mLoginListener = listener
+        mOnLoginAndShareListener = listener
         return this
     }
 
@@ -206,7 +206,7 @@ class WxLogin(private val activity: Activity) : LoginStrategy {
      */
     override fun login() {
         if (!mWxApi.isWXAppInstalled) {
-            mLoginListener.onFailure("您的手机没有安装微信")
+            mOnLoginAndShareListener?.onFailure("您的手机没有安装微信")
             return
         }
         // 获取授权码
@@ -228,11 +228,11 @@ class WxLogin(private val activity: Activity) : LoginStrategy {
     }
 
     internal fun onGetCodeCancel() {
-        mLoginListener.onCancel()
+        mOnLoginAndShareListener?.onCancel()
     }
 
     internal fun onGetCodeFailure(errStr: String?) {
-        mLoginListener.onFailure(errStr ?: "")
+        mOnLoginAndShareListener?.onFailure(errStr ?: "")
     }
 
 }

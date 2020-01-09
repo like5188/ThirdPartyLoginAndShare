@@ -22,7 +22,7 @@ import java.io.ByteArrayOutputStream
 class WxShare(private val activity: Activity) : ShareStrategy {
     companion object {
         private var mTargetScene: Int = WXSceneSession
-        private lateinit var mShareListener: OnLoginAndShareListener
+        private var mOnLoginAndShareListener: OnLoginAndShareListener? = null
     }
 
     private val mWxApi: IWXAPI by lazy {
@@ -38,13 +38,13 @@ class WxShare(private val activity: Activity) : ShareStrategy {
     }
 
     override fun setShareListener(listener: OnLoginAndShareListener): ShareStrategy {
-        mShareListener = listener
+        mOnLoginAndShareListener = listener
         return this
     }
 
     override fun share(params: ShareParams) {
         if (!mWxApi.isWXAppInstalled) {
-            mShareListener.onFailure("您的手机没有安装微信")
+            mOnLoginAndShareListener?.onFailure("您的手机没有安装微信")
             return
         }
         when (params) {
@@ -71,15 +71,15 @@ class WxShare(private val activity: Activity) : ShareStrategy {
     }
 
     internal fun onShareSuccess() {
-        mShareListener.onSuccess()
+        mOnLoginAndShareListener?.onSuccess()
     }
 
     internal fun onShareFailure(errStr: String?) {
-        mShareListener.onFailure(errStr ?: "")
+        mOnLoginAndShareListener?.onFailure(errStr ?: "")
     }
 
     internal fun onCancel() {
-        mShareListener.onCancel()
+        mOnLoginAndShareListener?.onCancel()
     }
 
     private fun sendMessageToWX(transaction: String, msg: WXMediaMessage) {

@@ -22,23 +22,29 @@ class QqLogin(private val activity: Activity) : LoginStrategy {
     private val mTencent by lazy {
         ApiFactory.createQqApi(activity.applicationContext, ThirdPartyInit.qqInitParams.appId)
     }
-    private lateinit var mLoginListener: LoginListener
+    private var mLoginListener: LoginListener? = null
+    private var mOnLoginAndShareListener: OnLoginAndShareListener? = null
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == Constants.REQUEST_LOGIN) {
-            Tencent.onActivityResultData(requestCode, resultCode, data, mLoginListener as IUiListener)
+            Tencent.onActivityResultData(requestCode, resultCode, data, mLoginListener as? IUiListener)
         }
     }
 
     override fun setLoginListener(listener: OnLoginAndShareListener): LoginStrategy {
+        mOnLoginAndShareListener = listener
         mLoginListener = LoginListener(listener)
         return this
     }
 
     override fun login() {
+        if (!mTencent.isQQInstalled(activity.applicationContext)) {
+            mOnLoginAndShareListener?.onFailure("您的手机没有安装QQ")
+            return
+        }
         if (mTencent.checkSessionValid(ThirdPartyInit.qqInitParams.appId)) {
             mTencent.initSessionCache(mTencent.loadSession(ThirdPartyInit.qqInitParams.appId))
-            mLoginListener.onSuccess()
+            mOnLoginAndShareListener?.onSuccess()
         } else {// token过期，请调用登录接口拉起手Q授权登录
             mTencent.login(activity, "all", mLoginListener)
         }
