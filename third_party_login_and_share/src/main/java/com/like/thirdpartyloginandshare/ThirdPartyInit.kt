@@ -61,7 +61,11 @@ object ThirdPartyInit {
 
     data class QqInitParams(val appId: String)
 
-    data class WxInitParams(val appId: String)
+    /**
+     * @param appId     应用唯一标识，在微信开放平台提交应用审核通过后获得
+     * @param secret    应用密钥 AppSecret，在微信开放平台提交应用审核通过后获得
+     */
+    data class WxInitParams(val appId: String, val secret: String)
 
     /**
      * @param redirectUrl   当前 DEMO 应用的回调页，第三方应用可以使用自己的回调页。建议使用默认回调页：https://api.weibo.com/oauth2/default.html

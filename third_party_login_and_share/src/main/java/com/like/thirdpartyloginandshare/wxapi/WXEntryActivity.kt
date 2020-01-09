@@ -7,6 +7,7 @@ import com.like.thirdpartyloginandshare.ThirdPartyInit
 import com.like.thirdpartyloginandshare.login.WxLogin
 import com.like.thirdpartyloginandshare.share.WxShare
 import com.like.thirdpartyloginandshare.util.ApiFactory
+import com.tencent.mm.opensdk.constants.ConstantsAPI
 import com.tencent.mm.opensdk.modelbase.BaseReq
 import com.tencent.mm.opensdk.modelbase.BaseResp
 import com.tencent.mm.opensdk.modelmsg.SendAuth
@@ -47,18 +48,18 @@ class WXEntryActivity : Activity(), IWXAPIEventHandler {
     // 第三方应用发送到微信的请求处理后的响应结果，会回调到该方法
     override fun onResp(resp: BaseResp?) {
         // 注意：新版微信把cancel状态也变成了success状态。
-        if (resp?.type == 2) {// 分享
+        if (resp?.type == ConstantsAPI.COMMAND_SENDMESSAGE_TO_WX) {// 分享
             when (resp.errCode) {
                 BaseResp.ErrCode.ERR_OK -> mWxShare.onShareSuccess()
                 BaseResp.ErrCode.ERR_USER_CANCEL -> mWxShare.onCancel()
                 else -> mWxShare.onShareFailure(resp.errStr)
             }
-        } else if (resp?.type == 1) {// 登录
+        } else if (resp?.type == ConstantsAPI.COMMAND_SENDAUTH) {// 登录
             when (resp.errCode) {
                 BaseResp.ErrCode.ERR_OK -> {
                     val r = resp as SendAuth.Resp
                     if ("wechat_sdk_demo_test" == r.state) {
-                        mWxLogin.onGetCodeSuccess(r.code)// 获取授权码
+                        mWxLogin.onGetCodeSuccess(r.code)// 获取授权码成功
                     } else {
                         mWxLogin.onGetCodeFailure("invalid state")
                     }
