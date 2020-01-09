@@ -20,14 +20,17 @@ import com.tencent.mm.opensdk.openapi.IWXAPI
 import java.io.ByteArrayOutputStream
 
 class WxShare(private val activity: Activity) : ShareStrategy {
-    private var mTargetScene: Int = WXSceneSession
+    companion object {
+        private var mTargetScene: Int = WXSceneSession
+        private lateinit var mShareListener: OnLoginAndShareListener
+    }
+
     private val mWxApi: IWXAPI by lazy {
         ApiFactory.createWxApi(activity.applicationContext, ThirdPartyInit.wxInitParams.appId)
     }
-    private lateinit var mShareListener: OnLoginAndShareListener
 
     fun setScene(scene: Int): ShareStrategy {
-        this.mTargetScene = scene
+        mTargetScene = scene
         return this
     }
 
@@ -35,7 +38,7 @@ class WxShare(private val activity: Activity) : ShareStrategy {
     }
 
     override fun setShareListener(listener: OnLoginAndShareListener): ShareStrategy {
-        this.mShareListener = listener
+        mShareListener = listener
         return this
     }
 
