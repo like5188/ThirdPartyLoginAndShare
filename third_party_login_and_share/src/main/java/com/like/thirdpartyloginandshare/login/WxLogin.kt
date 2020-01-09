@@ -191,6 +191,10 @@ class WxLogin(private val activity: Activity) : LoginStrategy {
      * 授权并获取到用户个人信息才算登录成功
      */
     override fun login() {
+        if (!mWxApi.isWXAppInstalled) {
+            mLoginListener.onFailure("您的手机没有安装微信")
+            return
+        }
         // 获取授权码
         val req = SendAuth.Req()
         // 应用授权作用域，如获取用户个人信息则填写 snsapi_userinfo

@@ -40,6 +40,10 @@ class WxShare(private val activity: Activity) : ShareStrategy {
     }
 
     override fun share(params: ShareParams) {
+        if (!mWxApi.isWXAppInstalled) {
+            mShareListener.onFailure("您的手机没有安装微信")
+            return
+        }
         when (params) {
             is WxTextParams -> {
                 shareText(params)
