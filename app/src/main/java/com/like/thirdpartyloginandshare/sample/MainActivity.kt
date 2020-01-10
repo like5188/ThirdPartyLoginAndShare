@@ -33,14 +33,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         ThirdPartyInit.initQq(this, ThirdPartyInit.QqInitParams("101540498"))
         ThirdPartyInit.initWx(this, ThirdPartyInit.WxInitParams("wxa9cce595f2c0b87b", "secret"))
-//        ThirdPartyInit.initWb(
-//            this,
-//            ThirdPartyInit.WbInitParams(
-//                "1929959086",
-//                "https://api.weibo.com/oauth2/default.html",
-//                "email,direct_messages_read,direct_messages_write,friendships_groups_read,friendships_groups_write,statuses_to_me_read,follow_app_official_microblog,invitation_write"
-//            )
-//        )
+        ThirdPartyInit.initWb(this, ThirdPartyInit.WbInitParams("1929959086"))
         copyFile("eeee.mp4")
         copyFile("aaa.png")
         copyFile("bbbb.jpg")
