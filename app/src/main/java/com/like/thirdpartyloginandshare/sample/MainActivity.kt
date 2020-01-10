@@ -11,7 +11,6 @@ import com.like.thirdpartyloginandshare.ThirdPartyInit
 import com.like.thirdpartyloginandshare.ThirdPartyLogin
 import com.like.thirdpartyloginandshare.ThirdPartyShare
 import com.like.thirdpartyloginandshare.share.params.app.QqAppParams
-import com.like.thirdpartyloginandshare.share.params.image.WbImageParams
 import com.like.thirdpartyloginandshare.share.params.imageandtext.QZoneImageAndTextParams
 import com.like.thirdpartyloginandshare.share.params.music.WxMusicParams
 import com.like.thirdpartyloginandshare.share.params.text.WbTextParams
@@ -294,7 +293,7 @@ class MainActivity : AppCompatActivity() {
                 QZoneImageAndTextParams(
                     "title",
                     "https://www.baidu.com/",
-                    arrayListOf("/storage/emulated/0/Pictures/Screenshots/S81224-20082955.jpg"),
+                    arrayListOf("${getExternalFilesDir(null)}/aaa.png", "${getExternalFilesDir(null)}/bbbb.jpg"),
                     "summary"
                 )
             )
