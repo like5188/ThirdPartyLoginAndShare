@@ -56,7 +56,7 @@ class QqLogin(private val activity: Activity) : LoginStrategy {
 
     inner class LoginListener(private val listener: OnLoginAndShareListener) : IUiListener {
         override fun onComplete(response: Any?) {
-            val jsonObject = response as JSONObject?
+            val jsonObject = response as? JSONObject
             if (null != jsonObject && jsonObject.length() != 0) {
                 try {
                     val accessToken = jsonObject.getString(Constants.PARAM_ACCESS_TOKEN)
@@ -109,7 +109,7 @@ class QqLogin(private val activity: Activity) : LoginStrategy {
 
     abstract class GetUserInfoListener : IUiListener {
         override fun onComplete(response: Any?) {
-            val jsonObject = response as JSONObject?
+            val jsonObject = response as? JSONObject
             if (null != jsonObject && jsonObject.length() != 0) {
                 val userInfo = UserInfo()
                 try {
@@ -140,7 +140,7 @@ class QqLogin(private val activity: Activity) : LoginStrategy {
 
     abstract class GetUnionIdListener : IUiListener {
         override fun onComplete(response: Any?) {
-            val jsonObject = response as JSONObject?
+            val jsonObject = response as? JSONObject
             if (null != jsonObject && jsonObject.length() != 0) {
                 try {
                     onSuccess(jsonObject.getString("unionid"))
