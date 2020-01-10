@@ -111,7 +111,15 @@ class QqLogin(private val activity: Activity) : LoginStrategy {
         override fun onComplete(response: Any?) {
             val jsonObject = response as JSONObject?
             if (null != jsonObject && jsonObject.length() != 0) {
-                onSuccess(jsonObject)
+                val userInfo = UserInfo()
+                try {
+                    userInfo.nickname = jsonObject.getString("nickname")
+                    userInfo.sex = jsonObject.getString("sex")
+                    userInfo.headimgurl = jsonObject.getString("figureurl_qq_2")
+                    onSuccess(userInfo)
+                } catch (e: Exception) {
+                    onFailure("获取用户信息失败 ${e.message}")
+                }
             } else {
                 onFailure("获取用户信息失败 返回为空")
             }
@@ -125,7 +133,7 @@ class QqLogin(private val activity: Activity) : LoginStrategy {
             onFailure("获取用户信息失败 ${e?.errorDetail}")
         }
 
-        abstract fun onSuccess(jsonObject: JSONObject)
+        abstract fun onSuccess(userInfo: UserInfo)
 
         abstract fun onFailure(errorMessage: String)
     }
@@ -155,6 +163,12 @@ class QqLogin(private val activity: Activity) : LoginStrategy {
         abstract fun onSuccess(unionId: String)
 
         abstract fun onFailure(errorMessage: String)
+    }
+
+    class UserInfo {
+        var nickname = ""
+        var sex = ""
+        var headimgurl = ""
     }
 
 }
