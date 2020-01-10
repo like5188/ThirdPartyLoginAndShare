@@ -40,12 +40,17 @@ class WbLogin(private val activity: Activity) : LoginStrategy {
         AccessTokenKeeper.clear(activity.applicationContext)
     }
 
-    fun getUserInfo(onSuccess: (UserInfo) -> Unit, onError: ((String) -> Unit)? = null) {
+    /**
+     * @param uid           需要查询的用户ID
+     * @param screen_name   需要查询的用户昵称
+     * 参数uid与screen_name二者必选其一，且只能选其一
+     */
+    fun getUserInfo(uid: String = "", screen_name: String = "", onSuccess: (UserInfo) -> Unit, onError: ((String) -> Unit)? = null) {
         // 封装了 "access_token"，"expires_in"，"refresh_token"，并提供了他们的管理功能
         val oauth2AccessToken = AccessTokenKeeper.readAccessToken(activity.applicationContext)
         if (oauth2AccessToken.isSessionValid) {
             HttpUtils.requestAsync(
-                "https://api.weibo.com/2/users/show.json?access_token=${oauth2AccessToken.token}",
+                "https://api.weibo.com/2/users/show.json?access_token=${oauth2AccessToken.token}&uid=$uid&screen_name=$screen_name",
                 {
                     if (it.isNullOrEmpty()) {
                         onError?.invoke("用户信息为空")
