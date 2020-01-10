@@ -55,6 +55,16 @@ class ThirdPartyLogin(private val activity: Activity) : LoginStrategy {
         mStrategy.logout()
     }
 
+    override fun getUserInfo(onSuccess: (String) -> Unit, onError: ((String) -> Unit)?) {
+        checkParams()
+        mStrategy.getUserInfo(onSuccess, onError)
+    }
+
+    override fun getUnionId(onSuccess: (String) -> Unit, onError: ((String) -> Unit)?) {
+        checkParams()
+        mStrategy.getUnionId(onSuccess, onError)
+    }
+
     private fun checkParams() {
         if (!::mStrategy.isInitialized) {
             throw UnsupportedOperationException("请先调用setPlatForm(platForm: PlatForm)方法设置对应的第三方登录平台")

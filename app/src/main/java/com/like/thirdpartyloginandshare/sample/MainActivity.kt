@@ -24,6 +24,10 @@ import java.io.File
 import java.io.FileOutputStream
 
 class MainActivity : AppCompatActivity() {
+    companion object {
+        private const val TAG = "MainActivity"
+    }
+
     private var isLogin = false
     private val mThirdPartyLogin: ThirdPartyLogin by lazy { ThirdPartyLogin(this) }
     private val mThirdPartyShare: ThirdPartyShare by lazy { ThirdPartyShare(this) }
@@ -96,7 +100,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun getUserInfoWB(view: View) {
-
+        mThirdPartyLogin.setPlatForm(PlatForm.WB).getUserInfo({
+            Log.w(TAG, it)
+        }, {
+            Log.e(TAG, it)
+        })
     }
 
     fun wbShare(view: View) {
@@ -170,7 +178,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun getUserInfoWX(view: View) {
-
+        mThirdPartyLogin.setPlatForm(PlatForm.WX).getUserInfo({
+            Log.w(TAG, it)
+        }, {
+            Log.e(TAG, it)
+        })
     }
 
     fun wxShare(view: View) {
@@ -258,7 +270,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun getUserInfoQQ(view: View) {
-
+        mThirdPartyLogin.setPlatForm(PlatForm.QQ).getUserInfo({
+            Log.w(TAG, it)
+        }, {
+            Log.e(TAG, it)
+        })
+        mThirdPartyLogin.setPlatForm(PlatForm.QQ).getUnionId({
+            Log.w(TAG, it)
+        }, {
+            Log.e(TAG, it)
+        })
     }
 
     fun qqShare(view: View) {
