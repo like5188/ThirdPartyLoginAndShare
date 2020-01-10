@@ -17,7 +17,7 @@ import java.net.URLConnection;
 import javax.net.ssl.HttpsURLConnection;
 
 /**
- * 微信登录辅助网络请求工具类
+ * 微信登录辅助网络请求工具类，直接从demo中复制过来的
  */
 public class NetworkUtil {
     private static String TAG = "MicroMsg.NetworkUtil";

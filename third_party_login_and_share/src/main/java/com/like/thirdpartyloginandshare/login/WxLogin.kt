@@ -171,22 +171,6 @@ class WxLogin(private val activity: Activity) : LoginStrategy {
                 }
             }
         }
-
-        class UserInfo {
-            var nickname = ""
-            var sex = ""
-            var province = ""
-            var city = ""
-            var country = ""
-            /**
-             * 用户头像，最后一个数值代表正方形头像大小（有 0、46、64、96、132 数值可选，0 代表 640*640 正方形头像），用户没有头像时该项为空
-             */
-            var headimgurl = ""
-            /**
-             * 用户统一标识。针对一个微信开放平台帐号下的应用，同一用户的 unionid 是唯一的。
-             */
-            var unionid = ""
-        }
     }
 
     private val mWxApi: IWXAPI by lazy {
@@ -235,4 +219,19 @@ class WxLogin(private val activity: Activity) : LoginStrategy {
         mOnLoginAndShareListener?.onFailure(errStr ?: "")
     }
 
+    class UserInfo {
+        var nickname = ""
+        var sex = ""
+        var province = ""
+        var city = ""
+        var country = ""
+        /**
+         * 用户头像，最后一个数值代表正方形头像大小（有 0、46、64、96、132 数值可选，0 代表 640*640 正方形头像），用户没有头像时该项为空
+         */
+        var headimgurl = ""
+        /**
+         * 用户统一标识。针对一个微信开放平台帐号下的应用，同一用户的 unionid 是唯一的。
+         */
+        var unionid = ""
+    }
 }
