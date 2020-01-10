@@ -52,6 +52,46 @@ class QqLogin(private val activity: Activity) : LoginStrategy {
         mTencent.logout(activity.applicationContext)
     }
 
+    override fun getUserInfo(onSuccess: (String) -> Unit, onError: ((String) -> Unit)?) {
+        if (!mTencent.isSessionValid) {
+            onError?.invoke("尚未登录QQ")
+            return
+        }
+        UserInfo(activity.applicationContext, mTencent.qqToken).getUserInfo(object : IUiListener {
+            override fun onComplete(response: Any?) {
+                onSuccess(response?.toString() ?: "")
+            }
+
+            override fun onCancel() {
+                onError?.invoke("操作被取消了")
+            }
+
+            override fun onError(e: UiError?) {
+                onError?.invoke(e?.errorDetail ?: "")
+            }
+        })
+    }
+
+    override fun getUnionId(onSuccess: (String) -> Unit, onError: ((String) -> Unit)?) {
+        if (!mTencent.isSessionValid) {
+            onError?.invoke("尚未登录QQ")
+            return
+        }
+        UnionInfo(activity.applicationContext, mTencent.qqToken).getUnionId(object : IUiListener {
+            override fun onComplete(response: Any?) {
+                onSuccess(response?.toString() ?: "")
+            }
+
+            override fun onCancel() {
+                onError?.invoke("操作被取消了")
+            }
+
+            override fun onError(e: UiError?) {
+                onError?.invoke(e?.errorDetail ?: "")
+            }
+        })
+    }
+
     inner class LoginListener(private val listener: OnLoginAndShareListener) : IUiListener {
         override fun onComplete(response: Any?) {
             val jsonObject = response as? JSONObject
@@ -87,100 +127,6 @@ class QqLogin(private val activity: Activity) : LoginStrategy {
             listener.onSuccess()
         }
 
-    }
-
-    fun getUserInfo(listener: GetUserInfoListener) {
-        if (mTencent.isSessionValid) {
-            UserInfo(activity.applicationContext, mTencent.qqToken).getUserInfo(listener)
-        } else {
-            listener.onFailure("获取用户信息失败 尚未登录")
-        }
-    }
-
-    fun getUnionId(listener: GetUnionIdListener) {
-        if (mTencent.isSessionValid) {
-            UnionInfo(activity.applicationContext, mTencent.qqToken).getUnionId(listener)
-        } else {
-            listener.onFailure("获取unionId失败 尚未登录")
-        }
-    }
-
-    abstract class GetUserInfoListener : IUiListener {
-        override fun onComplete(response: Any?) {
-            val jsonObject = response as? JSONObject
-            if (null != jsonObject && jsonObject.length() != 0) {
-                val ret = jsonObject.optInt("ret", -1)
-                if (ret == 0) {
-                    val userInfo = UserInfo()
-                    try {
-                        userInfo.nickname = jsonObject.getString("nickname")
-                        userInfo.gender = jsonObject.getString("gender")
-                        userInfo.figureurl_qq_1 = jsonObject.getString("figureurl_qq_1")
-                        userInfo.figureurl_qq_2 = jsonObject.getString("figureurl_qq_2")
-                        onSuccess(userInfo)
-                    } catch (e: Exception) {
-                        onFailure("获取用户信息失败 ${e.message}")
-                    }
-                } else {
-                    val msg = jsonObject.optString("msg")
-                    onFailure("获取用户信息失败 $msg")
-                }
-            } else {
-                onFailure("获取用户信息失败 返回为空")
-            }
-        }
-
-        override fun onCancel() {
-            onFailure("取消获取用户信息")
-        }
-
-        override fun onError(e: UiError?) {
-            onFailure("获取用户信息失败 ${e?.errorDetail}")
-        }
-
-        abstract fun onSuccess(userInfo: UserInfo)
-
-        abstract fun onFailure(errorMessage: String)
-    }
-
-    abstract class GetUnionIdListener : IUiListener {
-        override fun onComplete(response: Any?) {
-            val jsonObject = response as? JSONObject
-            if (null != jsonObject && jsonObject.length() != 0) {
-                try {
-                    onSuccess(jsonObject.getString("unionid"))
-                } catch (e: Exception) {
-                    onFailure("获取unionId成功 但是解析数据失败")
-                }
-            } else {
-                onFailure("获取unionId失败 返回为空")
-            }
-        }
-
-        override fun onCancel() {
-            onFailure("取消获取unionId")
-        }
-
-        override fun onError(e: UiError?) {
-            onFailure("获取unionId失败 ${e?.errorDetail}")
-        }
-
-        abstract fun onSuccess(unionId: String)
-
-        abstract fun onFailure(errorMessage: String)
-    }
-
-    class UserInfo {
-        var nickname = ""
-        var gender = ""
-        /**
-         * 大小为40×40像素的QQ头像URL。
-         */
-        var figureurl_qq_1 = ""
-        /**
-         * 大小为100×100像素的QQ头像URL。需要注意，不是所有的用户都拥有QQ的100x100的头像，但40x40像素则是一定会有。
-         */
-        var figureurl_qq_2 = ""
     }
 
 }

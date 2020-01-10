@@ -95,6 +95,10 @@ class MainActivity : AppCompatActivity() {
             .login()
     }
 
+    fun getUserInfoWB(view: View) {
+
+    }
+
     fun wbShare(view: View) {
         isLogin = false
         mThirdPartyShare
@@ -163,6 +167,10 @@ class MainActivity : AppCompatActivity() {
                 }
             })
             .login()
+    }
+
+    fun getUserInfoWX(view: View) {
+
     }
 
     fun wxShare(view: View) {
@@ -247,6 +255,10 @@ class MainActivity : AppCompatActivity() {
                 }
             })
             .login()
+    }
+
+    fun getUserInfoQQ(view: View) {
+
     }
 
     fun qqShare(view: View) {

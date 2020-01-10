@@ -9,7 +9,6 @@ import com.sina.weibo.sdk.auth.AccessTokenKeeper
 import com.sina.weibo.sdk.auth.Oauth2AccessToken
 import com.sina.weibo.sdk.auth.WbAuthListener
 import com.sina.weibo.sdk.auth.WbConnectErrorMessage
-import org.json.JSONObject
 
 class WbLogin(private val activity: Activity) : LoginStrategy {
     private val mSsoHandler by lazy { ApiFactory.createWbApi(activity) }
@@ -40,44 +39,27 @@ class WbLogin(private val activity: Activity) : LoginStrategy {
         AccessTokenKeeper.clear(activity.applicationContext)
     }
 
-    /**
-     * @param uid           需要查询的用户ID
-     * @param screen_name   需要查询的用户昵称
-     *
-     * 注意：
-     * 1、参数uid与screen_name二者必选其一，且只能选其一
-     * 2、接口升级后，对未授权本应用的uid，将无法获取其个人简介、认证原因、粉丝数、关注数、微博数及最近一条微博内容
-     */
-    fun getUserInfo(uid: String = "", screen_name: String = "", onSuccess: (UserInfo) -> Unit, onError: ((String) -> Unit)? = null) {
+    override fun getUserInfo(onSuccess: (String) -> Unit, onError: ((String) -> Unit)?) {
+        // 参数uid与screen_name二者必选其一，且只能选其一
+        val uid = ""// 需要查询的用户ID。接口升级后，对未授权本应用的uid，将无法获取其个人简介、认证原因、粉丝数、关注数、微博数及最近一条微博内容
+        val screen_name = ""// 需要查询的用户昵称
         // 封装了 "access_token"，"expires_in"，"refresh_token"，并提供了他们的管理功能
         val oauth2AccessToken = AccessTokenKeeper.readAccessToken(activity.applicationContext)
-        if (oauth2AccessToken.isSessionValid) {
-            HttpUtils.requestAsync(
-                "https://api.weibo.com/2/users/show.json?access_token=${oauth2AccessToken.token}&uid=$uid&screen_name=$screen_name",
-                {
-                    if (it.isNullOrEmpty()) {
-                        onError?.invoke("用户信息为空")
-                    } else {
-                        try {
-                            val jsonObject = JSONObject(it)
-                            val userInfo = UserInfo()
-                            userInfo.screen_name = jsonObject.getString("screen_name")
-                            userInfo.gender = jsonObject.getString("gender")
-                            userInfo.name = jsonObject.getString("name")
-                            userInfo.profile_image_url = jsonObject.getString("profile_image_url")
-                            userInfo.avatar_large = jsonObject.getString("avatar_large")
-                            userInfo.avatar_hd = jsonObject.getString("avatar_hd")
-                            onSuccess(userInfo)
-                        } catch (e: Exception) {
-                            onError?.invoke(e.message ?: "")
-                        }
-                    }
-                },
-                onError
-            )
-        } else {
-            onError?.invoke("获取用户信息失败 尚未登录")
+        if (!oauth2AccessToken.isSessionValid) {
+            onError?.invoke("尚未登录微博")
+            return
         }
+        HttpUtils.requestAsync(
+            "https://api.weibo.com/2/users/show.json?access_token=${oauth2AccessToken.token}&uid=$uid&screen_name=$screen_name",
+            {
+                onSuccess(it ?: "")
+            },
+            onError
+        )
+    }
+
+    override fun getUnionId(onSuccess: (String) -> Unit, onError: ((String) -> Unit)?) {
+        throw UnsupportedOperationException("WB不支持此操作")
     }
 
     inner class LoginListener(private val listener: OnLoginAndShareListener) : WbAuthListener {
@@ -108,27 +90,4 @@ class WbLogin(private val activity: Activity) : LoginStrategy {
         }
     }
 
-    class UserInfo {
-        /**
-         * 用户昵称
-         */
-        var screen_name = ""
-        /**
-         * 性别，m：男、f：女、n：未知
-         */
-        var gender = ""
-        var name = ""
-        /**
-         * 用户头像地址（中图），50×50像素
-         */
-        var profile_image_url = ""
-        /**
-         * 用户头像地址（大图），180×180像素
-         */
-        var avatar_large = ""
-        /**
-         * 用户头像地址（高清），高清头像原图
-         */
-        var avatar_hd = ""
-    }
 }

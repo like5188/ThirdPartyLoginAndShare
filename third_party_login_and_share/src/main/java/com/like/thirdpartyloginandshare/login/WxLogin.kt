@@ -6,13 +6,13 @@ import android.os.Handler
 import android.os.Message
 import com.like.thirdpartyloginandshare.ThirdPartyInit
 import com.like.thirdpartyloginandshare.util.ApiFactory
+import com.like.thirdpartyloginandshare.util.HttpUtils
 import com.like.thirdpartyloginandshare.util.NetworkUtil
 import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
 import com.tencent.mm.opensdk.modelmsg.SendAuth
 import com.tencent.mm.opensdk.openapi.IWXAPI
 import org.json.JSONException
 import org.json.JSONObject
-import java.nio.charset.Charset
 
 class WxLogin(private val activity: Activity) : LoginStrategy {
     companion object {
@@ -74,39 +74,6 @@ class WxLogin(private val activity: Activity) : LoginStrategy {
             NetworkUtil.sendWxAPI(handler, refreshTokenUrl, NetworkUtil.REFRESH_TOKEN)
         }
 
-        /**
-         * 此接口用于获取用户个人信息。
-         * 开发者可通过 OpenID 来获取用户基本信息。
-         * 特别需要注意的是，如果开发者拥有多个移动应用、网站应用和公众帐号，可通过获取用户基本信息中的 unionid 来区分用户的唯一性，
-         * 因为只要是同一个微信开放平台帐号下的移动应用、网站应用和公众帐号，用户的 unionid 是唯一的。
-         * 换句话说，同一用户，对同一个微信开放平台下的不同应用，unionid 是相同的。
-         * 请注意，在用户修改微信头像后，旧的微信头像 URL 将会失效，
-         * 因此开发者应该自己在获取用户信息后，将头像图片保存下来，避免微信头像 URL 失效后的异常情况。
-         */
-        private fun getInfo(accessToken: String?, openId: String?) {
-            if (accessToken.isNullOrEmpty() || openId.isNullOrEmpty()) {
-                mOnLoginAndShareListener?.onFailure("accessToken or openId is null or empty")
-                return
-            }
-            val getInfoUrl = "${BASE_URL}sns/userinfo?access_token=$accessToken&openid=$openId"
-            NetworkUtil.sendWxAPI(handler, getInfoUrl, NetworkUtil.GET_INFO)
-        }
-
-        private fun getEncode(str: String): String {
-            val encodeArray = arrayOf("GB2312", "ISO-8859-1", "UTF-8", "GBK", "Big5", "UTF-16LE", "Shift_JIS", "EUC-JP")
-            for (i in encodeArray.indices) {
-                try {
-                    val charset = Charset.forName(encodeArray[i])
-                    if (str == String(str.toByteArray(charset), charset)) {
-                        return encodeArray[i]
-                    }
-                } catch (e: Exception) {
-                } finally {
-                }
-            }
-            return ""
-        }
-
         private class MyHandler : Handler() {
             override fun handleMessage(msg: Message) {
                 when (msg.what) {
@@ -129,7 +96,7 @@ class WxLogin(private val activity: Activity) : LoginStrategy {
                             val json = JSONObject(result)
                             val errCode = json.getInt("errcode")
                             if (errCode == 0) {
-                                getInfo(accessToken, openId)
+                                mOnLoginAndShareListener?.onSuccess()
                             } else {
                                 refreshToken(refreshToken)
                             }
@@ -145,27 +112,9 @@ class WxLogin(private val activity: Activity) : LoginStrategy {
                             accessToken = json.getString("access_token")
                             refreshToken = json.getString("refresh_token")
                             scope = json.getString("scope")
-                            getInfo(accessToken, openId)
+                            mOnLoginAndShareListener?.onSuccess()
                         } catch (e: JSONException) {
                             mOnLoginAndShareListener?.onFailure(e.message ?: "refresh token error")
-                        }
-                    }
-                    NetworkUtil.GET_INFO -> {
-                        try {
-                            val result = msg.data.getString("result") ?: ""
-                            val json = JSONObject(result)
-                            val userInfo = UserInfo()
-                            userInfo.headimgurl = json.getString("headimgurl")
-                            val encode = getEncode(json.getString("nickname"))
-                            userInfo.nickname = String(json.getString("nickname").toByteArray(charset(encode)), Charset.forName("utf-8"))
-                            userInfo.sex = json.getString("sex")
-                            userInfo.province = json.getString("province")
-                            userInfo.city = json.getString("city")
-                            userInfo.country = json.getString("country")
-                            userInfo.unionid = json.getString("unionid")
-                            mOnLoginAndShareListener?.onSuccess(userInfo)
-                        } catch (e: JSONException) {
-                            mOnLoginAndShareListener?.onFailure(e.message ?: "get info error")
                         }
                     }
                 }
@@ -185,9 +134,6 @@ class WxLogin(private val activity: Activity) : LoginStrategy {
         return this
     }
 
-    /**
-     * 授权并获取到用户个人信息才算登录成功
-     */
     override fun login() {
         if (!mWxApi.isWXAppInstalled) {
             mOnLoginAndShareListener?.onFailure("您的手机没有安装微信")
@@ -207,6 +153,33 @@ class WxLogin(private val activity: Activity) : LoginStrategy {
         mWxApi.unregisterApp()
     }
 
+    override fun getUserInfo(onSuccess: (String) -> Unit, onError: ((String) -> Unit)?) {
+        if (accessToken.isNullOrEmpty() || openId.isNullOrEmpty()) {
+            onError?.invoke("尚未登录WX")
+            return
+        }
+        /*
+         * 此接口用于获取用户个人信息。
+         * 开发者可通过 OpenID 来获取用户基本信息。
+         * 特别需要注意的是，如果开发者拥有多个移动应用、网站应用和公众帐号，可通过获取用户基本信息中的 unionid 来区分用户的唯一性，
+         * 因为只要是同一个微信开放平台帐号下的移动应用、网站应用和公众帐号，用户的 unionid 是唯一的。
+         * 换句话说，同一用户，对同一个微信开放平台下的不同应用，unionid 是相同的。
+         * 请注意，在用户修改微信头像后，旧的微信头像 URL 将会失效，
+         * 因此开发者应该自己在获取用户信息后，将头像图片保存下来，避免微信头像 URL 失效后的异常情况。
+         */
+        HttpUtils.requestAsync(
+            "${BASE_URL}sns/userinfo?access_token=$accessToken&openid=$openId",
+            {
+                onSuccess(it ?: "")
+            },
+            onError
+        )
+    }
+
+    override fun getUnionId(onSuccess: (String) -> Unit, onError: ((String) -> Unit)?) {
+        throw UnsupportedOperationException("WX不支持此操作")
+    }
+
     internal fun onGetCodeSuccess(code: String?) {
         getToken(code)
     }
@@ -219,19 +192,4 @@ class WxLogin(private val activity: Activity) : LoginStrategy {
         mOnLoginAndShareListener?.onFailure(errStr ?: "")
     }
 
-    class UserInfo {
-        var nickname = ""
-        var sex = ""
-        var province = ""
-        var city = ""
-        var country = ""
-        /**
-         * 用户头像，最后一个数值代表正方形头像大小（有 0、46、64、96、132 数值可选，0 代表 640*640 正方形头像），用户没有头像时该项为空
-         */
-        var headimgurl = ""
-        /**
-         * 用户统一标识。针对一个微信开放平台帐号下的应用，同一用户的 unionid 是唯一的。
-         */
-        var unionid = ""
-    }
 }
