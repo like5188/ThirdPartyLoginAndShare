@@ -111,14 +111,21 @@ class QqLogin(private val activity: Activity) : LoginStrategy {
         override fun onComplete(response: Any?) {
             val jsonObject = response as? JSONObject
             if (null != jsonObject && jsonObject.length() != 0) {
-                val userInfo = UserInfo()
-                try {
-                    userInfo.nickname = jsonObject.getString("nickname")
-                    userInfo.sex = jsonObject.getString("sex")
-                    userInfo.headimgurl = jsonObject.getString("figureurl_qq_2")
-                    onSuccess(userInfo)
-                } catch (e: Exception) {
-                    onFailure("获取用户信息失败 ${e.message}")
+                val ret = jsonObject.optInt("ret", -1)
+                if (ret == 0) {
+                    val userInfo = UserInfo()
+                    try {
+                        userInfo.nickname = jsonObject.getString("nickname")
+                        userInfo.gender = jsonObject.getString("gender")
+                        userInfo.figureurl_qq_1 = jsonObject.getString("figureurl_qq_1")
+                        userInfo.figureurl_qq_2 = jsonObject.getString("figureurl_qq_2")
+                        onSuccess(userInfo)
+                    } catch (e: Exception) {
+                        onFailure("获取用户信息失败 ${e.message}")
+                    }
+                } else {
+                    val msg = jsonObject.optString("msg")
+                    onFailure("获取用户信息失败 $msg")
                 }
             } else {
                 onFailure("获取用户信息失败 返回为空")
@@ -167,8 +174,15 @@ class QqLogin(private val activity: Activity) : LoginStrategy {
 
     class UserInfo {
         var nickname = ""
-        var sex = ""
-        var headimgurl = ""
+        var gender = ""
+        /**
+         * 大小为40×40像素的QQ头像URL。
+         */
+        var figureurl_qq_1 = ""
+        /**
+         * 大小为100×100像素的QQ头像URL。需要注意，不是所有的用户都拥有QQ的100x100的头像，但40x40像素则是一定会有。
+         */
+        var figureurl_qq_2 = ""
     }
 
 }
