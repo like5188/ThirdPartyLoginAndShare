@@ -14,6 +14,7 @@ import com.like.thirdpartyloginandshare.share.params.app.QqAppParams
 import com.like.thirdpartyloginandshare.share.params.image.WbImageParams
 import com.like.thirdpartyloginandshare.share.params.imageandtext.QZoneImageAndTextParams
 import com.like.thirdpartyloginandshare.share.params.music.WxMusicParams
+import com.like.thirdpartyloginandshare.share.params.text.WbTextParams
 import com.like.thirdpartyloginandshare.share.params.text.WxTextParams
 import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
 import com.like.thirdpartyloginandshare.util.PlatForm
@@ -141,8 +142,8 @@ class MainActivity : AppCompatActivity() {
 //                    "defaultText"
 //                )
 //            )
-            .share(WbImageParams(BitmapFactory.decodeFile("${getExternalFilesDir(null)}/aaa.png")))
-//            .share(WbTextParams("hahahah"))
+//            .share(WbImageParams(BitmapFactory.decodeFile("${getExternalFilesDir(null)}/aaa.png")))
+            .share(WbTextParams("hahahah"))
     }
 
     fun wxLogin(view: View) {
