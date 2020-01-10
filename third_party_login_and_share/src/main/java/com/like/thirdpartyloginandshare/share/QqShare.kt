@@ -182,7 +182,7 @@ class QqShare(private val activity: Activity) : ShareStrategy {
         }
 
         override fun onError(e: UiError) {
-            listener.onFailure("分享失败 ${e.errorDetail}")
+            listener.onFailure(e.errorDetail)
         }
 
         override fun onCancel() {
