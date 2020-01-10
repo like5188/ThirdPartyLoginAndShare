@@ -30,7 +30,8 @@ class WbLogin(private val activity: Activity) : LoginStrategy {
         if (AccessTokenKeeper.readAccessToken(activity.applicationContext).isSessionValid) {
             mOnLoginAndShareListener?.onSuccess()
         } else {
-            // 此种授权方式会根据手机是否安装微博客户端来决定使用sso授权还是网页授权，如果安装有微博客户端 则调用微博客户端授权，否则调用Web页面方式授权
+            // 此种授权方式会根据手机是否安装微博客户端来决定使用sso授权还是网页授权，
+            // 如果安装有微博客户端 则调用微博客户端授权，否则调用Web页面方式授权
             mSsoHandler.authorize(mLoginListener)
         }
     }

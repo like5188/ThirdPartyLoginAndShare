@@ -38,14 +38,12 @@ class QqLogin(private val activity: Activity) : LoginStrategy {
     }
 
     override fun login() {
-        if (!mTencent.isQQInstalled(activity.applicationContext)) {
-            mOnLoginAndShareListener?.onFailure("您的手机没有安装QQ")
-            return
-        }
         if (mTencent.checkSessionValid(ThirdPartyInit.qqInitParams.appId)) {
             mTencent.initSessionCache(mTencent.loadSession(ThirdPartyInit.qqInitParams.appId))
             mOnLoginAndShareListener?.onSuccess()
-        } else {// token过期，请调用登录接口拉起手Q授权登录
+        } else {
+            // token过期，请调用登录接口拉起手Q授权登录
+            // 如果没有安装QQ，会自动打开下载页面
             mTencent.login(activity, "all", mLoginListener)
         }
     }
