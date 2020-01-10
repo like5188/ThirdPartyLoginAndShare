@@ -41,6 +41,7 @@ class WbLogin(private val activity: Activity) : LoginStrategy {
     }
 
     fun getUserInfo(onSuccess: (UserInfo) -> Unit, onError: ((String) -> Unit)? = null) {
+        // 封装了 "access_token"，"expires_in"，"refresh_token"，并提供了他们的管理功能
         val oauth2AccessToken = AccessTokenKeeper.readAccessToken(activity.applicationContext)
         if (oauth2AccessToken.isSessionValid) {
             HttpUtils.requestAsync(

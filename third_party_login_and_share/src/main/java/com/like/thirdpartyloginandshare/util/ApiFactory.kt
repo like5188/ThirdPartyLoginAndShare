@@ -48,6 +48,9 @@ object ApiFactory {
         }
     }
 
+    /**
+     * 注意：SsoHandler 仅当 SDK 支持 SSO 时有效
+     */
     fun createWbApi(activity: Activity) = SsoHandler(activity)
 
     fun createWbShareApi(activity: Activity) = WbShareHandler(activity)
