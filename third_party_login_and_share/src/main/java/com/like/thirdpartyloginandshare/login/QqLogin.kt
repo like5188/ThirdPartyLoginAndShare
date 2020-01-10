@@ -65,10 +65,13 @@ class QqLogin(private val activity: Activity) : LoginStrategy {
                     if (!TextUtils.isEmpty(accessToken) && !TextUtils.isEmpty(expiresIn) && !TextUtils.isEmpty(openId)) {
                         mTencent.setAccessToken(accessToken, expiresIn)
                         mTencent.openId = openId
+                        listener.onSuccess()
+                    } else {
+                        listener.onFailure("登录失败 解析数据失败")
                     }
                 } catch (e: Exception) {
+                    listener.onFailure(e.message ?: "")
                 }
-                listener.onSuccess()
             } else {
                 listener.onFailure("登录失败 返回为空")
             }
