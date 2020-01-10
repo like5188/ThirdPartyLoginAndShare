@@ -10,7 +10,6 @@ import com.like.thirdpartyloginandshare.share.params.text.WbTextParams
 import com.like.thirdpartyloginandshare.share.params.video.WbVideoParams
 import com.like.thirdpartyloginandshare.util.ApiFactory
 import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
-import com.sina.weibo.sdk.WbSdk
 import com.sina.weibo.sdk.api.*
 import com.sina.weibo.sdk.share.WbShareCallback
 import com.sina.weibo.sdk.utils.Utility
@@ -35,10 +34,6 @@ class WbShare(private val activity: Activity) : ShareStrategy {
     }
 
     override fun share(params: ShareParams) {
-        if (!WbSdk.isWbInstall(activity.applicationContext)) {
-            mOnLoginAndShareListener?.onFailure("您的手机没有安装微博")
-            return
-        }
         when (params) {
             is WbTextParams -> {
                 shareText(params)
