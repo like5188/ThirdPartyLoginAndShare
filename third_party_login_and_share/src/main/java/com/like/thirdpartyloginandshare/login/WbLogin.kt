@@ -5,7 +5,6 @@ import android.content.Intent
 import com.like.thirdpartyloginandshare.util.ApiFactory
 import com.like.thirdpartyloginandshare.util.HttpUtils
 import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
-import com.sina.weibo.sdk.WbSdk
 import com.sina.weibo.sdk.auth.AccessTokenKeeper
 import com.sina.weibo.sdk.auth.Oauth2AccessToken
 import com.sina.weibo.sdk.auth.WbAuthListener
@@ -28,13 +27,10 @@ class WbLogin(private val activity: Activity) : LoginStrategy {
     }
 
     override fun login() {
-        if (!WbSdk.isWbInstall(activity.applicationContext)) {
-            mOnLoginAndShareListener?.onFailure("您的手机没有安装微博")
-            return
-        }
         if (AccessTokenKeeper.readAccessToken(activity.applicationContext).isSessionValid) {
             mOnLoginAndShareListener?.onSuccess()
         } else {
+            // 此种授权方式会根据手机是否安装微博客户端来决定使用sso授权还是网页授权，如果安装有微博客户端 则调用微博客户端授权，否则调用Web页面方式授权
             mSsoHandler.authorize(mLoginListener)
         }
     }
@@ -81,6 +77,8 @@ class WbLogin(private val activity: Activity) : LoginStrategy {
                     listener.onSuccess()
                     // 保存 Token 到 SharedPreferences
                     AccessTokenKeeper.writeAccessToken(activity.applicationContext, token)
+                } else {
+                    listener.onFailure("登录失败 token无效")
                 }
             } else {
                 listener.onFailure("登录失败 返回为空")
