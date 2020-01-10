@@ -11,11 +11,13 @@ import com.like.thirdpartyloginandshare.share.params.ShareParams
  * @param targetUrl 音乐文件的远程链接, 以URL的形式传入, 不支持本地音乐。
  * @param summary   分享的消息摘要，最长40个字。
  * @param imageUrl  分享图片的URL或者本地路径
+ * @param arkStr    Ark JSON串
  */
 data class QqMusicParams(
     val title: String,
     val audioUrl: String,
     val targetUrl: String = audioUrl,
     val summary: String = "",
-    val imageUrl: String = ""
+    val imageUrl: String = "",
+    val arkStr: String = ""
 ) : ShareParams
