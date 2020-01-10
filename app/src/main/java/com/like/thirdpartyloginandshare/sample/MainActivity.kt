@@ -274,7 +274,7 @@ class MainActivity : AppCompatActivity() {
                 }
             })
             .share(QqAppParams("title", "http://url.cn/424xgot"))
-//            .share(QqMusicParams("title", "http://c.y.qq.com/v8/playsong.html?songid=109325260&songmid=000kuo2H2xJqfA&songtype=0&source=mqq&_wv=1"))
+//            .share(QqMusicParams("title", "http://c.y.qq.com/v8/playsong.html?songid=109325260&songmid=000kuo2H2xJqfA&songtype=0&source=mqq&_wv=1","https://www.baidu.com"))
 //            .share(QqImageAndTextParams("title","https://www.baidu.com/"))
 //            .share(QqImageParams("/storage/emulated/0/Pictures/Screenshots/S81224-20082955.jpg"))
     }
