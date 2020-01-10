@@ -45,30 +45,8 @@ class ThirdPartyShare(private val activity: Activity) : ShareStrategy {
     }
 
     /**
-     * @param params    对应平台的对应参数。
-     *
-     * - [com.like.thirdpartyloginandshare.util.PlatForm.QQ]：
-     * [com.like.thirdpartyloginandshare.share.params.app.QqAppParams]、
-     * [com.like.thirdpartyloginandshare.share.params.image.QqImageParams]、
-     * [com.like.thirdpartyloginandshare.share.params.imageandtext.QqImageAndTextParams]、
-     * [com.like.thirdpartyloginandshare.share.params.music.QqMusicParams]
-     *
-     * - [com.like.thirdpartyloginandshare.util.PlatForm.QZONE]：
-     * [com.like.thirdpartyloginandshare.share.params.imageandtext.QZoneImageAndTextParams]
-     *
-     * - [com.like.thirdpartyloginandshare.util.PlatForm.WX]、[com.like.thirdpartyloginandshare.util.PlatForm.WX_CIRCLE]：
-     * [com.like.thirdpartyloginandshare.share.params.image.WxImageParams]、
-     * [com.like.thirdpartyloginandshare.share.params.music.WxMusicParams]、
-     * [com.like.thirdpartyloginandshare.share.params.page.WxPageParams]、
-     * [com.like.thirdpartyloginandshare.share.params.text.WxTextParams]、
-     * [com.like.thirdpartyloginandshare.share.params.video.WxVideoParams]
-     *
-     * - [com.like.thirdpartyloginandshare.util.PlatForm.WB]：
-     * [com.like.thirdpartyloginandshare.share.params.image.WbImageParams]、
-     * [com.like.thirdpartyloginandshare.share.params.multiimage.WbMultiImageParams]、
-     * [com.like.thirdpartyloginandshare.share.params.page.WbPageParams]、
-     * [com.like.thirdpartyloginandshare.share.params.text.WbTextParams]、
-     * [com.like.thirdpartyloginandshare.share.params.video.WbVideoParams]
+     * 分享
+     * @param params    对应平台的对应参数。参数在[com.like.thirdpartyloginandshare.share.params]包下。
      */
     override fun share(params: ShareParams) {
         checkParams()
