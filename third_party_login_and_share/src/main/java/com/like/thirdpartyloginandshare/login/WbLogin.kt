@@ -43,7 +43,10 @@ class WbLogin(private val activity: Activity) : LoginStrategy {
     /**
      * @param uid           需要查询的用户ID
      * @param screen_name   需要查询的用户昵称
-     * 参数uid与screen_name二者必选其一，且只能选其一
+     *
+     * 注意：
+     * 1、参数uid与screen_name二者必选其一，且只能选其一
+     * 2、接口升级后，对未授权本应用的uid，将无法获取其个人简介、认证原因、粉丝数、关注数、微博数及最近一条微博内容
      */
     fun getUserInfo(uid: String = "", screen_name: String = "", onSuccess: (UserInfo) -> Unit, onError: ((String) -> Unit)? = null) {
         // 封装了 "access_token"，"expires_in"，"refresh_token"，并提供了他们的管理功能
