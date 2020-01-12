@@ -4,8 +4,8 @@ import android.content.Intent
 import com.like.thirdpartyloginandshare.share.params.ShareParams
 import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
 
-interface ShareStrategy {
+interface IShareStrategy {
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
-    fun setShareListener(listener: OnLoginAndShareListener): ShareStrategy
+    fun setShareListener(listener: OnLoginAndShareListener): IShareStrategy
     fun share(params: ShareParams)
 }

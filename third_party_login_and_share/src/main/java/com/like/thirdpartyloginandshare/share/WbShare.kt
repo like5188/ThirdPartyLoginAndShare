@@ -14,7 +14,7 @@ import com.sina.weibo.sdk.api.*
 import com.sina.weibo.sdk.share.WbShareCallback
 import com.sina.weibo.sdk.utils.Utility
 
-class WbShare(private val activity: Activity) : ShareStrategy {
+class WbShare(private val activity: Activity) : IShareStrategy {
     private val mWbShareHandler by lazy { ApiFactory.createWbShareApi(activity) }
     private var mShareListener: ShareListener? = null
     private var mOnLoginAndShareListener: OnLoginAndShareListener? = null
@@ -27,7 +27,7 @@ class WbShare(private val activity: Activity) : ShareStrategy {
         mWbShareHandler.doResultIntent(data, mShareListener)
     }
 
-    override fun setShareListener(listener: OnLoginAndShareListener): ShareStrategy {
+    override fun setShareListener(listener: OnLoginAndShareListener): IShareStrategy {
         mOnLoginAndShareListener = listener
         mShareListener = ShareListener(listener)
         return this

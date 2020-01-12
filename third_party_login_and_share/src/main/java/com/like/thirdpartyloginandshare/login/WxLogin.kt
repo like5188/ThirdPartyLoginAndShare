@@ -14,7 +14,7 @@ import com.tencent.mm.opensdk.openapi.IWXAPI
 import org.json.JSONException
 import org.json.JSONObject
 
-class WxLogin(private val activity: Activity) : LoginStrategy {
+class WxLogin(private val activity: Activity) : ILoginStrategy {
     companion object {
         private const val BASE_URL = "https://api.weixin.qq.com/"
         private var mOnLoginAndShareListener: OnLoginAndShareListener? = null
@@ -129,7 +129,7 @@ class WxLogin(private val activity: Activity) : LoginStrategy {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
     }
 
-    override fun setLoginListener(listener: OnLoginAndShareListener): LoginStrategy {
+    override fun setLoginListener(listener: OnLoginAndShareListener): ILoginStrategy {
         mOnLoginAndShareListener = listener
         return this
     }

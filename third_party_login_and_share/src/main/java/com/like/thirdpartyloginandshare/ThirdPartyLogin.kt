@@ -6,10 +6,10 @@ import com.like.thirdpartyloginandshare.login.*
 import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
 import com.like.thirdpartyloginandshare.util.PlatForm
 
-class ThirdPartyLogin(private val activity: Activity) : LoginStrategy {
-    private lateinit var mStrategy: LoginStrategy
+class ThirdPartyLogin(private val activity: Activity) : ILoginStrategy {
+    private lateinit var mStrategy: ILoginStrategy
 
-    fun setPlatForm(platForm: PlatForm): LoginStrategy {
+    fun setPlatForm(platForm: PlatForm): ILoginStrategy {
         ThirdPartyInit.checkInit(platForm)
         when (platForm) {
             PlatForm.QQ -> {
@@ -36,7 +36,7 @@ class ThirdPartyLogin(private val activity: Activity) : LoginStrategy {
         mStrategy.onActivityResult(requestCode, resultCode, data)
     }
 
-    override fun setLoginListener(listener: OnLoginAndShareListener): ThirdPartyLogin {
+    override fun setLoginListener(listener: OnLoginAndShareListener): ILoginStrategy {
         checkParams()
         mStrategy.setLoginListener(listener)
         return this

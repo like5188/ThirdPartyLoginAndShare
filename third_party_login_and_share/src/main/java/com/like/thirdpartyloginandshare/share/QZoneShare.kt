@@ -20,7 +20,7 @@ import com.tencent.tauth.UiError
  * QQ空间分享工具类
  * QQ空间分享无需QQ登录
  */
-class QZoneShare(private val activity: Activity) : ShareStrategy {
+class QZoneShare(private val activity: Activity) : IShareStrategy {
     private val mTencent by lazy {
         ApiFactory.createQqApi(activity.applicationContext, ThirdPartyInit.qqInitParams.appId)
     }
@@ -33,7 +33,7 @@ class QZoneShare(private val activity: Activity) : ShareStrategy {
         }
     }
 
-    override fun setShareListener(listener: OnLoginAndShareListener): ShareStrategy {
+    override fun setShareListener(listener: OnLoginAndShareListener): IShareStrategy {
         mOnLoginAndShareListener = listener
         mShareListener = ShareListener(listener)
         return this

@@ -3,9 +3,9 @@ package com.like.thirdpartyloginandshare.login
 import android.content.Intent
 import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
 
-interface LoginStrategy {
+interface ILoginStrategy {
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
-    fun setLoginListener(listener: OnLoginAndShareListener): LoginStrategy
+    fun setLoginListener(listener: OnLoginAndShareListener): ILoginStrategy
     fun login()
     fun logout()
     fun getData(dataType: DataType = USER_INFO, onSuccess: (String) -> Unit, onError: ((String) -> Unit)? = null)

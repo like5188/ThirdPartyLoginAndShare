@@ -19,7 +19,7 @@ import com.tencent.mm.opensdk.modelmsg.SendMessageToWX.Req.WXSceneTimeline
 import com.tencent.mm.opensdk.openapi.IWXAPI
 import java.io.ByteArrayOutputStream
 
-class WxShare(private val activity: Activity) : ShareStrategy {
+class WxShare(private val activity: Activity) : IShareStrategy {
     companion object {
         private var mTargetScene: Int = WXSceneSession
         private var mOnLoginAndShareListener: OnLoginAndShareListener? = null
@@ -29,7 +29,7 @@ class WxShare(private val activity: Activity) : ShareStrategy {
         ApiFactory.createWxApi(activity.applicationContext, ThirdPartyInit.wxInitParams.appId)
     }
 
-    fun setScene(scene: Int): ShareStrategy {
+    fun setScene(scene: Int): IShareStrategy {
         mTargetScene = scene
         return this
     }
@@ -37,7 +37,7 @@ class WxShare(private val activity: Activity) : ShareStrategy {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
     }
 
-    override fun setShareListener(listener: OnLoginAndShareListener): ShareStrategy {
+    override fun setShareListener(listener: OnLoginAndShareListener): IShareStrategy {
         mOnLoginAndShareListener = listener
         return this
     }

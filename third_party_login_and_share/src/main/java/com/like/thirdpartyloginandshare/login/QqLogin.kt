@@ -18,7 +18,7 @@ import org.json.JSONObject
  * QQ登录工具类
  * 应用需要在调用接口的Activity的onActivityResult方法中调用[onActivityResult]
  */
-class QqLogin(private val activity: Activity) : LoginStrategy {
+class QqLogin(private val activity: Activity) : ILoginStrategy {
     private val mTencent by lazy {
         ApiFactory.createQqApi(activity.applicationContext, ThirdPartyInit.qqInitParams.appId)
     }
@@ -31,7 +31,7 @@ class QqLogin(private val activity: Activity) : LoginStrategy {
         }
     }
 
-    override fun setLoginListener(listener: OnLoginAndShareListener): LoginStrategy {
+    override fun setLoginListener(listener: OnLoginAndShareListener): ILoginStrategy {
         mOnLoginAndShareListener = listener
         mLoginListener = LoginListener(listener)
         return this

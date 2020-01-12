@@ -10,7 +10,7 @@ import com.sina.weibo.sdk.auth.Oauth2AccessToken
 import com.sina.weibo.sdk.auth.WbAuthListener
 import com.sina.weibo.sdk.auth.WbConnectErrorMessage
 
-class WbLogin(private val activity: Activity) : LoginStrategy {
+class WbLogin(private val activity: Activity) : ILoginStrategy {
     private val mSsoHandler by lazy { ApiFactory.createWbApi(activity) }
     private var mLoginListener: LoginListener? = null
     private var mOnLoginAndShareListener: OnLoginAndShareListener? = null
@@ -19,7 +19,7 @@ class WbLogin(private val activity: Activity) : LoginStrategy {
         mSsoHandler.authorizeCallBack(requestCode, resultCode, data)
     }
 
-    override fun setLoginListener(listener: OnLoginAndShareListener): LoginStrategy {
+    override fun setLoginListener(listener: OnLoginAndShareListener): ILoginStrategy {
         mOnLoginAndShareListener = listener
         mLoginListener = LoginListener(listener)
         return this

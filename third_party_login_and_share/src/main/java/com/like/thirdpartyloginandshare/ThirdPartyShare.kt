@@ -8,10 +8,10 @@ import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
 import com.like.thirdpartyloginandshare.util.PlatForm
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX
 
-class ThirdPartyShare(private val activity: Activity) : ShareStrategy {
-    private lateinit var mStrategy: ShareStrategy
+class ThirdPartyShare(private val activity: Activity) : IShareStrategy {
+    private lateinit var mStrategy: IShareStrategy
 
-    fun setPlatForm(platForm: PlatForm): ShareStrategy {
+    fun setPlatForm(platForm: PlatForm): IShareStrategy {
         ThirdPartyInit.checkInit(platForm)
         when (platForm) {
             PlatForm.QQ -> {
@@ -38,7 +38,7 @@ class ThirdPartyShare(private val activity: Activity) : ShareStrategy {
         mStrategy.onActivityResult(requestCode, resultCode, data)
     }
 
-    override fun setShareListener(listener: OnLoginAndShareListener): ThirdPartyShare {
+    override fun setShareListener(listener: OnLoginAndShareListener): IShareStrategy {
         checkParams()
         mStrategy.setShareListener(listener)
         return this
