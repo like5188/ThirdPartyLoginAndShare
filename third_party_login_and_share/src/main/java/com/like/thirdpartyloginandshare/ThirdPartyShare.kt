@@ -11,7 +11,7 @@ import com.tencent.mm.opensdk.modelmsg.SendMessageToWX
 class ThirdPartyShare(private val activity: Activity) : ShareStrategy {
     private lateinit var mStrategy: ShareStrategy
 
-    fun setPlatForm(platForm: PlatForm): ThirdPartyShare {
+    fun setPlatForm(platForm: PlatForm): ShareStrategy {
         ThirdPartyInit.checkInit(platForm)
         when (platForm) {
             PlatForm.QQ -> {

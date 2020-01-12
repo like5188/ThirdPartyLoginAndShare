@@ -65,7 +65,7 @@ class QqShareActivity : AppCompatActivity() {
                     toast("取消QQ分享")
                 }
             })
-            .share(QqImageParams("/storage/emulated/0/Pictures/Screenshots/S81224-20082955.jpg"))
+            .share(QqImageParams("${getExternalFilesDir(null)}/aaa.png"))
     }
 
     fun imageAndText(view: View) {

@@ -2,17 +2,14 @@ package com.like.thirdpartyloginandshare
 
 import android.app.Activity
 import android.content.Intent
-import com.like.thirdpartyloginandshare.login.LoginStrategy
-import com.like.thirdpartyloginandshare.login.QqLogin
-import com.like.thirdpartyloginandshare.login.WbLogin
-import com.like.thirdpartyloginandshare.login.WxLogin
+import com.like.thirdpartyloginandshare.login.*
 import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
 import com.like.thirdpartyloginandshare.util.PlatForm
 
 class ThirdPartyLogin(private val activity: Activity) : LoginStrategy {
     private lateinit var mStrategy: LoginStrategy
 
-    fun setPlatForm(platForm: PlatForm): ThirdPartyLogin {
+    fun setPlatForm(platForm: PlatForm): LoginStrategy {
         ThirdPartyInit.checkInit(platForm)
         when (platForm) {
             PlatForm.QQ -> {
@@ -55,14 +52,9 @@ class ThirdPartyLogin(private val activity: Activity) : LoginStrategy {
         mStrategy.logout()
     }
 
-    override fun getUserInfo(onSuccess: (String) -> Unit, onError: ((String) -> Unit)?) {
+    override fun getData(dataType: DataType, onSuccess: (String) -> Unit, onError: ((String) -> Unit)?) {
         checkParams()
-        mStrategy.getUserInfo(onSuccess, onError)
-    }
-
-    override fun getUnionId(onSuccess: (String) -> Unit, onError: ((String) -> Unit)?) {
-        checkParams()
-        mStrategy.getUnionId(onSuccess, onError)
+        mStrategy.getData(dataType, onSuccess, onError)
     }
 
     private fun checkParams() {

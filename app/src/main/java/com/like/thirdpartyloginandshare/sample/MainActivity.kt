@@ -7,6 +7,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.like.thirdpartyloginandshare.ThirdPartyInit
 import com.like.thirdpartyloginandshare.ThirdPartyLogin
+import com.like.thirdpartyloginandshare.login.UNION_ID
 import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
 import com.like.thirdpartyloginandshare.util.PlatForm
 import kotlinx.coroutines.GlobalScope
@@ -85,11 +86,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun getUserInfoWB(view: View) {
-        mThirdPartyLogin.setPlatForm(PlatForm.WB).getUserInfo({
-            Log.w(TAG, it)
-        }, {
-            Log.e(TAG, it)
-        })
+        mThirdPartyLogin.setPlatForm(PlatForm.WB).getData(
+            onSuccess = {
+                Log.w(TAG, it)
+            },
+            onError = {
+                Log.e(TAG, it)
+            })
     }
 
     fun wbShare(view: View) {
@@ -116,11 +119,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun getUserInfoWX(view: View) {
-        mThirdPartyLogin.setPlatForm(PlatForm.WX).getUserInfo({
-            Log.w(TAG, it)
-        }, {
-            Log.e(TAG, it)
-        })
+        mThirdPartyLogin.setPlatForm(PlatForm.WX).getData(
+            onSuccess = {
+                Log.w(TAG, it)
+            },
+            onError = {
+                Log.e(TAG, it)
+            })
     }
 
     fun wxShare(view: View) {
@@ -151,19 +156,24 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun getUserInfoQQ(view: View) {
-        mThirdPartyLogin.setPlatForm(PlatForm.QQ).getUserInfo({
-            Log.w(TAG, it)
-        }, {
-            Log.e(TAG, it)
-        })
+        mThirdPartyLogin.setPlatForm(PlatForm.QQ).getData(
+            onSuccess = {
+                Log.w(TAG, it)
+            },
+            onError = {
+                Log.e(TAG, it)
+            })
     }
 
     fun getUnionId(view: View) {
-        mThirdPartyLogin.setPlatForm(PlatForm.QQ).getUnionId({
-            Log.w(TAG, it)
-        }, {
-            Log.e(TAG, it)
-        })
+        mThirdPartyLogin.setPlatForm(PlatForm.QQ).getData(
+            UNION_ID,
+            onSuccess = {
+                Log.w(TAG, it)
+            },
+            onError = {
+                Log.e(TAG, it)
+            })
     }
 
     fun qqShare(view: View) {
