@@ -7,21 +7,23 @@ import javax.net.ssl.HttpsURLConnection
 
 object HttpUtils {
     fun requestAsync(httpsUrl: String, onSuccess: (String?) -> Unit, onError: ((String) -> Unit)? = null) {
-        try {
-            val url = URL(httpsUrl)
-            val urlConnection: URLConnection = url.openConnection()
-            val httpsConn: HttpsURLConnection = urlConnection as HttpsURLConnection
-            httpsConn.allowUserInteraction = false
-            httpsConn.instanceFollowRedirects = true
-            httpsConn.requestMethod = "GET"
-            httpsConn.connect()
-            if (httpsConn.responseCode == HttpURLConnection.HTTP_OK) {
-                onSuccess(httpsConn.inputStream.bufferedReader().readText())
-            } else {
-                onError?.invoke(httpsConn.responseMessage)
+        Thread {
+            try {
+                val url = URL(httpsUrl)
+                val urlConnection: URLConnection = url.openConnection()
+                val httpsConn: HttpsURLConnection = urlConnection as HttpsURLConnection
+                httpsConn.allowUserInteraction = false
+                httpsConn.instanceFollowRedirects = true
+                httpsConn.requestMethod = "GET"
+                httpsConn.connect()
+                if (httpsConn.responseCode == HttpURLConnection.HTTP_OK) {
+                    onSuccess(httpsConn.inputStream.bufferedReader().readText())
+                } else {
+                    onError?.invoke(httpsConn.responseMessage)
+                }
+            } catch (e: Exception) {
+                onError?.invoke(e.message ?: "")
             }
-        } catch (e: Exception) {
-            onError?.invoke(e.message ?: "")
-        }
+        }.start()
     }
 }
