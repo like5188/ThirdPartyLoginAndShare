@@ -8,6 +8,9 @@ interface LoginStrategy {
     fun setLoginListener(listener: OnLoginAndShareListener): LoginStrategy
     fun login()
     fun logout()
-    fun getUserInfo(onSuccess: (String) -> Unit, onError: ((String) -> Unit)? = null)
-    fun getUnionId(onSuccess: (String) -> Unit, onError: ((String) -> Unit)? = null)
+    fun getData(dataType: DataType = USER_INFO, onSuccess: (String) -> Unit, onError: ((String) -> Unit)? = null)
 }
+
+sealed class DataType
+object USER_INFO : DataType()
+object UNION_ID : DataType()

@@ -52,44 +52,43 @@ class QqLogin(private val activity: Activity) : LoginStrategy {
         mTencent.logout(activity.applicationContext)
     }
 
-    override fun getUserInfo(onSuccess: (String) -> Unit, onError: ((String) -> Unit)?) {
+    override fun getData(dataType: DataType, onSuccess: (String) -> Unit, onError: ((String) -> Unit)?) {
         if (!mTencent.isSessionValid) {
             onError?.invoke("尚未登录QQ")
             return
         }
-        UserInfo(activity.applicationContext, mTencent.qqToken).getUserInfo(object : IUiListener {
-            override fun onComplete(response: Any?) {
-                onSuccess(response?.toString() ?: "")
-            }
+        when (dataType) {
+            USER_INFO -> {
+                UserInfo(activity.applicationContext, mTencent.qqToken).getUserInfo(object : IUiListener {
+                    override fun onComplete(response: Any?) {
+                        onSuccess(response?.toString() ?: "")
+                    }
 
-            override fun onCancel() {
-                onError?.invoke("操作被取消了")
-            }
+                    override fun onCancel() {
+                        onError?.invoke("操作被取消了")
+                    }
 
-            override fun onError(e: UiError?) {
-                onError?.invoke(e?.errorDetail ?: "")
+                    override fun onError(e: UiError?) {
+                        onError?.invoke(e?.errorDetail ?: "")
+                    }
+                })
             }
-        })
-    }
+            UNION_ID -> {
+                UnionInfo(activity.applicationContext, mTencent.qqToken).getUnionId(object : IUiListener {
+                    override fun onComplete(response: Any?) {
+                        onSuccess(response?.toString() ?: "")
+                    }
 
-    override fun getUnionId(onSuccess: (String) -> Unit, onError: ((String) -> Unit)?) {
-        if (!mTencent.isSessionValid) {
-            onError?.invoke("尚未登录QQ")
-            return
+                    override fun onCancel() {
+                        onError?.invoke("操作被取消了")
+                    }
+
+                    override fun onError(e: UiError?) {
+                        onError?.invoke(e?.errorDetail ?: "")
+                    }
+                })
+            }
         }
-        UnionInfo(activity.applicationContext, mTencent.qqToken).getUnionId(object : IUiListener {
-            override fun onComplete(response: Any?) {
-                onSuccess(response?.toString() ?: "")
-            }
-
-            override fun onCancel() {
-                onError?.invoke("操作被取消了")
-            }
-
-            override fun onError(e: UiError?) {
-                onError?.invoke(e?.errorDetail ?: "")
-            }
-        })
     }
 
     inner class LoginListener(private val listener: OnLoginAndShareListener) : IUiListener {

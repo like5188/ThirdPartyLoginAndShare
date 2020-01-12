@@ -16,6 +16,11 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name=".QqShareActivity" />
+        <activity android:name=".QZoneShareActivity" />
+        <activity android:name=".WbShareActivity" />
+        <activity android:name=".WxShareActivity" />
+        <activity android:name=".WxCircleShareActivity" />
     </application>
 
 </manifest>

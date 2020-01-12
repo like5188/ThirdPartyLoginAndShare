@@ -153,31 +153,40 @@ class WxLogin(private val activity: Activity) : LoginStrategy {
         mWxApi.unregisterApp()
     }
 
-    override fun getUserInfo(onSuccess: (String) -> Unit, onError: ((String) -> Unit)?) {
+    override fun getData(dataType: DataType, onSuccess: (String) -> Unit, onError: ((String) -> Unit)?) {
         if (accessToken.isNullOrEmpty() || openId.isNullOrEmpty()) {
             onError?.invoke("尚未登录WX")
             return
         }
-        /*
-         * 此接口用于获取用户个人信息。
-         * 开发者可通过 OpenID 来获取用户基本信息。
-         * 特别需要注意的是，如果开发者拥有多个移动应用、网站应用和公众帐号，可通过获取用户基本信息中的 unionid 来区分用户的唯一性，
-         * 因为只要是同一个微信开放平台帐号下的移动应用、网站应用和公众帐号，用户的 unionid 是唯一的。
-         * 换句话说，同一用户，对同一个微信开放平台下的不同应用，unionid 是相同的。
-         * 请注意，在用户修改微信头像后，旧的微信头像 URL 将会失效，
-         * 因此开发者应该自己在获取用户信息后，将头像图片保存下来，避免微信头像 URL 失效后的异常情况。
-         */
-        HttpUtils.requestAsync(
-            "${BASE_URL}sns/userinfo?access_token=$accessToken&openid=$openId",
-            {
-                onSuccess(it ?: "")
-            },
-            onError
-        )
-    }
-
-    override fun getUnionId(onSuccess: (String) -> Unit, onError: ((String) -> Unit)?) {
-        throw UnsupportedOperationException("WX不支持此操作")
+        when (dataType) {
+            USER_INFO -> {
+                /*
+                 * 此接口用于获取用户个人信息。
+                 * 开发者可通过 OpenID 来获取用户基本信息。
+                 * 特别需要注意的是，如果开发者拥有多个移动应用、网站应用和公众帐号，可通过获取用户基本信息中的 unionid 来区分用户的唯一性，
+                 * 因为只要是同一个微信开放平台帐号下的移动应用、网站应用和公众帐号，用户的 unionid 是唯一的。
+                 * 换句话说，同一用户，对同一个微信开放平台下的不同应用，unionid 是相同的。
+                 * 请注意，在用户修改微信头像后，旧的微信头像 URL 将会失效，
+                 * 因此开发者应该自己在获取用户信息后，将头像图片保存下来，避免微信头像 URL 失效后的异常情况。
+                 */
+                HttpUtils.requestAsync(
+                    "${BASE_URL}sns/userinfo?access_token=$accessToken&openid=$openId",
+                    {
+                        onSuccess(it ?: "")
+                    },
+                    onError
+                )
+            }
+            UNION_ID -> {
+                HttpUtils.requestAsync(
+                    "${BASE_URL}sns/userinfo?access_token=$accessToken&openid=$openId",
+                    {
+                        onSuccess(it ?: "")
+                    },
+                    onError
+                )
+            }
+        }
     }
 
     internal fun onGetCodeSuccess(code: String?) {

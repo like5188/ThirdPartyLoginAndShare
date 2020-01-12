@@ -1,73 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Button
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:onClick="wbLogin"
+        android:text="微博登录" />
 
     <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="wbLogin"
-            android:text="微博登录" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="getUserInfoWB"
+        android:text="获取微博用户信息" />
 
     <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="getUserInfoWB"
-            android:text="获取微博用户信息" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="wbShare"
+        android:text="微博分享" />
 
     <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="wbShare"
-            android:text="微博分享" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="wxLogin"
+        android:text="微信登录" />
 
     <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="wxLogin"
-            android:text="微信登录" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="getUserInfoWX"
+        android:text="获取微信用户信息" />
 
     <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="getUserInfoWX"
-            android:text="获取微信用户信息" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="wxShare"
+        android:text="微信分享" />
 
     <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="wxShare"
-            android:text="微信分享" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="wxCircleShare"
+        android:text="微信朋友圈分享" />
 
     <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="wxCircleShare"
-            android:text="微信朋友圈分享" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="qqLogin"
+        android:text="QQ登录" />
 
     <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="qqLogin"
-            android:text="QQ登录" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="getUserInfoQQ"
+        android:text="获取QQ用户信息" />
 
     <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="getUserInfoQQ"
-            android:text="获取QQ用户信息" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="getUnionId"
+        android:text="获取QQ用户unionid" />
 
     <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="qqShare"
-            android:text="QQ分享" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="qqShare"
+        android:text="QQ分享" />
 
     <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="qzoneShare"
-            android:text="QQ空间分享" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="qZoneShare"
+        android:text="QQ空间分享" />
 
 </LinearLayout>
