@@ -152,6 +152,9 @@ class WxLogin(private val activity: Activity) : ILoginStrategy {
         mWxApi.unregisterApp()
     }
 
+    /**
+     * 数据结构参考：https://developers.weixin.qq.com/doc/oplatform/Mobile_App/WeChat_Login/Authorized_API_call_UnionID.html
+     */
     override fun getData(dataType: DataType, onSuccess: (String) -> Unit, onError: ((String) -> Unit)?) {
         if (accessToken.isNullOrEmpty() || openId.isNullOrEmpty()) {
             onError?.invoke("尚未登录WX")

@@ -38,6 +38,9 @@ class WbLogin(private val activity: Activity) : ILoginStrategy {
         AccessTokenKeeper.clear(activity.applicationContext)
     }
 
+    /**
+     * 数据结构参考：https://open.weibo.com/wiki/2/users/show
+     */
     override fun getData(dataType: DataType, onSuccess: (String) -> Unit, onError: ((String) -> Unit)?) {
         when (dataType) {
             USER_INFO -> {

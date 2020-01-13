@@ -51,6 +51,9 @@ class QqLogin(private val activity: Activity) : ILoginStrategy {
         mTencent.logout(activity.applicationContext)
     }
 
+    /**
+     * 数据结构参考：https://wiki.connect.qq.com/get_user_info
+     */
     override fun getData(dataType: DataType, onSuccess: (String) -> Unit, onError: ((String) -> Unit)?) {
         if (!mTencent.isSessionValid) {
             onError?.invoke("尚未登录QQ")
