@@ -47,7 +47,7 @@
     ThirdPartyInit.initWb(context, ThirdPartyInit.WbInitParams("appKey", "redirectUrl", "scope"))
 ```
 
-4、登录
+4、登录、获取用户信息
 ```java
     private val mThirdPartyLogin: ThirdPartyLogin by lazy { ThirdPartyLogin() }
 
@@ -56,7 +56,7 @@
         mThirdPartyLogin.onActivityResult(requestCode, resultCode, data)
     }
 
-    // QQ登录，其它平台详见例子
+    // QQ登录，其它平台登录详见例子
     mThirdPartyLogin
         .strategy(QqLogin(this))
         .listener(object : OnLoginAndShareListener {
@@ -73,6 +73,15 @@
             }
         })
         .login()
+
+    // QQ获取用户信息，其它平台获取用户详见例子
+    mThirdPartyLogin.strategy(QqLogin(this)).getData(
+         onSuccess = {
+             Log.w(TAG, it)
+         },
+         onError = {
+             Log.e(TAG, it)
+         })
 ```
 
 5、分享
@@ -84,7 +93,7 @@
         mThirdPartyShare.onActivityResult(requestCode, resultCode, data)
     }
 
-    // QQ分享，其它平台详见例子
+    // QQ分享，其它平台分享详见例子
     mThirdPartyShare
         .strategy(QqShare(this))
         .listener(object : OnLoginAndShareListener {
