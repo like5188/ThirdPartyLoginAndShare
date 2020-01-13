@@ -8,7 +8,12 @@ interface ILoginStrategy {
     fun setLoginListener(listener: OnLoginAndShareListener)
     fun login()
     fun logout()
-    fun getData(dataType: DataType = USER_INFO, onSuccess: (String) -> Unit, onError: ((String) -> Unit)? = null)
+    fun getData(
+        dataType: DataType = USER_INFO,
+        params: Map<String, Any>? = null,
+        onSuccess: (String) -> Unit,
+        onError: ((String) -> Unit)? = null
+    )
 }
 
 sealed class DataType

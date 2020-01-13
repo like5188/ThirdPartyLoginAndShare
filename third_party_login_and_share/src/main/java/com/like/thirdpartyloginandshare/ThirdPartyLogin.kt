@@ -33,9 +33,14 @@ class ThirdPartyLogin {
         mStrategy.logout()
     }
 
-    fun getData(dataType: DataType = USER_INFO, onSuccess: (String) -> Unit, onError: ((String) -> Unit)? = null) {
+    fun getData(
+        dataType: DataType = USER_INFO,
+        params: Map<String, Any>? = null,
+        onSuccess: (String) -> Unit,
+        onError: ((String) -> Unit)? = null
+    ) {
         checkParams()
-        mStrategy.getData(dataType, onSuccess, onError)
+        mStrategy.getData(dataType, params, onSuccess, onError)
     }
 
     private fun checkParams() {

@@ -88,7 +88,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun getUserInfoWB(view: View) {
+        val params = mapOf("uid" to "6314833384")
+//        val params = mapOf("screen_name" to "三少也的拉萨的来看看")
         mThirdPartyLogin.strategy(WbLogin(this)).getData(
+            params = params,
             onSuccess = {
                 Log.w(TAG, it)
             },
