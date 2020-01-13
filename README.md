@@ -49,54 +49,56 @@
 
 4、登录
 ```java
-    private val mThirdPartyLogin: ThirdPartyLogin by lazy { ThirdPartyLogin(this) }
-
-    mThirdPartyLogin
-        .setPlatForm(PlatForm.WB)
-        .setLoginListener(object : OnLoginAndShareListener {
-            override fun onSuccess(content: String) {
-                toast("登录成功")
-            }
-
-            override fun onFailure(errorMessage: String) {
-                toast("登录失败：$errorMessage")
-            }
-
-            override fun onCancel() {
-                toast("取消登录")
-            }
-        })
-        .login()
+    private val mThirdPartyLogin: ThirdPartyLogin by lazy { ThirdPartyLogin() }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         mThirdPartyLogin.onActivityResult(requestCode, resultCode, data)
     }
+
+    // QQ登录，其它平台详见例子
+    mThirdPartyLogin
+        .strategy(QqLogin(this))
+        .listener(object : OnLoginAndShareListener {
+            override fun onSuccess() {
+                toast("QQ登录成功")
+            }
+
+            override fun onFailure(errorMessage: String) {
+                toast("QQ登录失败：$errorMessage")
+            }
+
+            override fun onCancel() {
+                toast("取消QQ登录")
+            }
+        })
+        .login()
 ```
 
 5、分享
 ```java
-    private val mThirdPartyShare: ThirdPartyShare by lazy { ThirdPartyShare(this) }
-
-    mThirdPartyShare
-        .setPlatForm(PlatForm.WX)// 平台类型
-        .setShareListener(object : OnLoginAndShareListener {
-            override fun onSuccess(content: String) {
-                toast("分享成功")
-            }
-
-            override fun onFailure(errorMessage: String) {
-                toast("分享失败：$errorMessage")
-            }
-
-            override fun onCancel() {
-                toast("取消分享")
-            }
-        })
-        .share(WxTextParams("111"))// 对应平台类型的参数
+    private val mThirdPartyShare: ThirdPartyShare by lazy { ThirdPartyShare() }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         mThirdPartyShare.onActivityResult(requestCode, resultCode, data)
     }
+
+    // QQ分享，其它平台详见例子
+    mThirdPartyShare
+        .strategy(QqShare(this))
+        .listener(object : OnLoginAndShareListener {
+            override fun onSuccess() {
+                toast("QQ分享成功")
+            }
+
+            override fun onFailure(errorMessage: String) {
+                toast("QQ分享失败：$errorMessage")
+            }
+
+            override fun onCancel() {
+                toast("取消QQ分享")
+            }
+        })
+        .share(QqImageParams("${getExternalFilesDir(null)}/aaa.png"))
 ```
