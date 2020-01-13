@@ -41,17 +41,29 @@ class WbLogin(private val activity: Activity) : ILoginStrategy {
     override fun getData(dataType: DataType, onSuccess: (String) -> Unit, onError: ((String) -> Unit)?) {
         when (dataType) {
             USER_INFO -> {
-                // 参数uid与screen_name二者必选其一，且只能选其一
-                val uid = ""// 需要查询的用户ID。接口升级后，对未授权本应用的uid，将无法获取其个人简介、认证原因、粉丝数、关注数、微博数及最近一条微博内容
-                val screen_name = ""// 需要查询的用户昵称
                 // 封装了 "access_token"，"expires_in"，"refresh_token"，并提供了他们的管理功能
                 val oauth2AccessToken = AccessTokenKeeper.readAccessToken(activity.applicationContext)
                 if (!oauth2AccessToken.isSessionValid) {
                     onError?.invoke("尚未登录微博")
                     return
                 }
+                // 参数uid与screen_name二者必选其一，且只能选其一
+                val uid = "6314833384"// 需要查询的用户ID。接口升级后，对未授权本应用的uid，将无法获取其个人简介、认证原因、粉丝数、关注数、微博数及最近一条微博内容
+                val screen_name = "三少也的拉萨的来看看"// 需要查询的用户昵称
+                val params = when {
+                    uid.isNotEmpty() -> {
+                        "uid=$uid"
+                    }
+                    screen_name.isNotEmpty() -> {
+                        "screen_name=$screen_name"
+                    }
+                    else -> {
+                        onError?.invoke("参数错误，uid与screen_name二者必选其一，且只能选其一")
+                        return
+                    }
+                }
                 HttpUtils.requestAsync(
-                    "https://api.weibo.com/2/users/show.json?access_token=${oauth2AccessToken.token}&uid=$uid&screen_name=$screen_name",
+                    "https://api.weibo.com/2/users/show.json?access_token=${oauth2AccessToken.token}&$params",
                     {
                         onSuccess(it ?: "")
                     },
