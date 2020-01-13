@@ -129,9 +129,8 @@ class WxLogin(private val activity: Activity) : ILoginStrategy {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
     }
 
-    override fun setLoginListener(listener: OnLoginAndShareListener): ILoginStrategy {
+    override fun setLoginListener(listener: OnLoginAndShareListener) {
         mOnLoginAndShareListener = listener
-        return this
     }
 
     override fun login() {

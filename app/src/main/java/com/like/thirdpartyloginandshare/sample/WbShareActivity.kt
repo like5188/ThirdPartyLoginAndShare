@@ -7,13 +7,13 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.like.thirdpartyloginandshare.ThirdPartyShare
+import com.like.thirdpartyloginandshare.share.WbShare
 import com.like.thirdpartyloginandshare.share.params.image.WbImageParams
 import com.like.thirdpartyloginandshare.share.params.multiimage.WbMultiImageParams
 import com.like.thirdpartyloginandshare.share.params.page.WbPageParams
 import com.like.thirdpartyloginandshare.share.params.text.WbTextParams
 import com.like.thirdpartyloginandshare.share.params.video.WbVideoParams
 import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
-import com.like.thirdpartyloginandshare.util.PlatForm
 import org.jetbrains.anko.toast
 import java.io.File
 
@@ -22,7 +22,7 @@ class WbShareActivity : AppCompatActivity() {
         private const val TAG = "WbShareActivity"
     }
 
-    private val mThirdPartyShare: ThirdPartyShare by lazy { ThirdPartyShare(this) }
+    private val mThirdPartyShare: ThirdPartyShare by lazy { ThirdPartyShare() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,8 +36,8 @@ class WbShareActivity : AppCompatActivity() {
 
     fun image(view: View) {
         mThirdPartyShare
-            .setPlatForm(PlatForm.WB)
-            .setShareListener(object : OnLoginAndShareListener {
+            .strategy(WbShare(this))
+            .listener(object : OnLoginAndShareListener {
                 override fun onSuccess() {
                     toast("微博分享成功")
                 }
@@ -55,8 +55,8 @@ class WbShareActivity : AppCompatActivity() {
 
     fun multiImage(view: View) {
         mThirdPartyShare
-            .setPlatForm(PlatForm.WB)
-            .setShareListener(object : OnLoginAndShareListener {
+            .strategy(WbShare(this))
+            .listener(object : OnLoginAndShareListener {
                 override fun onSuccess() {
                     toast("微博分享成功")
                 }
@@ -88,8 +88,8 @@ class WbShareActivity : AppCompatActivity() {
 
     fun page(view: View) {
         mThirdPartyShare
-            .setPlatForm(PlatForm.WB)
-            .setShareListener(object : OnLoginAndShareListener {
+            .strategy(WbShare(this))
+            .listener(object : OnLoginAndShareListener {
                 override fun onSuccess() {
                     toast("微博分享成功")
                 }
@@ -115,8 +115,8 @@ class WbShareActivity : AppCompatActivity() {
 
     fun text(view: View) {
         mThirdPartyShare
-            .setPlatForm(PlatForm.WB)
-            .setShareListener(object : OnLoginAndShareListener {
+            .strategy(WbShare(this))
+            .listener(object : OnLoginAndShareListener {
                 override fun onSuccess() {
                     toast("微博分享成功")
                 }
@@ -134,8 +134,8 @@ class WbShareActivity : AppCompatActivity() {
 
     fun video(view: View) {
         mThirdPartyShare
-            .setPlatForm(PlatForm.WB)
-            .setShareListener(object : OnLoginAndShareListener {
+            .strategy(WbShare(this))
+            .listener(object : OnLoginAndShareListener {
                 override fun onSuccess() {
                     toast("微博分享成功")
                 }

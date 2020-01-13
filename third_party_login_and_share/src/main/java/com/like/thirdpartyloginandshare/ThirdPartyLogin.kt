@@ -1,58 +1,39 @@
 package com.like.thirdpartyloginandshare
 
-import android.app.Activity
 import android.content.Intent
 import com.like.thirdpartyloginandshare.login.*
 import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
-import com.like.thirdpartyloginandshare.util.PlatForm
 
-class ThirdPartyLogin(private val activity: Activity) : ILoginStrategy {
+class ThirdPartyLogin {
     private lateinit var mStrategy: ILoginStrategy
 
-    fun setPlatForm(platForm: PlatForm): ILoginStrategy {
-        ThirdPartyInit.checkInit(platForm)
-        when (platForm) {
-            PlatForm.QQ -> {
-                mStrategy = QqLogin(activity)
-            }
-            PlatForm.QZONE -> {
-                throw UnsupportedOperationException("暂不支持 QZONE 进行登录")
-            }
-            PlatForm.WX -> {
-                mStrategy = WxLogin(activity)
-            }
-            PlatForm.WX_CIRCLE -> {
-                throw UnsupportedOperationException("暂不支持 WX_CIRCLE 进行登录")
-            }
-            PlatForm.WB -> {
-                mStrategy = WbLogin(activity)
-            }
-        }
+    fun strategy(strategy: ILoginStrategy): ThirdPartyLogin {
+        mStrategy = strategy
         return this
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         checkParams()
         mStrategy.onActivityResult(requestCode, resultCode, data)
     }
 
-    override fun setLoginListener(listener: OnLoginAndShareListener): ILoginStrategy {
+    fun listener(listener: OnLoginAndShareListener): ThirdPartyLogin {
         checkParams()
         mStrategy.setLoginListener(listener)
         return this
     }
 
-    override fun login() {
+    fun login() {
         checkParams()
         mStrategy.login()
     }
 
-    override fun logout() {
+    fun logout() {
         checkParams()
         mStrategy.logout()
     }
 
-    override fun getData(dataType: DataType, onSuccess: (String) -> Unit, onError: ((String) -> Unit)?) {
+    fun getData(dataType: DataType = USER_INFO, onSuccess: (String) -> Unit, onError: ((String) -> Unit)? = null) {
         checkParams()
         mStrategy.getData(dataType, onSuccess, onError)
     }
@@ -60,6 +41,23 @@ class ThirdPartyLogin(private val activity: Activity) : ILoginStrategy {
     private fun checkParams() {
         if (!::mStrategy.isInitialized) {
             throw UnsupportedOperationException("请先调用setPlatForm(platForm: PlatForm)方法设置对应的第三方登录平台")
+        }
+        when (mStrategy) {
+            is QqLogin -> {
+                if (!ThirdPartyInit.isQqInitialized()) {
+                    throw IllegalArgumentException("必须先调用ThirdPartyInit.initQq()方法初始化QQ")
+                }
+            }
+            is WxLogin -> {
+                if (!ThirdPartyInit.isWxInitialized()) {
+                    throw IllegalArgumentException("必须先调用ThirdPartyInit.initWx()方法初始化WX")
+                }
+            }
+            is WbLogin -> {
+                if (!ThirdPartyInit.isWbInitialized()) {
+                    throw IllegalArgumentException("必须先调用ThirdPartyInit.initWb()方法初始化WB")
+                }
+            }
         }
     }
 }

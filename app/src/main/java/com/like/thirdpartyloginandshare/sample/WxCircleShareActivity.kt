@@ -5,9 +5,9 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.like.thirdpartyloginandshare.ThirdPartyShare
+import com.like.thirdpartyloginandshare.share.WxShare
 import com.like.thirdpartyloginandshare.share.params.text.WxTextParams
 import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
-import com.like.thirdpartyloginandshare.util.PlatForm
 import org.jetbrains.anko.toast
 
 class WxCircleShareActivity : AppCompatActivity() {
@@ -15,7 +15,7 @@ class WxCircleShareActivity : AppCompatActivity() {
         private const val TAG = "WxCircleShareActivity"
     }
 
-    private val mThirdPartyShare: ThirdPartyShare by lazy { ThirdPartyShare(this) }
+    private val mThirdPartyShare: ThirdPartyShare by lazy { ThirdPartyShare() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,8 +41,8 @@ class WxCircleShareActivity : AppCompatActivity() {
 
     fun text(view: View) {
         mThirdPartyShare
-            .setPlatForm(PlatForm.WX_CIRCLE)
-            .setShareListener(object : OnLoginAndShareListener {
+            .strategy(WxShare(this).setScene(1))
+            .listener(object : OnLoginAndShareListener {
                 override fun onSuccess() {
                     toast("微信朋友圈分享成功")
                 }

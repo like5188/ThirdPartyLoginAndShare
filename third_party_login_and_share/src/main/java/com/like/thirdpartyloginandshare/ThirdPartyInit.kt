@@ -2,7 +2,6 @@ package com.like.thirdpartyloginandshare
 
 import android.content.Context
 import com.like.thirdpartyloginandshare.util.ApiFactory
-import com.like.thirdpartyloginandshare.util.PlatForm
 import com.sina.weibo.sdk.WbSdk
 import com.sina.weibo.sdk.auth.AuthInfo
 import java.util.concurrent.atomic.AtomicBoolean
@@ -15,43 +14,26 @@ object ThirdPartyInit {
     internal lateinit var wxInitParams: WxInitParams
     internal lateinit var wbInitParams: WbInitParams
 
-    internal fun checkInit(platForm: PlatForm) {
-        when (platForm) {
-            PlatForm.QQ -> {
-                if (!isQqInitialized.get()) throw IllegalArgumentException("必须先调用initQq()方法初始化QQ")
-            }
-            PlatForm.QZONE -> {
-                if (!isQqInitialized.get()) throw IllegalArgumentException("必须先调用initQq()方法初始化QQ")
-            }
-            PlatForm.WX -> {
-                if (!isWxInitialized.get()) throw IllegalArgumentException("必须先调用initWx()方法初始化微信")
-            }
-            PlatForm.WX_CIRCLE -> {
-                if (!isWxInitialized.get()) throw IllegalArgumentException("必须先调用initWx()方法初始化微信")
-            }
-            PlatForm.WB -> {
-                if (!isWbInitialized.get()) throw IllegalArgumentException("必须先调用initWb()方法初始化微博")
-            }
-        }
-    }
+    fun isQqInitialized() = isQqInitialized.get()
+    fun isWxInitialized() = isWxInitialized.get()
+    fun isWbInitialized() = isWbInitialized.get()
 
     fun initQq(context: Context, initParams: QqInitParams) {
-        qqInitParams = initParams
         if (isQqInitialized.compareAndSet(false, true)) {
-
+            qqInitParams = initParams
         }
     }
 
     fun initWx(context: Context, initParams: WxInitParams) {
-        wxInitParams = initParams
         if (isWxInitialized.compareAndSet(false, true)) {
+            wxInitParams = initParams
             ApiFactory.createWxApi(context, initParams.appId).registerApp(initParams.appId)
         }
     }
 
     fun initWb(context: Context, initParams: WbInitParams) {
-        wbInitParams = initParams
         if (isWbInitialized.compareAndSet(false, true)) {
+            wbInitParams = initParams
             WbSdk.install(
                 context.applicationContext,
                 AuthInfo(context.applicationContext, initParams.appKey, initParams.redirectUrl, initParams.scope)

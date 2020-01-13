@@ -19,10 +19,9 @@ class WbLogin(private val activity: Activity) : ILoginStrategy {
         mSsoHandler.authorizeCallBack(requestCode, resultCode, data)
     }
 
-    override fun setLoginListener(listener: OnLoginAndShareListener): ILoginStrategy {
+    override fun setLoginListener(listener: OnLoginAndShareListener) {
         mOnLoginAndShareListener = listener
         mLoginListener = LoginListener(listener)
-        return this
     }
 
     override fun login() {

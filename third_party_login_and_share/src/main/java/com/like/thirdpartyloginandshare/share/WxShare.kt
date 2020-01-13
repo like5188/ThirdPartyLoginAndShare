@@ -14,14 +14,12 @@ import com.like.thirdpartyloginandshare.share.params.video.WxVideoParams
 import com.like.thirdpartyloginandshare.util.ApiFactory
 import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
 import com.tencent.mm.opensdk.modelmsg.*
-import com.tencent.mm.opensdk.modelmsg.SendMessageToWX.Req.WXSceneSession
-import com.tencent.mm.opensdk.modelmsg.SendMessageToWX.Req.WXSceneTimeline
 import com.tencent.mm.opensdk.openapi.IWXAPI
 import java.io.ByteArrayOutputStream
 
 class WxShare(private val activity: Activity) : IShareStrategy {
     companion object {
-        private var mTargetScene: Int = WXSceneSession
+        private var mTargetScene: Int = SendMessageToWX.Req.WXSceneSession
         private var mOnLoginAndShareListener: OnLoginAndShareListener? = null
     }
 
@@ -29,6 +27,11 @@ class WxShare(private val activity: Activity) : IShareStrategy {
         ApiFactory.createWxApi(activity.applicationContext, ThirdPartyInit.wxInitParams.appId)
     }
 
+    /**
+     * @param scene 区分微信和微信朋友圈的标记。默认为[SendMessageToWX.Req.WXSceneSession]。
+     * 微信：[SendMessageToWX.Req.WXSceneSession]
+     * 微信朋友圈：[SendMessageToWX.Req.WXSceneTimeline]
+     */
     fun setScene(scene: Int): IShareStrategy {
         mTargetScene = scene
         return this
@@ -37,9 +40,8 @@ class WxShare(private val activity: Activity) : IShareStrategy {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
     }
 
-    override fun setShareListener(listener: OnLoginAndShareListener): IShareStrategy {
+    override fun setShareListener(listener: OnLoginAndShareListener) {
         mOnLoginAndShareListener = listener
-        return this
     }
 
     override fun share(params: ShareParams) {
@@ -64,8 +66,8 @@ class WxShare(private val activity: Activity) : IShareStrategy {
                 sharePage(params)
             }
             else -> when (mTargetScene) {
-                WXSceneSession -> throw UnsupportedOperationException("WX不支持此操作")
-                WXSceneTimeline -> throw UnsupportedOperationException("WX_CIRCLE不支持此操作")
+                SendMessageToWX.Req.WXSceneSession -> throw UnsupportedOperationException("WX不支持此操作")
+                SendMessageToWX.Req.WXSceneTimeline -> throw UnsupportedOperationException("WX_CIRCLE不支持此操作")
             }
         }
     }

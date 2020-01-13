@@ -7,9 +7,11 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.like.thirdpartyloginandshare.ThirdPartyInit
 import com.like.thirdpartyloginandshare.ThirdPartyLogin
+import com.like.thirdpartyloginandshare.login.QqLogin
 import com.like.thirdpartyloginandshare.login.UNION_ID
+import com.like.thirdpartyloginandshare.login.WbLogin
+import com.like.thirdpartyloginandshare.login.WxLogin
 import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
-import com.like.thirdpartyloginandshare.util.PlatForm
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.jetbrains.anko.toast
@@ -21,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         private const val TAG = "MainActivity"
     }
 
-    private val mThirdPartyLogin: ThirdPartyLogin by lazy { ThirdPartyLogin(this) }
+    private val mThirdPartyLogin: ThirdPartyLogin by lazy { ThirdPartyLogin() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,8 +70,8 @@ class MainActivity : AppCompatActivity() {
 
     fun wbLogin(view: View) {
         mThirdPartyLogin
-            .setPlatForm(PlatForm.WB)
-            .setLoginListener(object : OnLoginAndShareListener {
+            .strategy(WbLogin(this))
+            .listener(object : OnLoginAndShareListener {
                 override fun onSuccess() {
                     toast("微博登录成功")
                 }
@@ -86,7 +88,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun getUserInfoWB(view: View) {
-        mThirdPartyLogin.setPlatForm(PlatForm.WB).getData(
+        mThirdPartyLogin.strategy(WbLogin(this)).getData(
             onSuccess = {
                 Log.w(TAG, it)
             },
@@ -101,8 +103,8 @@ class MainActivity : AppCompatActivity() {
 
     fun wxLogin(view: View) {
         mThirdPartyLogin
-            .setPlatForm(PlatForm.WX)
-            .setLoginListener(object : OnLoginAndShareListener {
+            .strategy(WxLogin(this))
+            .listener(object : OnLoginAndShareListener {
                 override fun onSuccess() {
                     toast("微信登录成功")
                 }
@@ -119,7 +121,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun getUserInfoWX(view: View) {
-        mThirdPartyLogin.setPlatForm(PlatForm.WX).getData(
+        mThirdPartyLogin.strategy(WxLogin(this)).getData(
             onSuccess = {
                 Log.w(TAG, it)
             },
@@ -138,8 +140,8 @@ class MainActivity : AppCompatActivity() {
 
     fun qqLogin(view: View) {
         mThirdPartyLogin
-            .setPlatForm(PlatForm.QQ)
-            .setLoginListener(object : OnLoginAndShareListener {
+            .strategy(QqLogin(this))
+            .listener(object : OnLoginAndShareListener {
                 override fun onSuccess() {
                     toast("QQ登录成功")
                 }
@@ -156,7 +158,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun getUserInfoQQ(view: View) {
-        mThirdPartyLogin.setPlatForm(PlatForm.QQ).getData(
+        mThirdPartyLogin.strategy(QqLogin(this)).getData(
             onSuccess = {
                 Log.w(TAG, it)
             },
@@ -166,7 +168,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun getUnionId(view: View) {
-        mThirdPartyLogin.setPlatForm(PlatForm.QQ).getData(
+        mThirdPartyLogin.strategy(QqLogin(this)).getData(
             UNION_ID,
             onSuccess = {
                 Log.w(TAG, it)

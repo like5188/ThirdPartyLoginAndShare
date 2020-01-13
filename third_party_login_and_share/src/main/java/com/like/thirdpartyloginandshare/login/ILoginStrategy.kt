@@ -5,7 +5,7 @@ import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
 
 interface ILoginStrategy {
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
-    fun setLoginListener(listener: OnLoginAndShareListener): ILoginStrategy
+    fun setLoginListener(listener: OnLoginAndShareListener)
     fun login()
     fun logout()
     fun getData(dataType: DataType = USER_INFO, onSuccess: (String) -> Unit, onError: ((String) -> Unit)? = null)

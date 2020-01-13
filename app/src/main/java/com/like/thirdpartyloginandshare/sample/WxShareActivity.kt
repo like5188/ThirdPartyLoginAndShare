@@ -7,11 +7,11 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.like.thirdpartyloginandshare.ThirdPartyShare
+import com.like.thirdpartyloginandshare.share.WxShare
 import com.like.thirdpartyloginandshare.share.params.image.WxImageParams
 import com.like.thirdpartyloginandshare.share.params.music.WxMusicParams
 import com.like.thirdpartyloginandshare.share.params.text.WxTextParams
 import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
-import com.like.thirdpartyloginandshare.util.PlatForm
 import org.jetbrains.anko.toast
 
 class WxShareActivity : AppCompatActivity() {
@@ -19,7 +19,7 @@ class WxShareActivity : AppCompatActivity() {
         private const val TAG = "WxShareActivity"
     }
 
-    private val mThirdPartyShare: ThirdPartyShare by lazy { ThirdPartyShare(this) }
+    private val mThirdPartyShare: ThirdPartyShare by lazy { ThirdPartyShare() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,8 +33,8 @@ class WxShareActivity : AppCompatActivity() {
 
     fun image(view: View) {
         mThirdPartyShare
-            .setPlatForm(PlatForm.WX)
-            .setShareListener(object : OnLoginAndShareListener {
+            .strategy(WxShare(this).setScene(0))
+            .listener(object : OnLoginAndShareListener {
                 override fun onSuccess() {
                     toast("微信分享成功")
                 }
@@ -62,8 +62,8 @@ class WxShareActivity : AppCompatActivity() {
 
     fun music(view: View) {
         mThirdPartyShare
-            .setPlatForm(PlatForm.WX)
-            .setShareListener(object : OnLoginAndShareListener {
+            .strategy(WxShare(this).setScene(0))
+            .listener(object : OnLoginAndShareListener {
                 override fun onSuccess() {
                     toast("微信分享成功")
                 }
@@ -97,8 +97,8 @@ class WxShareActivity : AppCompatActivity() {
 
     fun text(view: View) {
         mThirdPartyShare
-            .setPlatForm(PlatForm.WX)
-            .setShareListener(object : OnLoginAndShareListener {
+            .strategy(WxShare(this).setScene(0))
+            .listener(object : OnLoginAndShareListener {
                 override fun onSuccess() {
                     toast("微信分享成功")
                 }

@@ -31,10 +31,9 @@ class QqLogin(private val activity: Activity) : ILoginStrategy {
         }
     }
 
-    override fun setLoginListener(listener: OnLoginAndShareListener): ILoginStrategy {
+    override fun setLoginListener(listener: OnLoginAndShareListener) {
         mOnLoginAndShareListener = listener
         mLoginListener = LoginListener(listener)
-        return this
     }
 
     override fun login() {

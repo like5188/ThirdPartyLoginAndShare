@@ -5,12 +5,12 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.like.thirdpartyloginandshare.ThirdPartyShare
+import com.like.thirdpartyloginandshare.share.QqShare
 import com.like.thirdpartyloginandshare.share.params.app.QqAppParams
 import com.like.thirdpartyloginandshare.share.params.image.QqImageParams
 import com.like.thirdpartyloginandshare.share.params.imageandtext.QqImageAndTextParams
 import com.like.thirdpartyloginandshare.share.params.music.QqMusicParams
 import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
-import com.like.thirdpartyloginandshare.util.PlatForm
 import org.jetbrains.anko.toast
 
 class QqShareActivity : AppCompatActivity() {
@@ -18,7 +18,7 @@ class QqShareActivity : AppCompatActivity() {
         private const val TAG = "QqShareActivity"
     }
 
-    private val mThirdPartyShare: ThirdPartyShare by lazy { ThirdPartyShare(this) }
+    private val mThirdPartyShare: ThirdPartyShare by lazy { ThirdPartyShare() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,8 +32,8 @@ class QqShareActivity : AppCompatActivity() {
 
     fun app(view: View) {
         mThirdPartyShare
-            .setPlatForm(PlatForm.QQ)
-            .setShareListener(object : OnLoginAndShareListener {
+            .strategy(QqShare(this))
+            .listener(object : OnLoginAndShareListener {
                 override fun onSuccess() {
                     toast("QQ分享成功")
                 }
@@ -51,8 +51,8 @@ class QqShareActivity : AppCompatActivity() {
 
     fun image(view: View) {
         mThirdPartyShare
-            .setPlatForm(PlatForm.QQ)
-            .setShareListener(object : OnLoginAndShareListener {
+            .strategy(QqShare(this))
+            .listener(object : OnLoginAndShareListener {
                 override fun onSuccess() {
                     toast("QQ分享成功")
                 }
@@ -70,8 +70,8 @@ class QqShareActivity : AppCompatActivity() {
 
     fun imageAndText(view: View) {
         mThirdPartyShare
-            .setPlatForm(PlatForm.QQ)
-            .setShareListener(object : OnLoginAndShareListener {
+            .strategy(QqShare(this))
+            .listener(object : OnLoginAndShareListener {
                 override fun onSuccess() {
                     toast("QQ分享成功")
                 }
@@ -89,8 +89,8 @@ class QqShareActivity : AppCompatActivity() {
 
     fun music(view: View) {
         mThirdPartyShare
-            .setPlatForm(PlatForm.QQ)
-            .setShareListener(object : OnLoginAndShareListener {
+            .strategy(QqShare(this))
+            .listener(object : OnLoginAndShareListener {
                 override fun onSuccess() {
                     toast("QQ分享成功")
                 }

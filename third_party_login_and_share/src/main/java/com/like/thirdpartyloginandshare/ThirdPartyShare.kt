@@ -1,44 +1,24 @@
 package com.like.thirdpartyloginandshare
 
-import android.app.Activity
 import android.content.Intent
 import com.like.thirdpartyloginandshare.share.*
 import com.like.thirdpartyloginandshare.share.params.ShareParams
 import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
-import com.like.thirdpartyloginandshare.util.PlatForm
-import com.tencent.mm.opensdk.modelmsg.SendMessageToWX
 
-class ThirdPartyShare(private val activity: Activity) : IShareStrategy {
+class ThirdPartyShare {
     private lateinit var mStrategy: IShareStrategy
 
-    fun setPlatForm(platForm: PlatForm): IShareStrategy {
-        ThirdPartyInit.checkInit(platForm)
-        when (platForm) {
-            PlatForm.QQ -> {
-                mStrategy = QqShare(activity)
-            }
-            PlatForm.QZONE -> {
-                mStrategy = QZoneShare(activity)
-            }
-            PlatForm.WX -> {
-                mStrategy = WxShare(activity).setScene(SendMessageToWX.Req.WXSceneSession)
-            }
-            PlatForm.WX_CIRCLE -> {
-                mStrategy = WxShare(activity).setScene(SendMessageToWX.Req.WXSceneTimeline)
-            }
-            PlatForm.WB -> {
-                mStrategy = WbShare(activity)
-            }
-        }
+    fun strategy(strategy: IShareStrategy): ThirdPartyShare {
+        mStrategy = strategy
         return this
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         checkParams()
         mStrategy.onActivityResult(requestCode, resultCode, data)
     }
 
-    override fun setShareListener(listener: OnLoginAndShareListener): IShareStrategy {
+    fun listener(listener: OnLoginAndShareListener): ThirdPartyShare {
         checkParams()
         mStrategy.setShareListener(listener)
         return this
@@ -48,7 +28,7 @@ class ThirdPartyShare(private val activity: Activity) : IShareStrategy {
      * 分享
      * @param params    对应平台的对应参数。参数在[com.like.thirdpartyloginandshare.share.params]包下。
      */
-    override fun share(params: ShareParams) {
+    fun share(params: ShareParams) {
         checkParams()
         mStrategy.share(params)
     }
@@ -56,6 +36,23 @@ class ThirdPartyShare(private val activity: Activity) : IShareStrategy {
     private fun checkParams() {
         if (!::mStrategy.isInitialized) {
             throw UnsupportedOperationException("请先调用setPlatForm(platForm: PlatForm)方法设置对应的第三方分享平台")
+        }
+        when (mStrategy) {
+            is QqShare, is QZoneShare -> {
+                if (!ThirdPartyInit.isQqInitialized()) {
+                    throw IllegalArgumentException("必须先调用ThirdPartyInit.initQq()方法初始化QQ")
+                }
+            }
+            is WxShare -> {
+                if (!ThirdPartyInit.isWxInitialized()) {
+                    throw IllegalArgumentException("必须先调用ThirdPartyInit.initWx()方法初始化WX")
+                }
+            }
+            is WbShare -> {
+                if (!ThirdPartyInit.isWbInitialized()) {
+                    throw IllegalArgumentException("必须先调用ThirdPartyInit.initWb()方法初始化WB")
+                }
+            }
         }
     }
 }

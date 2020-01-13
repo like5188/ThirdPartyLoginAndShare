@@ -27,10 +27,9 @@ class WbShare(private val activity: Activity) : IShareStrategy {
         mWbShareHandler.doResultIntent(data, mShareListener)
     }
 
-    override fun setShareListener(listener: OnLoginAndShareListener): IShareStrategy {
+    override fun setShareListener(listener: OnLoginAndShareListener) {
         mOnLoginAndShareListener = listener
         mShareListener = ShareListener(listener)
-        return this
     }
 
     override fun share(params: ShareParams) {

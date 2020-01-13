@@ -33,10 +33,9 @@ class QZoneShare(private val activity: Activity) : IShareStrategy {
         }
     }
 
-    override fun setShareListener(listener: OnLoginAndShareListener): IShareStrategy {
+    override fun setShareListener(listener: OnLoginAndShareListener) {
         mOnLoginAndShareListener = listener
         mShareListener = ShareListener(listener)
-        return this
     }
 
     override fun share(params: ShareParams) {

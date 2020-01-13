@@ -5,9 +5,9 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.like.thirdpartyloginandshare.ThirdPartyShare
+import com.like.thirdpartyloginandshare.share.QZoneShare
 import com.like.thirdpartyloginandshare.share.params.imageandtext.QZoneImageAndTextParams
 import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
-import com.like.thirdpartyloginandshare.util.PlatForm
 import org.jetbrains.anko.toast
 
 class QZoneShareActivity : AppCompatActivity() {
@@ -15,7 +15,7 @@ class QZoneShareActivity : AppCompatActivity() {
         private const val TAG = "QZoneShareActivity"
     }
 
-    private val mThirdPartyShare: ThirdPartyShare by lazy { ThirdPartyShare(this) }
+    private val mThirdPartyShare: ThirdPartyShare by lazy { ThirdPartyShare() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,8 +29,8 @@ class QZoneShareActivity : AppCompatActivity() {
 
     fun imageAndText(view: View) {
         mThirdPartyShare
-            .setPlatForm(PlatForm.QZONE)
-            .setShareListener(object : OnLoginAndShareListener {
+            .strategy(QZoneShare(this))
+            .listener(object : OnLoginAndShareListener {
                 override fun onSuccess() {
                     toast("QZONE分享成功")
                 }
