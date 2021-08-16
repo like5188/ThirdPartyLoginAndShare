@@ -1,43 +1,74 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.like.thirdpartyloginandshare">
+    package="com.like.thirdpartyloginandshare">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <queries>
+        <package android:name="com.instagram.android" />
+        <package android:name="com.tencent.mm" />
+        <package android:name="com.tencent.mobileqq" />
+        <package android:name="com.tencent.wework" />
+        <package android:name="com.qzone" />
+        <package android:name="com.sina.weibo" />
+        <package android:name="com.alibaba.android.rimet" />
+        <package android:name="com.eg.android.AlipayGphone" />
+        <package android:name="com.donews.renren.android" />
+        <package android:name="com.douban.frodo" />
+        <package android:name="com.youdao.note" />
+        <package android:name="im.yixin" />
+        <package android:name="com.yinxiang" />
+        <package android:name="com.facebook.katana" />
+        <package android:name="com.linkedin.android" />
+    </queries>
 
     <application>
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths" />
+        </provider>
         <!--QQ-->
         <activity
-                android:name="com.tencent.tauth.AuthActivity"
-                android:noHistory="true"
-                android:launchMode="singleTask">
+            android:name="com.tencent.tauth.AuthActivity"
+            android:launchMode="singleTask"
+            android:noHistory="true">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:scheme="${tencentAuthId}"/>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="${qqappid}" />
             </intent-filter>
         </activity>
+        <!--微信-->
         <activity
-                android:name="com.tencent.connect.common.AssistActivity"
-                android:configChanges="orientation|keyboardHidden"
-                android:screenOrientation="behind"
-                android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
-        <!--WX-->
+            android:name=".wxapi.WXEntryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <!--钉钉-->
         <activity
-                android:name=".wxapi.WXEntryActivity"
-                android:theme="@android:style/Theme.Translucent.NoTitleBar"
-                android:exported="true"
-                android:taskAffinity="com.like.thirdpartyloginandshare">
-        </activity>
-        <activity-alias
-                android:name="${applicationId}.wxapi.WXEntryActivity"
-                android:theme="@android:style/Theme.Translucent.NoTitleBar"
-                android:exported="true"
-                android:enabled="true"
-                android:targetActivity=".wxapi.WXEntryActivity">
-        </activity-alias>
+            android:name=".ddshare.DDShareActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <!--支付宝-->
+        <activity
+            android:name=".apshare.ShareEntryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
     </application>
 </manifest>

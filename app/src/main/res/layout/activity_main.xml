@@ -13,14 +13,8 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="getUserInfoWB"
-        android:text="获取微博用户信息" />
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="wbShare"
-        android:text="微博分享" />
+        android:onClick="deleteWbLogin"
+        android:text="删除微博登录" />
 
     <Button
         android:layout_width="match_parent"
@@ -31,20 +25,8 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="getUserInfoWX"
-        android:text="获取微信用户信息" />
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="wxShare"
-        android:text="微信分享" />
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="wxCircleShare"
-        android:text="微信朋友圈分享" />
+        android:onClick="deleteWxLogin"
+        android:text="删除微信登录" />
 
     <Button
         android:layout_width="match_parent"
@@ -55,25 +37,13 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="getUserInfoQQ"
-        android:text="获取QQ用户信息" />
+        android:onClick="deleteQqLogin"
+        android:text="删除QQ登录" />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="getUnionId"
-        android:text="获取QQ用户unionid" />
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="qqShare"
-        android:text="QQ分享" />
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="qZoneShare"
-        android:text="QQ空间分享" />
+        android:onClick="share"
+        android:text="分享" />
 
 </LinearLayout>

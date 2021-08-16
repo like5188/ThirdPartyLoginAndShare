@@ -32,6 +32,12 @@
     }
 ```
 
+2、创建第三方平台应用
+大部分社交平台进行分享、登录操作首先需要在第三方平台创建应用并提交审核，
+创建应用后，分享、登录操作时显示的应用icon、名称和对应开放平台设置有关，
+必须要创建应用的平台为：微信、QQ、新浪、钉钉、企业微信、支付宝、Facebook、Kakao、LinkeIn、Twitter，
+创建应用方法请参考：https://developer.umeng.com/docs/128606/detail/193651
+
 2、QQ登录分享配置
 ```java
     defaultConfig {

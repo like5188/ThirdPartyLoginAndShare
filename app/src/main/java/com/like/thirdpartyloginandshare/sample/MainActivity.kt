@@ -5,16 +5,15 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.like.thirdpartyloginandshare.ThirdPartyInit
-import com.like.thirdpartyloginandshare.ThirdPartyLogin
-import com.like.thirdpartyloginandshare.login.QqLogin
-import com.like.thirdpartyloginandshare.login.UNION_ID
-import com.like.thirdpartyloginandshare.login.WbLogin
-import com.like.thirdpartyloginandshare.login.WxLogin
-import com.like.thirdpartyloginandshare.util.OnLoginAndShareListener
+import com.like.thirdpartyloginandshare.Callback
+import com.umeng.socialize.ShareAction
+import com.umeng.socialize.UMAuthListener
+import com.umeng.socialize.UMShareAPI
+import com.umeng.socialize.UMShareListener
+import com.umeng.socialize.bean.SHARE_MEDIA
+import com.umeng.socialize.media.UMImage
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import org.jetbrains.anko.toast
 import java.io.File
 import java.io.FileOutputStream
 
@@ -23,14 +22,45 @@ class MainActivity : AppCompatActivity() {
         private const val TAG = "MainActivity"
     }
 
-    private val mThirdPartyLogin: ThirdPartyLogin by lazy { ThirdPartyLogin() }
+    private val mUMAuthListener = object : UMAuthListener {
+        override fun onStart(platform: SHARE_MEDIA?) {
+            Log.d(TAG, "auth onStart $platform")
+        }
+
+        override fun onComplete(platform: SHARE_MEDIA?, action: Int, data: MutableMap<String, String>?) {
+            Log.d(TAG, "auth onComplete $platform $data")
+        }
+
+        override fun onError(platform: SHARE_MEDIA?, action: Int, t: Throwable?) {
+            Log.d(TAG, "auth onError $platform $t")
+        }
+
+        override fun onCancel(platform: SHARE_MEDIA?, action: Int) {
+            Log.d(TAG, "auth onCancel $platform")
+        }
+    }
+
+    private val mUMShareListener = object : UMShareListener {
+        override fun onStart(platform: SHARE_MEDIA?) {
+            Log.d(TAG, "share onStart $platform")
+        }
+
+        override fun onResult(platform: SHARE_MEDIA?) {
+            Log.d(TAG, "share onResult $platform")
+        }
+
+        override fun onError(platform: SHARE_MEDIA?, t: Throwable?) {
+            Log.d(TAG, "share onError $platform $t")
+        }
+
+        override fun onCancel(platform: SHARE_MEDIA?) {
+            Log.d(TAG, "share onCancel $platform")
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        ThirdPartyInit.initQq(this, ThirdPartyInit.QqInitParams("101540498"))
-        ThirdPartyInit.initWx(this, ThirdPartyInit.WxInitParams("wxa9cce595f2c0b87b", "secret"))
-        ThirdPartyInit.initWb(this, ThirdPartyInit.WbInitParams("1929959086"))
         copyFile("eeee.mp4")
         copyFile("aaa.png")
         copyFile("bbbb.jpg")
@@ -65,128 +95,40 @@ class MainActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        mThirdPartyLogin.onActivityResult(requestCode, resultCode, data)
+        Callback.onActivityResultForQqOrSina(this, requestCode, resultCode, data)
     }
 
     fun wbLogin(view: View) {
-        mThirdPartyLogin
-            .strategy(WbLogin(this))
-            .listener(object : OnLoginAndShareListener {
-                override fun onSuccess() {
-                    toast("微博登录成功")
-                }
-
-                override fun onFailure(errorMessage: String) {
-                    toast("微博登录失败：$errorMessage")
-                }
-
-                override fun onCancel() {
-                    toast("取消微博登录")
-                }
-            })
-            .login()
+        UMShareAPI.get(this).getPlatformInfo(this, SHARE_MEDIA.SINA, mUMAuthListener)
     }
 
-    fun getUserInfoWB(view: View) {
-        val params = mapOf("uid" to "6314833384")
-//        val params = mapOf("screen_name" to "三少也的拉萨的来看看")
-        mThirdPartyLogin.strategy(WbLogin(this)).getData(
-            params = params,
-            onSuccess = {
-                Log.w(TAG, it)
-            },
-            onError = {
-                Log.e(TAG, it)
-            })
-    }
-
-    fun wbShare(view: View) {
-        startActivity(Intent(this, WbShareActivity::class.java))
+    fun deleteWbLogin(view: View) {
+        UMShareAPI.get(this).deleteOauth(this, SHARE_MEDIA.SINA, mUMAuthListener)
     }
 
     fun wxLogin(view: View) {
-        mThirdPartyLogin
-            .strategy(WxLogin(this))
-            .listener(object : OnLoginAndShareListener {
-                override fun onSuccess() {
-                    toast("微信登录成功")
-                }
-
-                override fun onFailure(errorMessage: String) {
-                    toast("微信登录失败：$errorMessage")
-                }
-
-                override fun onCancel() {
-                    toast("取消微信登录")
-                }
-            })
-            .login()
+        UMShareAPI.get(this).getPlatformInfo(this, SHARE_MEDIA.WEIXIN, mUMAuthListener)
     }
 
-    fun getUserInfoWX(view: View) {
-        mThirdPartyLogin.strategy(WxLogin(this)).getData(
-            onSuccess = {
-                Log.w(TAG, it)
-            },
-            onError = {
-                Log.e(TAG, it)
-            })
-    }
-
-    fun wxShare(view: View) {
-        startActivity(Intent(this, WxShareActivity::class.java))
-    }
-
-    fun wxCircleShare(view: View) {
-        startActivity(Intent(this, WxCircleShareActivity::class.java))
+    fun deleteWxLogin(view: View) {
+        UMShareAPI.get(this).deleteOauth(this, SHARE_MEDIA.WEIXIN, mUMAuthListener)
     }
 
     fun qqLogin(view: View) {
-        mThirdPartyLogin
-            .strategy(QqLogin(this))
-            .listener(object : OnLoginAndShareListener {
-                override fun onSuccess() {
-                    toast("QQ登录成功")
-                }
-
-                override fun onFailure(errorMessage: String) {
-                    toast("QQ登录失败：$errorMessage")
-                }
-
-                override fun onCancel() {
-                    toast("取消QQ登录")
-                }
-            })
-            .login()
+        UMShareAPI.get(this).getPlatformInfo(this, SHARE_MEDIA.QQ, mUMAuthListener)
     }
 
-    fun getUserInfoQQ(view: View) {
-        mThirdPartyLogin.strategy(QqLogin(this)).getData(
-            onSuccess = {
-                Log.w(TAG, it)
-            },
-            onError = {
-                Log.e(TAG, it)
-            })
+    fun deleteQqLogin(view: View) {
+        UMShareAPI.get(this).deleteOauth(this, SHARE_MEDIA.QQ, mUMAuthListener)
     }
 
-    fun getUnionId(view: View) {
-        mThirdPartyLogin.strategy(QqLogin(this)).getData(
-            UNION_ID,
-            onSuccess = {
-                Log.w(TAG, it)
-            },
-            onError = {
-                Log.e(TAG, it)
-            })
-    }
-
-    fun qqShare(view: View) {
-        startActivity(Intent(this, QqShareActivity::class.java))
-    }
-
-    fun qZoneShare(view: View) {
-        startActivity(Intent(this, QZoneShareActivity::class.java))
+    fun share(view: View) {
+        ShareAction(this)
+            .setDisplayList(SHARE_MEDIA.SINA, SHARE_MEDIA.QQ, SHARE_MEDIA.WEIXIN)
+            .setCallback(mUMShareListener)
+            .withText("hello")
+            .withMedia(UMImage(this, File(getExternalFilesDir(null), "aaa.png")))
+            .open()
     }
 
 }
