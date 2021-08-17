@@ -14,7 +14,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        manifestPlaceholders = [qqappid: "tencent101540498"]
+        manifestPlaceholders = [qqappid: "101540498"]
     }
     signingConfigs {
         debug {
