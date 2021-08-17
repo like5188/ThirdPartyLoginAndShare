@@ -23,7 +23,7 @@ class MyApplication : Application() {
         PlatformConfig.setQQZone("101540498", "e957a6694ea10bead40ebc7301275eca");
         PlatformConfig.setQQFileProvider("com.like.thirdpartyloginandshare.fileprovider");
         // 新浪微博设置
-        PlatformConfig.setSinaWeibo("1929959086", "376628131f4e598e7b13b682bab35f91", "http://sns.whalecloud.com");
+        PlatformConfig.setSinaWeibo("1929959086", "376628131f4e598e7b13b682bab35f91", "https://api.weibo.com/oauth2/default.html");
         PlatformConfig.setSinaFileProvider("com.like.thirdpartyloginandshare.fileprovider");
 
         // 设置每次登录拉取确认界面（目前SDK默认设置为在Token有效期内登录不进行二次授权）
