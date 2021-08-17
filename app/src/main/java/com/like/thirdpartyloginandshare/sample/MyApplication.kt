@@ -12,9 +12,19 @@ class MyApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
+        /**
+         * 注意: 即使您已经在AndroidManifest.xml中配置过appkey和channel值，也需要在App代码中调
+         * 用初始化接口（如需要使用AndroidManifest.xml中配置好的appkey和channel值，
+         * UMConfigure.init调用中appkey和channel参数请置为null）。
+         *
+         * 参数解释：
+         * 1、appkey和channl必须保持和预初始化一致！！！
+         * 2、deviceType：设备类型，UMConfigure.DEVICE_TYPE_PHONE为手机、UMConfigure.DEVICE_TYPE_BOX为盒子
+         * 3、pushSecret：Push推送业务的secret
+         */
         UMConfigure.init(
             this, "592b8268e88bad10320009ca", "umeng", UMConfigure.DEVICE_TYPE_PHONE, ""
-        )//58edcfeb310c93091c000be2 5965ee00734be40b580001a0
+        )
 
         // 微信设置
         PlatformConfig.setWeixin("wxa9cce595f2c0b87b", "979610c4b66148e4dd7a46f25f261058");
